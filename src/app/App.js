@@ -1,16 +1,17 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import React, { Suspense } from "react";
+import { BrowserRouter } from "react-router-dom";
+
+import { SuspenseLoader } from "../commons/components";
+import { history } from "../commons/helpers";
+import MainNavigation from "../navigation/MainNavigation";
 
 function App() {
-  const { t } = useTranslation(["general"]);
-  const { lang } = useSelector((state) => state?.settings);
-
   return (
-    <div className="App">
-      {lang}
-      {t("title")}
-    </div>
+    <BrowserRouter history={history}>
+      <Suspense fallback={<SuspenseLoader />}>
+        <MainNavigation />
+      </Suspense>
+    </BrowserRouter>
   );
 }
 

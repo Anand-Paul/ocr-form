@@ -20,32 +20,33 @@ class ErrorBoundary extends Component {
   }
 
   render() {
-    if (this.state.hasError) {
-      return (
-        <Backdrop open={true}>
-          <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Typography variant="h1" component="h2">
-              Oops! Something went wrong.
-            </Typography>
-            <Button
-              variant="contained"
-              onClick={() => {
-                window.location.reload();
-              }}
-            >
-              Refresh
-            </Button>
-          </Grid>
-        </Backdrop>
-      );
-    }
+    const { hasError } = this.state;
+    const { children } = this.props;
 
-    return this.props.children;
+    return hasError ? (
+      <Backdrop open={true}>
+        <Grid
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Typography variant="h1" component="h2">
+            Oops! Something went wrong.
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            Refresh
+          </Button>
+        </Grid>
+      </Backdrop>
+    ) : (
+      children
+    );
   }
 }
 

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { IAssetPreviewProps } from "./assetPreview";
 import { ReactWrapper, mount } from "enzyme";
@@ -9,7 +6,8 @@ import MockFactory from "../../../../common/mockFactory";
 
 describe("Image Asset Component", () => {
     // tslint:disable-next-line:max-line-length
-    const dataUri = "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7";
+    const dataUri =
+        "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7";
     let wrapper: ReactWrapper<IAssetPreviewProps> = null;
     const onLoadHandler = jest.fn();
     const onActivatedHandler = jest.fn();
@@ -28,7 +26,9 @@ describe("Image Asset Component", () => {
         onError: onErrorHandler,
     };
 
-    function createComponent(props?: IAssetPreviewProps): ReactWrapper<IAssetPreviewProps> {
+    function createComponent(
+        props?: IAssetPreviewProps
+    ): ReactWrapper<IAssetPreviewProps> {
         props = props || defaultProps;
         return mount(<ImageAsset {...props} />);
     }
@@ -60,6 +60,8 @@ describe("Image Asset Component", () => {
         await MockFactory.flushUi();
 
         expect(onActivatedHandler).toBeCalledWith(expect.any(HTMLImageElement));
-        expect(onDeactivatedHandler).toBeCalledWith(expect.any(HTMLImageElement));
+        expect(onDeactivatedHandler).toBeCalledWith(
+            expect.any(HTMLImageElement)
+        );
     });
 });

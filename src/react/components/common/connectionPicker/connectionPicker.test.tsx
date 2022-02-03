@@ -1,8 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
-import { ConnectionPicker, ConnectionPickerWithRouter, IConnectionPickerProps } from "./connectionPicker";
+import {
+    ConnectionPicker,
+    ConnectionPickerWithRouter,
+    IConnectionPickerProps,
+} from "./connectionPicker";
 import { BrowserRouter as Router } from "react-router-dom";
 import MockFactory from "../../../../common/mockFactory";
 import { mount, ReactWrapper } from "enzyme";
@@ -25,7 +26,7 @@ describe("Connection Picker Component", () => {
                     connections={connections}
                     onChange={onChangeHandler}
                 />
-            </Router>,
+            </Router>
         );
     });
 
@@ -44,12 +45,16 @@ describe("Connection Picker Component", () => {
     it("raises onChange event when dropdown is modified", () => {
         const newConnection = connections[1];
 
-        wrapper.find("select").simulate("change", { target: { value: newConnection.id } });
+        wrapper
+            .find("select")
+            .simulate("change", { target: { value: newConnection.id } });
         expect(onChangeHandler).toBeCalledWith(newConnection);
     });
 
     it("navigates to create connection page when clicking on Add Connection button", () => {
-        const connectionPicker = wrapper.find(ConnectionPicker) as ReactWrapper<IConnectionPickerProps>;
+        const connectionPicker = wrapper.find(
+            ConnectionPicker
+        ) as ReactWrapper<IConnectionPickerProps>;
         const pushSpy = jest.spyOn(connectionPicker.props().history, "push");
         connectionPicker.find("button.add-connection").simulate("click");
         expect(pushSpy).toBeCalledWith("/connections/create");

@@ -1,9 +1,10 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { ReactWrapper, mount } from "enzyme";
-import { AssetPreview, IAssetPreviewProps, IAssetPreviewState } from "./assetPreview";
+import {
+    AssetPreview,
+    IAssetPreviewProps,
+    IAssetPreviewState,
+} from "./assetPreview";
 import MockFactory from "../../../../common/mockFactory";
 import { ImageAsset } from "./imageAsset";
 import { AssetType, IAsset } from "../../../../models/applicationState";
@@ -11,7 +12,8 @@ import { AssetType, IAsset } from "../../../../models/applicationState";
 describe("Asset Preview Component", () => {
     let wrapper: ReactWrapper<IAssetPreviewProps, IAssetPreviewState> = null;
     // tslint:disable-next-line:max-line-length
-    const dataUri = "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7";
+    const dataUri =
+        "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7";
     const onLoadedHandler = jest.fn();
     const onErrorHandler = jest.fn();
     const onActivatedHandler = jest.fn();
@@ -34,7 +36,9 @@ describe("Asset Preview Component", () => {
         onAssetChanged: onAssetChangedHandler,
     };
 
-    function createComponent(props?: IAssetPreviewProps): ReactWrapper<IAssetPreviewProps, IAssetPreviewState> {
+    function createComponent(
+        props?: IAssetPreviewProps
+    ): ReactWrapper<IAssetPreviewProps, IAssetPreviewState> {
         props = props || defaultProps;
         return mount(<AssetPreview {...props} />);
     }
@@ -56,7 +60,6 @@ describe("Asset Preview Component", () => {
         expect(wrapper.find(ImageAsset).exists()).toBe(true);
         expect(imageProps.onActivated).toBe(onActivatedHandler);
         expect(imageProps.onDeactivated).toBe(onDeactivatedHandler);
-
     });
 
     it("renders loading indicator if asset isn't fully loaded", () => {
@@ -82,7 +85,10 @@ describe("Asset Preview Component", () => {
         wrapper = createComponent();
         const errorEvent = new Event("error");
 
-        wrapper.find(ImageAsset).props().onError(errorEvent as any);
+        wrapper
+            .find(ImageAsset)
+            .props()
+            .onError(errorEvent as any);
         wrapper.update();
 
         expect(wrapper.find(".asset-error").exists()).toBe(true);
@@ -90,8 +96,13 @@ describe("Asset Preview Component", () => {
 
     it("raises asset loaded handler when image asset loading is complete", () => {
         wrapper = createComponent();
-        wrapper.find(ImageAsset).props().onLoaded(MockFactory.createTestAsset() as IAsset,
-                                                  document.createElement("img"));
+        wrapper
+            .find(ImageAsset)
+            .props()
+            .onLoaded(
+                MockFactory.createTestAsset() as IAsset,
+                document.createElement("img")
+            );
         wrapper.update();
 
         expect(onLoadedHandler).toBeCalledWith(expect.any(HTMLImageElement));
@@ -102,7 +113,10 @@ describe("Asset Preview Component", () => {
     it("raises asset error handler when an image asset fails to load successfully", () => {
         wrapper = createComponent();
         const errorEvent = new Event("error");
-        wrapper.find(ImageAsset).props().onError(errorEvent as any);
+        wrapper
+            .find(ImageAsset)
+            .props()
+            .onError(errorEvent as any);
 
         expect(wrapper.state().hasError).toBe(true);
         expect(wrapper.state().loaded).toBe(true);
@@ -111,16 +125,24 @@ describe("Asset Preview Component", () => {
 
     it("raises activated handler when asset is activated", () => {
         wrapper = createComponent();
-        wrapper.find(ImageAsset).props().onActivated(document.createElement("img"));
+        wrapper
+            .find(ImageAsset)
+            .props()
+            .onActivated(document.createElement("img"));
 
         expect(onActivatedHandler).toBeCalledWith(expect.any(HTMLImageElement));
     });
 
     it("raises deactivated handler when asset is deactivated", () => {
         wrapper = createComponent();
-        wrapper.find(ImageAsset).props().onDeactivated(document.createElement("img"));
+        wrapper
+            .find(ImageAsset)
+            .props()
+            .onDeactivated(document.createElement("img"));
 
-        expect(onDeactivatedHandler).toBeCalledWith(expect.any(HTMLImageElement));
+        expect(onDeactivatedHandler).toBeCalledWith(
+            expect.any(HTMLImageElement)
+        );
     });
 
     it("renders landscape asset correctly", () => {
@@ -153,8 +175,13 @@ describe("Asset Preview Component", () => {
 
     it("updates loaded/error flags when asset changes", () => {
         wrapper = createComponent();
-        wrapper.find(ImageAsset).props().onLoaded(MockFactory.createTestAsset() as IAsset,
-                                                  document.createElement("img"));
+        wrapper
+            .find(ImageAsset)
+            .props()
+            .onLoaded(
+                MockFactory.createTestAsset() as IAsset,
+                document.createElement("img")
+            );
 
         expect(wrapper.state()).toEqual({
             loaded: true,

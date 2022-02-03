@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { KeyboardRegistrationManager } from "./keyboardRegistrationManager";
 
@@ -26,7 +23,13 @@ export class KeyboardManager extends React.Component<any, IKeyboardContext> {
         keyboard: new KeyboardRegistrationManager(),
     };
 
-    private nonSupportedKeys = new Set(["Meta", "Ctrl", " Control", "Alt", undefined]);
+    private nonSupportedKeys = new Set([
+        "Meta",
+        "Ctrl",
+        " Control",
+        "Alt",
+        undefined,
+    ]);
     private inputElementTypes = new Set(["input", "select", "textarea"]);
 
     public componentDidMount() {
@@ -65,10 +68,19 @@ export class KeyboardManager extends React.Component<any, IKeyboardContext> {
         if (this.isDisabled() || this.nonSupportedKeys.has(evt.key)) {
             return;
         }
-        this.state.keyboard.invokeHandler(evt.type as KeyEventType, this.getKeyParts(evt), evt);
-    }
+        this.state.keyboard.invokeHandler(
+            evt.type as KeyEventType,
+            this.getKeyParts(evt),
+            evt
+        );
+    };
 
     private isDisabled(): boolean {
-        return document.activeElement && this.inputElementTypes.has(document.activeElement.tagName.toLowerCase());
+        return (
+            document.activeElement &&
+            this.inputElementTypes.has(
+                document.activeElement.tagName.toLowerCase()
+            )
+        );
     }
 }

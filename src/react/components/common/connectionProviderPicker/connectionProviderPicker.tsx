@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import _ from "lodash";
 import { StorageProviderFactory } from "../../../../providers/storage/storageProviderFactory";
@@ -22,7 +19,9 @@ export interface IConnectionProviderPickerProps {
  * Creates HTML select object for selecting an asset or storage provider
  * @param props Properties for picker
  */
-export default function ConnectionProviderPicker(props: IConnectionProviderPickerProps) {
+export default function ConnectionProviderPicker(
+    props: IConnectionProviderPickerProps
+) {
     const storageProviders = _.values(StorageProviderFactory.providers);
     const assetProviders = _.values(AssetProviderFactory.providers);
 
@@ -38,17 +37,18 @@ export default function ConnectionProviderPicker(props: IConnectionProviderPicke
     }
 
     return (
-        <select id={props.id}
+        <select
+            id={props.id}
             className="form-control"
             value={props.value}
-            onChange={onChange}>
+            onChange={onChange}
+        >
             <option value="">Select Provider</option>
-            {
-                allProviders.map((provider) =>
-                    <option key={provider.name} value={provider.name}>
-                        {provider.displayName}
-                    </option>)
-            }
+            {allProviders.map((provider) => (
+                <option key={provider.name} value={provider.name}>
+                    {provider.displayName}
+                </option>
+            ))}
         </select>
     );
 }

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { FieldProps, WidgetProps } from "react-jsonschema-form";
 import Guard from "../../../../common/guard";
@@ -10,12 +7,15 @@ import Guard from "../../../../common/guard";
  * @param Widget UI Widget for form
  * @param mapProps Function mapping props to an object
  */
-export function CustomField<Props = {}>(Widget: any, mapProps?: (props: FieldProps) => Props) {
+export function CustomField<Props = {}>(
+    Widget: any,
+    mapProps?: (props: FieldProps) => Props
+) {
     Guard.null(Widget);
 
     return function render(props: FieldProps) {
         const widgetProps = mapProps ? mapProps(props) : props;
-        return (<Widget {...widgetProps} />);
+        return <Widget {...widgetProps} />;
     };
 }
 
@@ -24,11 +24,14 @@ export function CustomField<Props = {}>(Widget: any, mapProps?: (props: FieldPro
  * @param Widget UI Widget for form
  * @param mapProps Function mapping component props to form widget props
  */
-export function CustomWidget<Props = {}>(Widget: any, mapProps?: (props: WidgetProps) => Props) {
+export function CustomWidget<Props = {}>(
+    Widget: any,
+    mapProps?: (props: WidgetProps) => Props
+) {
     Guard.null(Widget);
 
     return function render(props: WidgetProps) {
         const widgetProps = mapProps ? mapProps(props) : props;
-        return (<Widget {...widgetProps} />);
+        return <Widget {...widgetProps} />;
     };
 }

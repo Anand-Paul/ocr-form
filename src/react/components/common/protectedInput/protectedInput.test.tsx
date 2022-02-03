@@ -1,9 +1,10 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { mount, ReactWrapper } from "enzyme";
-import { ProtectedInput, IProtectedInputProps, IProtectedInputState } from "./protectedInput";
+import {
+    ProtectedInput,
+    IProtectedInputProps,
+    IProtectedInputState,
+} from "./protectedInput";
 import { generateKey } from "../../../../common/crypto";
 
 describe("Protected Input Component", () => {
@@ -23,7 +24,9 @@ describe("Protected Input Component", () => {
         }
     });
 
-    function createComponent(props: IProtectedInputProps): ReactWrapper<IProtectedInputProps, IProtectedInputState> {
+    function createComponent(
+        props: IProtectedInputProps
+    ): ReactWrapper<IProtectedInputProps, IProtectedInputState> {
         return mount(<ProtectedInput {...props} />);
     }
 
@@ -67,7 +70,9 @@ describe("Protected Input Component", () => {
     it("calls onChange event handler when the input value changes", () => {
         const expectedValue = generateKey();
         const wrapper = createComponent(defaultProps);
-        wrapper.find("input").simulate("change", { target: { value: expectedValue } });
+        wrapper
+            .find("input")
+            .simulate("change", { target: { value: expectedValue } });
 
         expect(onChangeHandler).toBeCalledWith(expectedValue);
         expect(wrapper.state().value).toEqual(expectedValue);

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { useState } from "react";
 import { Modal } from "@fluentui/react/lib/Modal";
 import { FontIcon } from "@fluentui/react";
@@ -46,11 +43,13 @@ export const KeyboardShortcuts: React.FC = () => {
         },
         {
             key: strings.shortcuts.greaterAndLessThan.keys.lessThan,
-            description: strings.shortcuts.greaterAndLessThan.description.prevPage,
+            description:
+                strings.shortcuts.greaterAndLessThan.description.prevPage,
         },
         {
             key: strings.shortcuts.greaterAndLessThan.keys.greaterThan,
-            description: strings.shortcuts.greaterAndLessThan.description.nextPage,
+            description:
+                strings.shortcuts.greaterAndLessThan.description.nextPage,
         },
         {
             key: strings.shortcuts.zoomKeys.keys.minus,
@@ -65,20 +64,24 @@ export const KeyboardShortcuts: React.FC = () => {
             description: strings.shortcuts.zoomKeys.description.reset,
         },
         {
-            secondKeyOption: strings.shortcuts.deleteAndBackspace.keys.backSpace,
+            secondKeyOption:
+                strings.shortcuts.deleteAndBackspace.keys.backSpace,
             key: strings.shortcuts.deleteAndBackspace.keys.delete,
-            description: strings.shortcuts.deleteAndBackspace.description.delete,
+            description:
+                strings.shortcuts.deleteAndBackspace.description.delete,
         },
         {
             key: strings.shortcuts.drawnRegions.keys.escape,
-            description: strings.shortcuts.drawnRegions.description.cancelDrawOrReshape,
+            description:
+                strings.shortcuts.drawnRegions.description.cancelDrawOrReshape,
         },
         {
             modifierKey: "Alt",
             key: strings.shortcuts.drawnRegions.keys.backSpace,
-            description: strings.shortcuts.drawnRegions.description.deleteSelectedDrawnRegions,
+            description:
+                strings.shortcuts.drawnRegions.description
+                    .deleteSelectedDrawnRegions,
         },
-
     ];
 
     const tipsItems: ITipsItem[] = [
@@ -92,7 +95,8 @@ export const KeyboardShortcuts: React.FC = () => {
         },
         {
             name: strings.shortcuts.tips.deleteAllLabelsForTag.name,
-            description: strings.shortcuts.tips.deleteAllLabelsForTag.description,
+            description:
+                strings.shortcuts.tips.deleteAllLabelsForTag.description,
         },
         {
             name: strings.shortcuts.tips.groupSelect.name,
@@ -100,33 +104,36 @@ export const KeyboardShortcuts: React.FC = () => {
         },
         {
             name: strings.shortcuts.tips.multipleWordSelection.name,
-            description: strings.shortcuts.tips.multipleWordSelection.description,
+            description:
+                strings.shortcuts.tips.multipleWordSelection.description,
         },
     ];
     const ShortcutsListItems = ({ items }): JSX.Element => {
         return items.map((item, idx) => (
             <li key={`${item.key}-${idx}`} className="shortcut">
-                <div className="shortcut-description description">{item.description}</div>
+                <div className="shortcut-description description">
+                    {item.description}
+                </div>
                 <div className="shortcut-keys">
-                    {item.secondKeyOption &&
-                    <>
-                        <span
-                            className="keyboard-key"
-                            aria-label={`keyboard key - ${item.secondKeyOption}`}
-                        >
-                            {item.secondKeyOption}
-                        </span>
-                        <span className="mr-2 ml-2 mt-1">or</span>
-                    </>
-                    }
-                    {item.modifierKey &&
+                    {item.secondKeyOption && (
+                        <>
+                            <span
+                                className="keyboard-key"
+                                aria-label={`keyboard key - ${item.secondKeyOption}`}
+                            >
+                                {item.secondKeyOption}
+                            </span>
+                            <span className="mr-2 ml-2 mt-1">or</span>
+                        </>
+                    )}
+                    {item.modifierKey && (
                         <span
                             className="keyboard-key key-modifier"
                             aria-label={`keyboard key - ${item.modifierKey}`}
                         >
                             {item.modifierKey}
                         </span>
-                    }
+                    )}
                     <span
                         className="keyboard-key"
                         aria-label={`keyboard key - ${item.key}`}
@@ -134,7 +141,8 @@ export const KeyboardShortcuts: React.FC = () => {
                         {item.key}
                     </span>
                 </div>
-            </li>));
+            </li>
+        ));
     };
 
     const TipsListItems = ({ items }): JSX.Element => {
@@ -164,7 +172,12 @@ export const KeyboardShortcuts: React.FC = () => {
             >
                 <div className="header">
                     <h3>{strings.shortcuts.headers.keyboardShortcuts}</h3>
-                    <FontIcon className="close-modal" role="button" onClick={closeModal} iconName="Cancel" />
+                    <FontIcon
+                        className="close-modal"
+                        role="button"
+                        onClick={closeModal}
+                        iconName="Cancel"
+                    />
                 </div>
                 <div className="content">
                     <div className="shortcuts-list-container">
@@ -173,7 +186,7 @@ export const KeyboardShortcuts: React.FC = () => {
                         </ul>
                     </div>
                     <div className="tips-list-container">
-                        <h4 >{strings.shortcuts.headers.otherTips}</h4>
+                        <h4>{strings.shortcuts.headers.otherTips}</h4>
                         <ul className="tips-list">
                             <TipsListItems items={tipsItems} />
                         </ul>

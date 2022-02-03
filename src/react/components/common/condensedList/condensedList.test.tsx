@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import CondensedList from "./condensedList";
@@ -34,7 +31,7 @@ describe("Condensed List Component", () => {
                     onDelete={options.onDelete}
                     newLinkTo={options.newLinkTo}
                 />
-            </Router>,
+            </Router>
         );
     }
 
@@ -47,7 +44,9 @@ describe("Condensed List Component", () => {
 
     it("Displays the add link when defined", () => {
         const expectedNewLinkTo = "/create";
-        const wrapper = createList("Testing Component", items, { newLinkTo: expectedNewLinkTo });
+        const wrapper = createList("Testing Component", items, {
+            newLinkTo: expectedNewLinkTo,
+        });
         const newLink = wrapper.find(".condensed-list-header a");
         expect(newLink.length).toEqual(1);
         expect(newLink.prop("href")).toEqual(expectedNewLinkTo);

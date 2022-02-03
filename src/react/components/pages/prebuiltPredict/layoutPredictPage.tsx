@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import {
     FontIcon,
     IconButton,
@@ -11,7 +8,7 @@ import {
     SpinnerSize,
     TooltipHost,
     ContextualMenu,
-    IContextualMenuProps
+    IContextualMenuProps,
 } from "@fluentui/react";
 import Fill from "ol/style/Fill";
 import Stroke from "ol/style/Stroke";
@@ -23,12 +20,20 @@ import { bindActionCreators } from "redux";
 import url from "url";
 import { constants } from "../../../../common/constants";
 import { interpolate, strings } from "../../../../common/strings";
-import { getPrimaryGreenTheme, getPrimaryWhiteTheme } from "../../../../common/themes";
-import { downloadFile, poll, zipData, downloadZipFile } from "../../../../common/utils";
+import {
+    getPrimaryGreenTheme,
+    getPrimaryWhiteTheme,
+} from "../../../../common/themes";
+import {
+    downloadFile,
+    poll,
+    zipData,
+    downloadZipFile,
+} from "../../../../common/utils";
 import {
     ErrorCode,
     IApplicationState,
-    IPrebuiltSettings
+    IPrebuiltSettings,
 } from "../../../../models/applicationState";
 import IAppTitleActions, * as appTitleActions from "../../../../redux/actions/appTitleActions";
 import IAppPrebuiltSettingsActions, * as appPrebuiltSettingsActions from "../../../../redux/actions/prebuiltSettingsActions";
@@ -84,7 +89,7 @@ interface ILayoutPredictPageState extends ITableState {
 
 function mapStateToProps(state: IApplicationState) {
     return {
-        prebuiltSettings: state.prebuiltSettings
+        prebuiltSettings: state.prebuiltSettings,
     };
 }
 
@@ -96,7 +101,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPageProps>, ILayoutPredictPageState>{
+export class LayoutPredictPage extends React.Component<
+    Partial<ILayoutPredictPageProps>,
+    ILayoutPredictPageState
+> {
     private layoutHelper: ILayoutHelper = new LayoutHelper();
     private tableHelper: ITableHelper = new TableHelper(this);
 
@@ -119,15 +127,27 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
         layoutData: null,
         imageAngle: 0,
 
-        layers: { text: true, tables: true, checkboxes: true, label: true, drawnRegions: true },
+        layers: {
+            text: true,
+            tables: true,
+            checkboxes: true,
+            label: true,
+            drawnRegions: true,
+        },
 
-        tableIconTooltip: { display: "none", width: 0, height: 0, top: 0, left: 0 },
+        tableIconTooltip: {
+            display: "none",
+            width: 0,
+            height: 0,
+            top: 0,
+            left: 0,
+        },
         hoveringFeature: null,
         tableToView: null,
         tableToViewId: null,
 
         withPageRange: false,
-        pageRange: ""
+        pageRange: "",
     };
 
     private imageMap: ImageMap;
@@ -137,43 +157,53 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
         document.title = strings.layoutPredict.title + " - " + strings.appName;
         this.props.appTitleActions.setTitle(strings.layoutPredict.title);
     }
-    componentDidUpdate(_prevProps: ILayoutPredictPageProps, prevState: ILayoutPredictPageState) {
+    componentDidUpdate(
+        _prevProps: ILayoutPredictPageProps,
+        prevState: ILayoutPredictPageState
+    ) {
         if (this.state.file) {
             if (!this.state.fileLoaded && !this.state.isFetching) {
                 this.loadFile(this.state.file);
-            } else if (this.state.fileLoaded && prevState.currentPage !== this.state.currentPage) {
-                this.fileHelper.loadPage(this.state.currentPage).then((res: any) => {
-                    if (res) {
-                        this.setState({ ...res });
-                    }
-                });
+            } else if (
+                this.state.fileLoaded &&
+                prevState.currentPage !== this.state.currentPage
+            ) {
+                this.fileHelper
+                    .loadPage(this.state.currentPage)
+                    .then((res: any) => {
+                        if (res) {
+                            this.setState({ ...res });
+                        }
+                    });
             }
         }
     }
 
     private loadFile = (file: File) => {
         this.setState({ isFetching: true });
-        this.fileHelper.loadFile(file)
-            .then((res: any) => {
-                if (res) {
-                    this.setState({
-                        ...res,
-                        isFetching: false,
-                        fileLoaded: true
-                    });
-                }
-            });
-    }
+        this.fileHelper.loadFile(file).then((res: any) => {
+            if (res) {
+                this.setState({
+                    ...res,
+                    isFetching: false,
+                    fileLoaded: true,
+                });
+            }
+        });
+    };
 
     getAnalyzeDisabled = () => {
-        return this.state.isFetching || !this.state.file
-            || this.state.invalidFileFormat ||
+        return (
+            this.state.isFetching ||
+            !this.state.file ||
+            this.state.invalidFileFormat ||
             !this.state.fileLoaded ||
             this.state.isAnalyzing ||
             !this.props.prebuiltSettings?.apiKey ||
             !this.props.prebuiltSettings?.serviceURI ||
-            (this.state.withPageRange && !this.state.pageRangeIsValid);
-    }
+            (this.state.withPageRange && !this.state.pageRangeIsValid)
+        );
+    };
 
     render() {
         const analyzeDisabled: boolean = this.getAnalyzeDisabled();
@@ -181,69 +211,109 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
             className: "keep-button-120px",
             items: [
                 {
-                    key: 'JSON',
-                    text: 'JSON',
-                    onClick: () => this.onJsonDownloadClick()
+                    key: "JSON",
+                    text: "JSON",
+                    onClick: () => this.onJsonDownloadClick(),
                 },
                 {
-                    key: 'Table',
-                    text: 'Table',
-                    onClick: () => this.onCSVDownloadClick()
-                }
-            ]
-        }
+                    key: "Table",
+                    text: "Table",
+                    onClick: () => this.onCSVDownloadClick(),
+                },
+            ],
+        };
         return (
             <>
                 <div
                     className="predict skipToMainContent"
                     id="pagePredict"
-                    style={{ display: "flex" }} >
+                    style={{ display: "flex" }}
+                >
                     <div className="predict-main">
-                        {this.state.file && this.state.imageUri && this.renderImageMap()}
+                        {this.state.file &&
+                            this.state.imageUri &&
+                            this.renderImageMap()}
                         {this.renderPrevPageButton()}
                         {this.renderNextPageButton()}
                         {this.renderPageIndicator()}
                     </div>
                     <div className="predict-sidebar bg-lighter-1">
                         <div className="condensed-list">
-                            <h6 className="condensed-list-header bg-darker-2 p-2 flex-center"
-                                style={{ marginBottom: "1rem" }}>
-                                <FontIcon className="mr-1" iconName="KeyPhraseExtraction" />
+                            <h6
+                                className="condensed-list-header bg-darker-2 p-2 flex-center"
+                                style={{ marginBottom: "1rem" }}
+                            >
+                                <FontIcon
+                                    className="mr-1"
+                                    iconName="KeyPhraseExtraction"
+                                />
                                 <span>{strings.layoutPredict.layout}</span>
                             </h6>
-                            <PrebuiltSetting prebuiltSettings={this.props.prebuiltSettings}
-                                disabled={this.state.isFetching || this.state.isAnalyzing}
+                            <PrebuiltSetting
+                                prebuiltSettings={this.props.prebuiltSettings}
+                                disabled={
+                                    this.state.isFetching ||
+                                    this.state.isAnalyzing
+                                }
                                 actions={this.props.actions}
                             />
                             <div className="p-3">
-                                <h5>{strings.layoutPredict.selectFileAndRunLayout}</h5>
+                                <h5>
+                                    {
+                                        strings.layoutPredict
+                                            .selectFileAndRunLayout
+                                    }
+                                </h5>
                                 <DocumentFilePicker
-                                    disabled={this.state.isFetching || this.state.isAnalyzing}
-                                    onFileChange={(data) => this.onFileChange(data)}
-                                    onSelectSourceChange={() => this.onSelectSourceChange()}
-                                    onError={(err) => this.onFileLoadError(err)} />
+                                    disabled={
+                                        this.state.isFetching ||
+                                        this.state.isAnalyzing
+                                    }
+                                    onFileChange={(data) =>
+                                        this.onFileChange(data)
+                                    }
+                                    onSelectSourceChange={() =>
+                                        this.onSelectSourceChange()
+                                    }
+                                    onError={(err) => this.onFileLoadError(err)}
+                                />
                                 <div className="page-range-section">
                                     <PageRange
-                                        disabled={this.state.isFetching || this.state.isAnalyzing}
+                                        disabled={
+                                            this.state.isFetching ||
+                                            this.state.isAnalyzing
+                                        }
                                         withPageRange={this.state.withPageRange}
                                         pageRange={this.state.pageRange}
-                                        onPageRangeChange={this.onPageRangeChange} />
+                                        onPageRangeChange={
+                                            this.onPageRangeChange
+                                        }
+                                    />
                                 </div>
                             </div>
-                            <Separator className="separator-right-pane-main">{strings.layoutPredict.analysis}</Separator>
+                            <Separator className="separator-right-pane-main">
+                                {strings.layoutPredict.analysis}
+                            </Separator>
                             <div className="p-3" style={{ marginTop: "8px" }}>
                                 <div className="container-items-end predict-button">
                                     <PrimaryButton
                                         theme={getPrimaryWhiteTheme()}
-                                        iconProps={{ iconName: "KeyPhraseExtraction" }}
+                                        iconProps={{
+                                            iconName: "KeyPhraseExtraction",
+                                        }}
                                         text={strings.layoutPredict.runLayout}
-                                        aria-label={!this.state.analyzationLoaded ? strings.layoutPredict.inProgress : ""}
+                                        aria-label={
+                                            !this.state.analyzationLoaded
+                                                ? strings.layoutPredict
+                                                      .inProgress
+                                                : ""
+                                        }
                                         allowDisabledFocus
                                         disabled={analyzeDisabled}
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                {this.state.isFetching &&
+                                {this.state.isFetching && (
                                     <div className="loading-container">
                                         <Spinner
                                             label="Fetching..."
@@ -252,32 +322,45 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
                                             size={SpinnerSize.large}
                                         />
                                     </div>
-                                }
-                                {this.state.isAnalyzing &&
+                                )}
+                                {this.state.isAnalyzing && (
                                     <div className="loading-container">
                                         <Spinner
-                                            label={strings.layoutPredict.inProgress}
+                                            label={
+                                                strings.layoutPredict.inProgress
+                                            }
                                             ariaLive="assertive"
                                             labelPosition="right"
                                             size={SpinnerSize.large}
                                         />
                                     </div>
-                                }
-                                {this.state.layoutData && !this.state.isAnalyzing &&
-                                    <div className="container-items-center container-space-between results-container">
-                                        <h5 className="results-header">{strings.layoutPredict.layoutResults}</h5>
-                                        <PrimaryButton
-                                            className="align-self-end keep-button-120px"
-                                            theme={getPrimaryGreenTheme()}
-                                            text={strings.layoutPredict.download}
-                                            allowDisabledFocus
-                                            autoFocus={true}
-                                            onClick={this.onJsonDownloadClick}
-                                            menuProps={menuProps}
-                                            menuAs={this.getMenu}
-                                        />
-                                    </div>
-                                }
+                                )}
+                                {this.state.layoutData &&
+                                    !this.state.isAnalyzing && (
+                                        <div className="container-items-center container-space-between results-container">
+                                            <h5 className="results-header">
+                                                {
+                                                    strings.layoutPredict
+                                                        .layoutResults
+                                                }
+                                            </h5>
+                                            <PrimaryButton
+                                                className="align-self-end keep-button-120px"
+                                                theme={getPrimaryGreenTheme()}
+                                                text={
+                                                    strings.layoutPredict
+                                                        .download
+                                                }
+                                                allowDisabledFocus
+                                                autoFocus={true}
+                                                onClick={
+                                                    this.onJsonDownloadClick
+                                                }
+                                                menuProps={menuProps}
+                                                menuAs={this.getMenu}
+                                            />
+                                        </div>
+                                    )}
                             </div>
                         </div>
                     </div>
@@ -285,32 +368,44 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
                         show={this.state.shouldShowAlert}
                         title={this.state.alertTitle}
                         message={this.state.alertMessage}
-                        onClose={() => this.setState({
-                            shouldShowAlert: false,
-                            alertTitle: "",
-                            alertMessage: "",
-                            analyzationLoaded: true
-                        })}
+                        onClose={() =>
+                            this.setState({
+                                shouldShowAlert: false,
+                                alertTitle: "",
+                                alertMessage: "",
+                                analyzationLoaded: true,
+                            })
+                        }
                     />
                     <PreventLeaving
                         when={this.state.isAnalyzing}
-                        message={"A prediction operation is currently in progress, are you sure you want to leave?"}
+                        message={
+                            "A prediction operation is currently in progress, are you sure you want to leave?"
+                        }
                     />
                 </div>
             </>
-        )
+        );
     }
 
-    onPageRangeChange = (withPageRange: boolean, pageRange: string, pageRangeIsValid: boolean) => {
+    onPageRangeChange = (
+        withPageRange: boolean,
+        pageRange: string,
+        pageRangeIsValid: boolean
+    ) => {
         this.setState({ withPageRange, pageRange, pageRangeIsValid });
-    }
+    };
 
     onJsonDownloadClick = () => {
         const { layoutData } = this.state;
         if (layoutData) {
-            downloadFile(JSON.stringify(layoutData), this.state.fileLabel + ".json", "Layout-");
+            downloadFile(
+                JSON.stringify(layoutData),
+                this.state.fileLabel + ".json",
+                "Layout-"
+            );
         }
-    }
+    };
     onCSVDownloadClick = () => {
         const { layoutData } = this.state;
         if (layoutData) {
@@ -324,20 +419,29 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
                         if (table.cells && table.columns && table.rows) {
                             let tableContent = "";
                             let rowIndex = 0;
-                            table.cells.forEach(cell => {
+                            table.cells.forEach((cell) => {
                                 if (cell.rowIndex === rowIndex) {
-                                    tableContent += `"${cell.text}"${cell.columnSpan ? _.repeat(',', cell.columnSpan) : ','}`;
-                                }
-                                else {
+                                    tableContent += `"${cell.text}"${
+                                        cell.columnSpan
+                                            ? _.repeat(",", cell.columnSpan)
+                                            : ","
+                                    }`;
+                                } else {
                                     tableContent += "\n";
-                                    tableContent += `"${cell.text}"${cell.columnSpan ? _.repeat(',', cell.columnSpan) : ','}`;
+                                    tableContent += `"${cell.text}"${
+                                        cell.columnSpan
+                                            ? _.repeat(",", cell.columnSpan)
+                                            : ","
+                                    }`;
                                     rowIndex = cell.rowIndex;
                                 }
                             });
                             if (tableContent.length > 0) {
                                 data.push({
-                                    fileName: `Layout-page-${i + 1}-table-${index + 1}.csv`,
-                                    data: tableContent
+                                    fileName: `Layout-page-${i + 1}-table-${
+                                        index + 1
+                                    }.csv`,
+                                    data: tableContent,
                                 });
                             }
                         }
@@ -348,35 +452,41 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
                 downloadZipFile(data, this.state.fileLabel + "tables");
             }
         }
-    }
+    };
 
     onFileChange(data: {
-        file: File,
-        fileLabel: string,
-        fetchedFileURL: string
+        file: File;
+        fileLabel: string;
+        fetchedFileURL: string;
     }): void {
-        this.setState({
-            currentPage: 1,
-            layoutData: null,
-            ...data,
-            analyzationLoaded: false,
-            fileLoaded: false,
-        }, () => {
-            this.layoutHelper?.reset();
-        });
+        this.setState(
+            {
+                currentPage: 1,
+                layoutData: null,
+                ...data,
+                analyzationLoaded: false,
+                fileLoaded: false,
+            },
+            () => {
+                this.layoutHelper?.reset();
+            }
+        );
     }
 
     onSelectSourceChange(): void {
-        this.setState({
-            file: undefined,
-            layoutData: null,
-            analyzationLoaded: false,
-        }, () => {
-            this.layoutHelper.reset();
-        });
+        this.setState(
+            {
+                file: undefined,
+                layoutData: null,
+                analyzationLoaded: false,
+            },
+            () => {
+                this.layoutHelper.reset();
+            }
+        );
     }
 
-    onFileLoadError(err: { alertTitle: string; alertMessage: string; }): void {
+    onFileLoadError(err: { alertTitle: string; alertMessage: string }): void {
         this.setState({
             ...err,
             shouldShowAlert: true,
@@ -419,14 +529,26 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
                     hoveringFeature={this.state.hoveringFeature}
                     onMapReady={this.noOp}
                     featureStyler={this.featureStyler}
-                    tableBorderFeatureStyler={this.tableHelper.tableBorderFeatureStyler}
-                    tableIconFeatureStyler={this.tableHelper.tableIconFeatureStyler}
-                    tableIconBorderFeatureStyler={this.tableHelper.tableIconBorderFeatureStyler}
-                    handleTableToolTipChange={this.tableHelper.handleTableToolTipChange}
+                    tableBorderFeatureStyler={
+                        this.tableHelper.tableBorderFeatureStyler
+                    }
+                    tableIconFeatureStyler={
+                        this.tableHelper.tableIconFeatureStyler
+                    }
+                    tableIconBorderFeatureStyler={
+                        this.tableHelper.tableIconBorderFeatureStyler
+                    }
+                    handleTableToolTipChange={
+                        this.tableHelper.handleTableToolTipChange
+                    }
                 />
                 <TooltipHost
-                    content={"rows: " + this.state.tableIconTooltip.rows +
-                        " columns: " + this.state.tableIconTooltip.columns}
+                    content={
+                        "rows: " +
+                        this.state.tableIconTooltip.rows +
+                        " columns: " +
+                        this.state.tableIconTooltip.columns
+                    }
                     id="tableInfo"
                     styles={hostStyles}
                 >
@@ -436,27 +558,27 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
                         onClick={this.handleTableIconFeatureSelect}
                     />
                 </TooltipHost>
-                {this.state.tableToView !== null &&
+                {this.state.tableToView !== null && (
                     <TableView
                         handleTableViewClose={this.handleTableViewClose}
                         tableToView={this.state.tableToView}
                     />
-                }
+                )}
             </div>
         );
-    }
+    };
 
     private handleCanvasZoomIn = () => {
         this.imageMap.zoomIn();
-    }
+    };
 
     private handleCanvasZoomOut = () => {
         this.imageMap.zoomOut();
-    }
+    };
 
     private handleRotateCanvas = (degrees: number) => {
         this.setState({ imageAngle: this.state.imageAngle + degrees });
-    }
+    };
 
     private handleLayerChange = (layer: string) => {
         switch (layer) {
@@ -481,23 +603,30 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
         this.setState({
             layers: newLayers,
         });
-    }
+    };
 
     private handleTableIconFeatureSelect = () => {
         if (this.state.hoveringFeature != null) {
-            const tableState = this.imageMap.getTableBorderFeatureByID(this.state.hoveringFeature).get("state");
+            const tableState = this.imageMap
+                .getTableBorderFeatureByID(this.state.hoveringFeature)
+                .get("state");
             if (tableState === "hovering" || tableState === "rest") {
-                this.tableHelper.setTableToView(this.tableHelper.getTable(this.state.currentPage, this.state.hoveringFeature),
-                    this.state.hoveringFeature);
+                this.tableHelper.setTableToView(
+                    this.tableHelper.getTable(
+                        this.state.currentPage,
+                        this.state.hoveringFeature
+                    ),
+                    this.state.hoveringFeature
+                );
             } else {
                 this.closeTableView("hovering");
             }
         }
-    }
+    };
 
     private handleTableViewClose = () => {
         this.closeTableView("rest");
-    }
+    };
 
     private closeTableView = (state: string) => {
         if (this.state.tableToView) {
@@ -507,14 +636,13 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
                 tableToViewId: null,
             });
         }
-    }
+    };
 
     private noOp = () => {
         // no operation
-    }
+    };
 
     private featureStyler = (feature) => {
-
         // Unselected
         return new Style({
             stroke: new Stroke({
@@ -525,22 +653,24 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
                 color: "rgba(255, 252, 127, 0.2)",
             }),
         });
-    }
+    };
 
     private renderPrevPageButton = () => {
         const prevPage = () => {
             this.goToPage(Math.max(1, this.state.currentPage - 1));
         };
 
-        return this.state.currentPage > 1 ?
+        return this.state.currentPage > 1 ? (
             <IconButton
                 className="toolbar-btn prev"
                 title="Previous"
                 iconProps={{ iconName: "ChevronLeft" }}
                 onClick={prevPage}
             />
-            : <div></div>;
-    }
+        ) : (
+            <div></div>
+        );
+    };
 
     private renderNextPageButton = () => {
         const { numPages } = this.state;
@@ -548,64 +678,84 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
             this.goToPage(Math.min(this.state.currentPage + 1, numPages));
         };
 
-        return this.state.currentPage < numPages ?
+        return this.state.currentPage < numPages ? (
             <IconButton
                 className="toolbar-btn next"
                 title="Next"
                 onClick={nextPage}
                 iconProps={{ iconName: "ChevronRight" }}
             />
-            : <div></div>;
-    }
+        ) : (
+            <div></div>
+        );
+    };
 
     private renderPageIndicator = () => {
         const { numPages } = this.state;
-        return numPages > 1 ?
+        return numPages > 1 ? (
             <p className="page-number">
                 Page {this.state.currentPage} of {numPages}
-            </p> : <div></div>;
-    }
+            </p>
+        ) : (
+            <div></div>
+        );
+    };
 
     private goToPage = async (targetPage: number) => {
         if (targetPage <= 0 || targetPage > this.state.numPages) {
             return;
         }
-        this.setState({
-            currentPage: targetPage,
-        }, () => {
-            this.layoutHelper.drawLayout(targetPage);
-            this.tableHelper.drawTables(targetPage);
-        });
-    }
+        this.setState(
+            {
+                currentPage: targetPage,
+            },
+            () => {
+                this.layoutHelper.drawLayout(targetPage);
+                this.tableHelper.drawTables(targetPage);
+            }
+        );
+    };
 
     private handleClick = () => {
         this.setState({ analyzationLoaded: false, isAnalyzing: true });
         this.getAnalzation()
             .then((result) => {
                 this.tableHelper.setAnalyzeResult(result?.analyzeResult);
-                this.setState({
-                    isAnalyzing: false,
-                    analyzationLoaded: true,
-                    layoutData: result,
-                }, () => {
-                    this.layoutHelper.setLayoutData(result);
-                    this.layoutHelper.drawLayout(this.state.currentPage);
-                    this.tableHelper.drawTables(this.state.currentPage);
-                })
-            }).catch((error) => {
+                this.setState(
+                    {
+                        isAnalyzing: false,
+                        analyzationLoaded: true,
+                        layoutData: result,
+                    },
+                    () => {
+                        this.layoutHelper.setLayoutData(result);
+                        this.layoutHelper.drawLayout(this.state.currentPage);
+                        this.tableHelper.drawTables(this.state.currentPage);
+                    }
+                );
+            })
+            .catch((error) => {
                 let alertMessage = "";
-                if (error?.errorCode === ErrorCode.PredictWithoutTrainForbidden) {
-                    alertMessage = strings.errors.predictWithoutTrainForbidden.message;
+                if (
+                    error?.errorCode === ErrorCode.PredictWithoutTrainForbidden
+                ) {
+                    alertMessage =
+                        strings.errors.predictWithoutTrainForbidden.message;
                 } else if (error?.errorCode === ErrorCode.ModelNotFound) {
                     alertMessage = error.message;
-                } else if (error?.errorCode === ErrorCode.HttpStatusUnauthorized) {
+                } else if (
+                    error?.errorCode === ErrorCode.HttpStatusUnauthorized
+                ) {
                     alertMessage = error.message;
                 } else if (error?.message) {
                     alertMessage = error.message;
                 } else if (error?.response) {
                     alertMessage = error.response.data;
                 } else {
-                    alertMessage = interpolate(strings.errors.endpointConnectionError.message, { endpoint: "form recognizer backend URL" });
+                    alertMessage = interpolate(
+                        strings.errors.endpointConnectionError.message,
+                        { endpoint: "form recognizer backend URL" }
+                    );
                 }
                 this.setState({
                     shouldShowAlert: true,
@@ -614,12 +764,12 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
                     isAnalyzing: false,
                 });
             });
-    }
+    };
 
     private async getAnalzation(): Promise<any> {
         let endpointURL = url.resolve(
             this.props.prebuiltSettings.serviceURI,
-            `/formrecognizer/${constants.prebuiltServiceVersion}/layout/analyze`,
+            `/formrecognizer/${constants.prebuiltServiceVersion}/layout/analyze`
         );
         if (this.state.withPageRange && this.state.pageRangeIsValid) {
             endpointURL += `?${constants.pages}=${this.state.pageRange}`;
@@ -627,19 +777,34 @@ export class LayoutPredictPage extends React.Component<Partial<ILayoutPredictPag
         const apiKey = this.props.prebuiltSettings.apiKey;
 
         const headers = {
-            "Content-Type": this.state.file ? this.state.file.type : "application/json",
-            "cache-control": "no-cache"
+            "Content-Type": this.state.file
+                ? this.state.file.type
+                : "application/json",
+            "cache-control": "no-cache",
         };
-        const body = this.state.file ?? ({ source: this.state.fetchedFileURL });
+        const body = this.state.file ?? { source: this.state.fetchedFileURL };
 
         // let response;
         try {
             const response = await ServiceHelper.postWithAutoRetry(
-                endpointURL, body, { headers }, apiKey as string);
+                endpointURL,
+                body,
+                { headers },
+                apiKey as string
+            );
             const operationLocation = response.headers["operation-location"];
 
             // Make the second REST API call and get the response.
-            return poll(() => ServiceHelper.getWithAutoRetry(operationLocation, { headers }, apiKey as string), 120000, 500);
+            return poll(
+                () =>
+                    ServiceHelper.getWithAutoRetry(
+                        operationLocation,
+                        { headers },
+                        apiKey as string
+                    ),
+                120000,
+                500
+            );
         } catch (err) {
             ServiceHelper.handleServiceError({ ...err, endpoint: endpointURL });
         }

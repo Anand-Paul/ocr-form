@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { SyntheticEvent } from "react";
 import { IAsset, AssetType } from "../../../../models/applicationState";
 import { strings } from "../../../../common/strings";
@@ -18,7 +15,10 @@ export interface IGenericContentSource {
     offsetTop: number;
     offsetLeft: number;
 }
-export type ContentSource = HTMLImageElement | HTMLVideoElement | IGenericContentSource;
+export type ContentSource =
+    | HTMLImageElement
+    | HTMLVideoElement
+    | IGenericContentSource;
 
 /**
  * AssetPreview component properties
@@ -55,7 +55,10 @@ export interface IAssetPreviewState {
  * @name - Asset Preview
  * @description - Small preview of assets for selection in editor page
  */
-export class AssetPreview extends React.Component<IAssetPreviewProps, IAssetPreviewState> {
+export class AssetPreview extends React.Component<
+    IAssetPreviewProps,
+    IAssetPreviewState
+> {
     /** Default properties for component if not defined */
     public static defaultProps: IAssetPreviewProps = {
         asset: null,
@@ -99,38 +102,48 @@ export class AssetPreview extends React.Component<IAssetPreviewProps, IAssetPrev
         return (
             <div className={classNames.join(" ")}>
                 <div className="asset-preview-container">
-                    {!loaded &&
+                    {!loaded && (
                         <div className="asset-loading">
                             <div className="asset-loading-spinner">
                                 <Spinner size={SpinnerSize.small} />
                             </div>
                         </div>
-                    }
-                    {this.props.asset.isRunningOCR &&
+                    )}
+                    {this.props.asset.isRunningOCR && (
                         <div className="asset-loading">
                             <div className="asset-loading-ocr-spinner">
-                                <Label className="p-0" ></Label>
-                                <Spinner size={SpinnerSize.small} label="Running Layout..." ariaLive="off" labelPosition="right" />
+                                <Label className="p-0"></Label>
+                                <Spinner
+                                    size={SpinnerSize.small}
+                                    label="Running Layout..."
+                                    ariaLive="off"
+                                    labelPosition="right"
+                                />
                             </div>
                         </div>
-                    }
-                    {this.props.asset.isRunningAutoLabeling &&
+                    )}
+                    {this.props.asset.isRunningAutoLabeling && (
                         <div className="asset-loading">
                             <div className="asset-loading-ocr-spinner">
-                                <Label className="p-0" ></Label>
-                                <Spinner size={SpinnerSize.small} label="Auto Labeling..." ariaLive="off" labelPosition="right" />
+                                <Label className="p-0"></Label>
+                                <Spinner
+                                    size={SpinnerSize.small}
+                                    label="Auto Labeling..."
+                                    ariaLive="off"
+                                    labelPosition="right"
+                                />
                             </div>
                         </div>
-                    }
-                    {hasError &&
+                    )}
+                    {hasError && (
                         <div className="asset-error text-danger">
                             <i className="fas fa-2x fa-exclamation-circle" />
-                            <p className="m-2">{strings.editorPage.assetError}</p>
+                            <p className="m-2">
+                                {strings.editorPage.assetError}
+                            </p>
                         </div>
-                    }
-                    {!hasError &&
-                        this.renderAsset()
-                    }
+                    )}
+                    {!hasError && this.renderAsset()}
                 </div>
             </div>
         );
@@ -141,50 +154,72 @@ export class AssetPreview extends React.Component<IAssetPreviewProps, IAssetPrev
 
         switch (asset.type) {
             case AssetType.Image:
-                return <ImageAsset asset={asset}
-                    onLoaded={this.onAssetLoad}
-                    onError={this.onError}
-                    onActivated={this.props.onActivated}
-                    onDeactivated={this.props.onDeactivated} />;
+                return (
+                    <ImageAsset
+                        asset={asset}
+                        onLoaded={this.onAssetLoad}
+                        onError={this.onError}
+                        onActivated={this.props.onActivated}
+                        onDeactivated={this.props.onDeactivated}
+                    />
+                );
             case AssetType.TIFF:
-                return <TiffAsset asset={asset}
-                    onLoaded={this.onAssetLoad}
-                    onError={this.onError}
-                    onActivated={this.props.onActivated}
-                    onDeactivated={this.props.onDeactivated} />;
+                return (
+                    <TiffAsset
+                        asset={asset}
+                        onLoaded={this.onAssetLoad}
+                        onError={this.onError}
+                        onActivated={this.props.onActivated}
+                        onDeactivated={this.props.onDeactivated}
+                    />
+                );
             case AssetType.PDF:
-                return <PDFAsset asset={asset}
-                    onLoaded={this.onAssetLoad}
-                    onError={this.onError}
-                    onActivated={this.props.onActivated}
-                    onDeactivated={this.props.onDeactivated} />;
+                return (
+                    <PDFAsset
+                        asset={asset}
+                        onLoaded={this.onAssetLoad}
+                        onError={this.onError}
+                        onActivated={this.props.onActivated}
+                        onDeactivated={this.props.onDeactivated}
+                    />
+                );
             default:
-                return <div className="asset-error">{strings.editorPage.assetError}</div>;
+                return (
+                    <div className="asset-error">
+                        {strings.editorPage.assetError}
+                    </div>
+                );
         }
-    }
+    };
 
     /**
      * Internal event handler for when the referenced asset has been loaded
      * @param contentSource The visual HTML element of the asset (img/video tag)
      */
     private onAssetLoad = (asset: IAsset, contentSource: ContentSource) => {
-        this.setState({
-            loaded: true,
-        }, () => {
-            if (this.props.onLoaded) {
-                this.props.onLoaded(this.props.asset, contentSource);
+        this.setState(
+            {
+                loaded: true,
+            },
+            () => {
+                if (this.props.onLoaded) {
+                    this.props.onLoaded(this.props.asset, contentSource);
+                }
             }
-        });
-    }
+        );
+    };
 
     private onError = (e: SyntheticEvent) => {
-        this.setState({
-            hasError: true,
-            loaded: true,
-        }, () => {
-            if (this.props.onError) {
-                this.props.onError(e);
+        this.setState(
+            {
+                hasError: true,
+                loaded: true,
+            },
+            () => {
+                if (this.props.onError) {
+                    this.props.onError(e);
+                }
             }
-        });
-    }
+        );
+    };
 }

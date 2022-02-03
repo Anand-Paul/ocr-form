@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { IAssetPreviewProps } from "./assetPreview";
 import { IAsset } from "../../../../models/applicationState";
@@ -34,12 +31,14 @@ export class TiffAsset extends React.Component<IAssetPreviewProps, ITiffAsset> {
 
     public render() {
         return (
-            <img ref={this.image}
+            <img
+                ref={this.image}
                 src={this.state.imageUri}
                 alt={this.props.asset.name}
                 onLoad={this.onLoad}
-                style={ { display: this.state.imageUri ? "block" : "none" } }
-                crossOrigin="anonymous" />
+                style={{ display: this.state.imageUri ? "block" : "none" }}
+                crossOrigin="anonymous"
+            />
         );
     }
 
@@ -47,15 +46,18 @@ export class TiffAsset extends React.Component<IAssetPreviewProps, ITiffAsset> {
         const assetArrayBuffer = await HtmlFileReader.getAssetArray(asset);
         const tiffImages = parseTiffData(assetArrayBuffer);
         this.loadTiffPage(tiffImages, 1 /*pageNumber*/);
-    }
+    };
 
     private loadTiffPage = (tiffImages, pageNumber) => {
         const tiffImage = tiffImages[pageNumber - 1];
         const canvas = renderTiffToCanvas(tiffImage);
         this.setState({
-            imageUri: canvas.toDataURL(constants.convertedImageFormat, constants.convertedThumbnailQuality),
+            imageUri: canvas.toDataURL(
+                constants.convertedImageFormat,
+                constants.convertedThumbnailQuality
+            ),
         });
-}
+    };
 
     private onLoad = () => {
         if (this.props.onLoaded) {
@@ -67,5 +69,5 @@ export class TiffAsset extends React.Component<IAssetPreviewProps, ITiffAsset> {
         if (this.props.onDeactivated) {
             this.props.onDeactivated(this.image.current);
         }
-    }
+    };
 }

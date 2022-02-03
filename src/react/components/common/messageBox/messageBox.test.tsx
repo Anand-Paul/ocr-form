@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { mount, ReactWrapper } from "enzyme";
 import MessageBox, { IMessageBoxProps, IMessageBoxState } from "./messageBox";
@@ -18,13 +15,16 @@ describe("MessageBox component", () => {
         onCancel: cancelHandler,
     };
 
-    function createComponent(props: IMessageBoxProps): ReactWrapper<IMessageBoxProps, IMessageBoxState, MessageBox> {
+    function createComponent(
+        props: IMessageBoxProps
+    ): ReactWrapper<IMessageBoxProps, IMessageBoxState, MessageBox> {
         return mount(
             <MessageBox {...props}>
                 <Button autoFocus={true}>Yes</Button>
                 <Button>No</Button>
                 <Button>Cancel</Button>
-            </MessageBox>);
+            </MessageBox>
+        );
     }
 
     it("Is defined", () => {
@@ -43,7 +43,9 @@ describe("MessageBox component", () => {
         wrapper.update();
 
         expect(wrapper.find(".modal-title").text()).toEqual(defaultProps.title);
-        expect(wrapper.find(".modal-body").text()).toEqual(defaultProps.message);
+        expect(wrapper.find(".modal-body").text()).toEqual(
+            defaultProps.message
+        );
         expect(wrapper.find(".modal-footer button").length).toEqual(3);
     });
 
@@ -54,7 +56,7 @@ describe("MessageBox component", () => {
         const props: IMessageBoxProps = {
             ...defaultProps,
             message: (testObject) => testObject.value,
-            params: [ testObject ],
+            params: [testObject],
         };
         const wrapper = createComponent(props);
 
@@ -101,7 +103,6 @@ describe("MessageBox component", () => {
         expect(wrapper.instance().state.isOpen).toBe(true);
         expect(wrapper.instance().state.isRendered).toBe(true);
         expect(wrapper.instance().state.isButtonSelected).toBe(false);
-
     });
 
     describe("componentDidUpdate", () => {

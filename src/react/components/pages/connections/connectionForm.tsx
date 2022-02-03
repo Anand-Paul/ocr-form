@@ -1,9 +1,10 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
-import Form, { Widget, IChangeEvent, FormValidation } from "react-jsonschema-form";
-import { FontIcon, PrimaryButton} from "@fluentui/react";
+import Form, {
+    Widget,
+    IChangeEvent,
+    FormValidation,
+} from "react-jsonschema-form";
+import { FontIcon, PrimaryButton } from "@fluentui/react";
 import { IConnection } from "../../../../models/applicationState";
 import { strings, addLocValues } from "../../../../common/strings";
 import LocalFolderPicker from "../../common/localFolderPicker/localFolderPicker";
@@ -14,8 +15,14 @@ import Checkbox from "rc-checkbox";
 import "rc-checkbox/assets/index.css";
 import { CustomWidget } from "../../common/customField/customField";
 import { isBrowser } from "../../../../common/hostProcess";
-import { getPrimaryGreenTheme, getPrimaryGreyTheme} from "../../../../common/themes";
-import { backFillAriaLabelledBy, getPropertiesIds } from "../../common/jsonSchemaFormHelper";
+import {
+    getPrimaryGreenTheme,
+    getPrimaryGreyTheme,
+} from "../../../../common/themes";
+import {
+    backFillAriaLabelledBy,
+    getPropertiesIds,
+} from "../../common/jsonSchemaFormHelper";
 // tslint:disable-next-line:no-var-requires
 const formSchema = addLocValues(require("./connectionForm.json"));
 // tslint:disable-next-line:no-var-requires
@@ -52,11 +59,14 @@ export interface IConnectionFormState {
 /**
  * Form for viewing, creating and editing connections
  */
-export default class ConnectionForm extends React.Component<IConnectionFormProps, IConnectionFormState> {
+export default class ConnectionForm extends React.Component<
+    IConnectionFormProps,
+    IConnectionFormState
+> {
     private widgets = {
-        localFolderPicker: (LocalFolderPicker as any) as Widget,
-        connectionProviderPicker: (ConnectionProviderPicker as any) as Widget,
-        protectedInput: (ProtectedInput as any) as Widget,
+        localFolderPicker: LocalFolderPicker as any as Widget,
+        connectionProviderPicker: ConnectionProviderPicker as any as Widget,
+        protectedInput: ProtectedInput as any as Widget,
         checkbox: CustomWidget(Checkbox, (props) => ({
             checked: props.value,
             onChange: (value) => props.onChange(value.target.checked),
@@ -84,7 +94,9 @@ export default class ConnectionForm extends React.Component<IConnectionFormProps
         if (this.props.connection) {
             this.bindForm(this.props.connection);
         }
-        const connectionFormIds = getPropertiesIds(this.state.formSchema.properties);
+        const connectionFormIds = getPropertiesIds(
+            this.state.formSchema.properties
+        );
         connectionFormIds.forEach((id) => {
             backFillAriaLabelledBy(id);
         });
@@ -101,26 +113,30 @@ export default class ConnectionForm extends React.Component<IConnectionFormProps
             <div className="app-connections-page-detail m-3">
                 <h3>
                     <FontIcon iconName="Plug" />
-                    <span className="px-2">
-                        {strings.connections.settings}
-                    </span>
+                    <span className="px-2">{strings.connections.settings}</span>
                 </h3>
                 <div className="m-3">
-                    {isBrowser() &&
-                        <div className="alert alert-warning warning"
-                            role="alert">
-                            <FontIcon iconName="WarningSolid" className="mr-1" />
+                    {isBrowser() && (
+                        <div
+                            className="alert alert-warning warning"
+                            role="alert"
+                        >
+                            <FontIcon
+                                iconName="WarningSolid"
+                                className="mr-1"
+                            />
                             {strings.formatString(
                                 strings.connections.blobCorsWarning,
                                 <a
                                     href="https://aka.ms/blob-cors"
                                     target="_blank"
-                                    rel="noopener noreferrer">
+                                    rel="noopener noreferrer"
+                                >
                                     {strings.connections.azDocLinkText}
-                                </a>)
-                            }
+                                </a>
+                            )}
                         </div>
-                    }
+                    )}
                     <Form
                         className={this.state.classNames.join(" ")}
                         showErrorList={false}
@@ -133,18 +149,21 @@ export default class ConnectionForm extends React.Component<IConnectionFormProps
                         uiSchema={this.state.uiSchema}
                         formData={this.state.formData}
                         onChange={this.onFormChange}
-                        onSubmit={(form) => this.props.onSubmit(form.formData)}>
+                        onSubmit={(form) => this.props.onSubmit(form.formData)}
+                    >
                         <div>
                             <PrimaryButton
                                 theme={getPrimaryGreenTheme()}
                                 className="mr-2"
-                                type="submit">
+                                type="submit"
+                            >
                                 {strings.connections.save}
                             </PrimaryButton>
                             <PrimaryButton
                                 theme={getPrimaryGreyTheme()}
                                 type="button"
-                                onClick={this.onFormCancel}>
+                                onClick={this.onFormCancel}
+                            >
                                 {strings.common.cancel}
                             </PrimaryButton>
                         </div>
@@ -159,15 +178,25 @@ export default class ConnectionForm extends React.Component<IConnectionFormProps
             errors.providerType.addError("is a required property");
         }
 
-        if (connection.providerOptions && connection.providerOptions["sas"] && errors.providerOptions["sas"]) {
+        if (
+            connection.providerOptions &&
+            connection.providerOptions["sas"] &&
+            errors.providerOptions["sas"]
+        ) {
             const urlRegex = new RegExp(/^(\s*)?(https:\/\/)([^\s])+(\s*)?$/);
             if (urlRegex.test(connection.providerOptions["sas"])) {
                 const urlWithQueryRegex = new RegExp(/\?.+=.+/);
-                if (!urlWithQueryRegex.test(connection.providerOptions["sas"])) {
-                    errors.providerOptions["sas"].addError("should include SAS token in query");
+                if (
+                    !urlWithQueryRegex.test(connection.providerOptions["sas"])
+                ) {
+                    errors.providerOptions["sas"].addError(
+                        "should include SAS token in query"
+                    );
                 }
             } else {
-                errors.providerOptions["sas"].addError("should match URI format");
+                errors.providerOptions["sas"].addError(
+                    "should match URI format"
+                );
             }
         }
 
@@ -190,7 +219,7 @@ export default class ConnectionForm extends React.Component<IConnectionFormProps
                 formData: args.formData,
             });
         }
-    }
+    };
 
     private onFormCancel() {
         if (this.props.onCancel) {
@@ -198,14 +227,21 @@ export default class ConnectionForm extends React.Component<IConnectionFormProps
         }
     }
 
-    private bindForm(connection: IConnection, resetProviderOptions: boolean = false) {
+    private bindForm(
+        connection: IConnection,
+        resetProviderOptions: boolean = false
+    ) {
         const providerType = connection ? connection.providerType : "";
         let newFormSchema: any = this.state.formSchema;
         let newUiSchema: any = this.state.uiSchema;
 
         if (providerType) {
-            const providerSchema = addLocValues(require(`../../../../providers/storage/${providerType}.json`));
-            const providerUiSchema = addLocValues(require(`../../../../providers/storage/${providerType}.ui.json`));
+            const providerSchema = addLocValues(
+                require(`../../../../providers/storage/${providerType}.json`)
+            );
+            const providerUiSchema = addLocValues(
+                require(`../../../../providers/storage/${providerType}.ui.json`)
+            );
 
             newFormSchema = { ...formSchema };
             newFormSchema.properties["providerOptions"] = providerSchema;

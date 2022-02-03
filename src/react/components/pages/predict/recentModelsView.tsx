@@ -1,12 +1,22 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
-import { Customizer, IColumn, ICustomizations, Modal, DetailsList, SelectionMode, DetailsListLayoutMode, PrimaryButton, ISelection } from "@fluentui/react";
-import { getDarkGreyTheme, getPrimaryGreenTheme, getPrimaryGreyTheme } from "../../../../common/themes";
+import {
+    Customizer,
+    IColumn,
+    ICustomizations,
+    Modal,
+    DetailsList,
+    SelectionMode,
+    DetailsListLayoutMode,
+    PrimaryButton,
+    ISelection,
+} from "@fluentui/react";
+import {
+    getDarkGreyTheme,
+    getPrimaryGreenTheme,
+    getPrimaryGreyTheme,
+} from "../../../../common/themes";
 import { strings } from "../../../../common/strings";
 import { IRecentModel } from "../../../../models/applicationState";
-
 
 export interface IRecentModelsViewProps {
     selectedIndex: number;
@@ -42,7 +52,7 @@ export default function RecentModelsView(props: IRecentModelsViewProps) {
             isCollapsable: true,
             isResizable: true,
             onRender: (model) => <span>{model.modelInfo.createdDateTime}</span>,
-        }
+        },
     ];
 
     const dark: ICustomizations = {
@@ -63,11 +73,13 @@ export default function RecentModelsView(props: IRecentModelsViewProps) {
             >
                 <h4>{strings.recentModelsView.header}</h4>
                 <DetailsList
-                    checkButtonAriaLabel={strings.recentModelsView.checkboxAriaLabel}
+                    checkButtonAriaLabel={
+                        strings.recentModelsView.checkboxAriaLabel
+                    }
                     selectionMode={SelectionMode.single}
                     selectionPreservedOnEmptyClick={true}
                     className="modal-list-container"
-                    items={props.recentModels ||  []}
+                    items={props.recentModels || []}
                     columns={columns}
                     selection={props.selectionHandler}
                     isHeaderVisible={true}
@@ -83,7 +95,7 @@ export default function RecentModelsView(props: IRecentModelsViewProps) {
                         Apply
                     </PrimaryButton>
                     <PrimaryButton
-                        style={{width: "110px"}}
+                        style={{ width: "110px" }}
                         className="modal-cancel"
                         theme={getPrimaryGreyTheme()}
                         onClick={props.onCancel}

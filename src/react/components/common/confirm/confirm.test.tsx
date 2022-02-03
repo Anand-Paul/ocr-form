@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { mount, ReactWrapper } from "enzyme";
 import Confirm, { IConfirmProps, IConfirmState } from "./confirm";
@@ -15,7 +12,9 @@ describe("Confirm component", () => {
         onCancel: modalCancelHandler,
     };
 
-    function createComponent(props: IConfirmProps): ReactWrapper<IConfirmProps, IConfirmState, Confirm> {
+    function createComponent(
+        props: IConfirmProps
+    ): ReactWrapper<IConfirmProps, IConfirmState, Confirm> {
         return mount(<Confirm {...props}></Confirm>);
     }
 
@@ -35,7 +34,9 @@ describe("Confirm component", () => {
         wrapper.update();
 
         expect(wrapper.find(".modal-title").text()).toEqual(defaultProps.title);
-        expect(wrapper.find(".modal-body").text()).toEqual(defaultProps.message);
+        expect(wrapper.find(".modal-body").text()).toEqual(
+            defaultProps.message
+        );
         expect(wrapper.find(".modal-footer button").length).toEqual(2);
     });
 

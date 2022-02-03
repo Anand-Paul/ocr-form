@@ -1,10 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { mount, ReactWrapper } from "enzyme";
 import _ from "lodash";
-import ConnectionProviderPicker, { IConnectionProviderPickerProps } from "./connectionProviderPicker";
+import ConnectionProviderPicker, {
+    IConnectionProviderPickerProps,
+} from "./connectionProviderPicker";
 import MockFactory from "../../../../common/mockFactory";
 
 jest.mock("../../../../providers/storage/storageProviderFactory");
@@ -13,8 +12,10 @@ jest.mock("../../../../providers/storage/assetProviderFactory");
 import { AssetProviderFactory } from "../../../../providers/storage/assetProviderFactory";
 
 describe("Connection Provider Picker", () => {
-    const storageProviderRegistrations = MockFactory.createStorageProviderRegistrations();
-    const assetProviderRegistrations = MockFactory.createAssetProviderRegistrations();
+    const storageProviderRegistrations =
+        MockFactory.createStorageProviderRegistrations();
+    const assetProviderRegistrations =
+        MockFactory.createAssetProviderRegistrations();
 
     let wrapper: ReactWrapper;
 
@@ -61,15 +62,23 @@ describe("Connection Provider Picker", () => {
             // Count of unique providers + the "Select" option
             expect(htmlNode.id).toEqual(defaultProps.id);
             expect(htmlNode.value).toEqual(defaultProps.value);
-            expect(picker.find("option").length).toEqual(allProviders.length + 1);
+            expect(picker.find("option").length).toEqual(
+                allProviders.length + 1
+            );
         });
 
         it("Calls registred onChange handler when value changes", async () => {
             await MockFactory.flushUi(() => {
-                wrapper.find("select").simulate("change", { target: { value: assetProviderRegistrations[1].name } });
+                wrapper
+                    .find("select")
+                    .simulate("change", {
+                        target: { value: assetProviderRegistrations[1].name },
+                    });
             });
 
-            expect(onChangeHandler).toBeCalledWith(assetProviderRegistrations[1].name);
+            expect(onChangeHandler).toBeCalledWith(
+                assetProviderRegistrations[1].name
+            );
         });
     });
 
@@ -81,7 +90,9 @@ describe("Connection Provider Picker", () => {
             };
             wrapper = createComponent(props);
 
-            const htmlNode = wrapper.find("select").getDOMNode() as HTMLSelectElement;
+            const htmlNode = wrapper
+                .find("select")
+                .getDOMNode() as HTMLSelectElement;
             expect(htmlNode.value).toEqual(props.value);
         });
     });

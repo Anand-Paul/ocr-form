@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { ReactElement } from "react";
 import {
     Customizer,
@@ -12,7 +9,7 @@ import {
     PrimaryButton,
     DefaultButton,
     SpinnerSize,
-    Spinner
+    Spinner,
 } from "@fluentui/react";
 import { MessageFormatHandler } from "../messageBox/messageBox";
 import { getDarkTheme, getDefaultDarkTheme } from "../../../../common/themes";
@@ -51,8 +48,10 @@ export interface IConfirmState {
  * @name - Confirm
  * @description - Dialog for confirming an action
  */
-export default class Confirm extends React.Component<IConfirmProps, IConfirmState> {
-
+export default class Confirm extends React.Component<
+    IConfirmProps,
+    IConfirmState
+> {
     constructor(props, context) {
         super(props, context);
 
@@ -66,13 +65,13 @@ export default class Confirm extends React.Component<IConfirmProps, IConfirmStat
         this.close = this.close.bind(this);
         this.onConfirmClick = this.onConfirmClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
-        this.load = this.load.bind(this)
+        this.load = this.load.bind(this);
     }
 
     public render() {
         const dark: ICustomizations = {
             settings: {
-              theme: getDarkTheme(),
+                theme: getDarkTheme(),
             },
             scopedSettings: {},
         };
@@ -82,41 +81,48 @@ export default class Confirm extends React.Component<IConfirmProps, IConfirmStat
 
         return (
             <Customizer {...dark}>
-                {!hideDialog &&
+                {!hideDialog && (
                     <Dialog
                         hidden={hideDialog}
                         onDismiss={this.close}
-                        dialogContentProps={!loading ? {
-                            type: DialogType.normal,
-                            title: this.props.title,
-                            subText: this.getMessage(this.props.message),
-                        } : null}
+                        dialogContentProps={
+                            !loading
+                                ? {
+                                      type: DialogType.normal,
+                                      title: this.props.title,
+                                      subText: this.getMessage(
+                                          this.props.message
+                                      ),
+                                  }
+                                : null
+                        }
                         modalProps={{
                             isBlocking: true,
                         }}
                     >
-                    {loading && this.props.loadMessage &&
-                        <div className="spinner-container">
-                                    <Spinner
+                        {loading && this.props.loadMessage && (
+                            <div className="spinner-container">
+                                <Spinner
                                     label={this.props.loadMessage}
                                     labelPosition="right"
                                     theme={getDefaultDarkTheme()}
                                     size={SpinnerSize.large}
                                 />
-                        </div>
-
-                        }
+                            </div>
+                        )}
                         <DialogFooter>
                             <PrimaryButton
                                 theme={confirmButtonTheme}
                                 onClick={this.onConfirmClick}
-                                text={this.props.confirmButtonText || "Yes"} />
+                                text={this.props.confirmButtonText || "Yes"}
+                            />
                             <DefaultButton
                                 onClick={this.onCancelClick}
-                                text={this.props.cancelButtonText || "No"} />
+                                text={this.props.cancelButtonText || "No"}
+                            />
                         </DialogFooter>
                     </Dialog>
-                }
+                )}
             </Customizer>
         );
     }
@@ -137,7 +143,7 @@ export default class Confirm extends React.Component<IConfirmProps, IConfirmStat
     }
 
     public load(): void {
-        this.setState({loading: true});
+        this.setState({ loading: true });
     }
 
     private onConfirmClick() {
@@ -156,11 +162,13 @@ export default class Confirm extends React.Component<IConfirmProps, IConfirmStat
         this.close();
     }
 
-    private getMessage = (message: string | MessageFormatHandler | ReactElement<any>) => {
+    private getMessage = (
+        message: string | MessageFormatHandler | ReactElement<any>
+    ) => {
         if (typeof message === "function") {
             return message.apply(this, this.state.params);
         } else {
             return message;
         }
-    }
+    };
 }

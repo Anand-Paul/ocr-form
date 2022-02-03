@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import { FontIcon } from "@fluentui/react";
@@ -35,7 +32,10 @@ interface ICondensedListState {
  * @name - Condensed List
  * @description - Clickable, deletable and linkable list of items
  */
-export default class CondensedList extends React.Component<ICondensedListProps, ICondensedListState> {
+export default class CondensedList extends React.Component<
+    ICondensedListProps,
+    ICondensedListState
+> {
     constructor(props, context) {
         super(props, context);
         this.state = { currentId: null };
@@ -45,37 +45,47 @@ export default class CondensedList extends React.Component<ICondensedListProps, 
     }
 
     public render() {
-        const { title, items, newLinkTo, newLinkToTitle, Component } = this.props;
+        const { title, items, newLinkTo, newLinkToTitle, Component } =
+            this.props;
 
         return (
             <div className="condensed-list">
                 <div className="condensed-list-header bg-darker-2">
                     <span>{title}</span>
-                    {newLinkTo &&
-                        <Link to={newLinkTo} className="float-right add-button" role="button" title={newLinkToTitle}
-                            id="addConnection">
+                    {newLinkTo && (
+                        <Link
+                            to={newLinkTo}
+                            className="float-right add-button"
+                            role="button"
+                            title={newLinkToTitle}
+                            id="addConnection"
+                        >
                             <FontIcon iconName="AddTo" />
                         </Link>
-                    }
+                    )}
                 </div>
                 <div className="condensed-list-body">
-                    {(!items) &&
+                    {!items && (
                         <div className="p-3 text-center">
                             <Spinner size={SpinnerSize.small} />
                         </div>
-                    }
-                    {(items && items.length === 0) &&
+                    )}
+                    {items && items.length === 0 && (
                         <div className="p-3 text-center">No items found</div>
-                    }
-                    {(items && items.length > 0) &&
+                    )}
+                    {items && items.length > 0 && (
                         <ul className="condensed-list-items">
-                            {items.map((item) => <Component key={item.id}
-                                item={item}
-                                currentId={this.state.currentId}
-                                onClick={(e) => this.onItemClick(e, item)}
-                                onDelete={(e) => this.onItemDelete(e, item)} />)}
+                            {items.map((item) => (
+                                <Component
+                                    key={item.id}
+                                    item={item}
+                                    currentId={this.state.currentId}
+                                    onClick={(e) => this.onItemClick(e, item)}
+                                    onDelete={(e) => this.onItemDelete(e, item)}
+                                />
+                            ))}
                         </ul>
-                    }
+                    )}
                 </div>
             </div>
         );
@@ -86,7 +96,7 @@ export default class CondensedList extends React.Component<ICondensedListProps, 
             this.props.onClick(item);
         }
         this.setState({ currentId: item.id });
-    }
+    };
 
     private onItemDelete = (e: SyntheticEvent, item) => {
         e.stopPropagation();
@@ -95,7 +105,7 @@ export default class CondensedList extends React.Component<ICondensedListProps, 
         if (this.props.onDelete) {
             this.props.onDelete(item);
         }
-    }
+    };
 }
 
 /**
@@ -106,7 +116,13 @@ export function ListItem({ item, onClick, currentId }) {
     return (
         <li>
             {/* eslint-disable-next-line */}
-            <a className={["condensed-list-item", currentId === item.id? "current":""].join(" ")} onClick={onClick}>
+            <a
+                className={[
+                    "condensed-list-item",
+                    currentId === item.id ? "current" : "",
+                ].join(" ")}
+                onClick={onClick}
+            >
                 <span className="px-2">{item.name}</span>
             </a>
         </li>

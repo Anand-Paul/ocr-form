@@ -1,8 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
-import { IAppError, ErrorCode, AppError } from "../../../../models/applicationState";
+import {
+    IAppError,
+    ErrorCode,
+    AppError,
+} from "../../../../models/applicationState";
 import { strings } from "../../../../common/strings";
 import Alert from "../alert/alert";
 import { Env } from "../../../../common/environment";
@@ -16,16 +17,30 @@ export interface IErrorHandlerProps extends React.Props<ErrorHandler> {
     onClearError: () => void;
 }
 
-export function throwUnhandledRejectionForEdge(error: any, ignoreNotFound?: boolean, ignoreForbidden?: boolean) {
+export function throwUnhandledRejectionForEdge(
+    error: any,
+    ignoreNotFound?: boolean,
+    ignoreForbidden?: boolean
+) {
     const isEdge = !("onunhandledrejection" in window);
     if (isEdge) {
-        if (error instanceof AppError && error.errorCode === ErrorCode.BlobContainerIONotFound && ignoreNotFound) {
+        if (
+            error instanceof AppError &&
+            error.errorCode === ErrorCode.BlobContainerIONotFound &&
+            ignoreNotFound
+        ) {
             return;
         }
-        if (error instanceof AppError && error.errorCode === ErrorCode.BlobContainerIOForbidden && ignoreForbidden) {
+        if (
+            error instanceof AppError &&
+            error.errorCode === ErrorCode.BlobContainerIOForbidden &&
+            ignoreForbidden
+        ) {
             return;
         }
-        window.dispatchEvent(new CustomEvent("unhandledrejectionForEdge", { detail: error }));
+        window.dispatchEvent(
+            new CustomEvent("unhandledrejectionForEdge", { detail: error })
+        );
     }
 }
 
@@ -66,18 +81,30 @@ export class ErrorHandler extends React.Component<IErrorHandlerProps> {
     private registerUnhandledRejectionHandler() {
         const exist = "onunhandledrejection" in window;
         if (exist) {
-            window.addEventListener("unhandledrejection", this.onUnhandledRejection);
+            window.addEventListener(
+                "unhandledrejection",
+                this.onUnhandledRejection
+            );
         } else {
-            window.addEventListener("unhandledrejectionForEdge", this.onEdgeUnhandledRejection);
+            window.addEventListener(
+                "unhandledrejectionForEdge",
+                this.onEdgeUnhandledRejection
+            );
         }
     }
 
     private unregisterUnhandledRejectionHandler() {
         const exist = "onunhandledrejection" in window;
         if (exist) {
-            window.removeEventListener("unhandledrejection", this.onUnhandledRejection);
+            window.removeEventListener(
+                "unhandledrejection",
+                this.onUnhandledRejection
+            );
         } else {
-            window.removeEventListener("unhandledrejectionForEdge", this.onEdgeUnhandledRejection);
+            window.removeEventListener(
+                "unhandledrejectionForEdge",
+                this.onEdgeUnhandledRejection
+            );
         }
     }
 
@@ -88,7 +115,7 @@ export class ErrorHandler extends React.Component<IErrorHandlerProps> {
     private onWindowError = (evt: ErrorEvent) => {
         evt.preventDefault();
         this.handleError(evt.error || evt.message);
-    }
+    };
 
     /**
      * Handles async / promise based errors
@@ -97,12 +124,12 @@ export class ErrorHandler extends React.Component<IErrorHandlerProps> {
     private onUnhandledRejection = (evt: PromiseRejectionEvent) => {
         evt.preventDefault();
         console.warn(evt.reason);
-    }
+    };
 
     private onEdgeUnhandledRejection = (event: CustomEvent) => {
         event.preventDefault();
         this.handleError(event.detail);
-    }
+    };
 
     /**
      * Handles various error format scenarios
@@ -123,7 +150,7 @@ export class ErrorHandler extends React.Component<IErrorHandlerProps> {
         }
         let appError: IAppError = null;
         // Promise rejection with reason
-        if (typeof (error) === "string") {
+        if (typeof error === "string") {
             // Promise rejection with string base reason
             appError = {
                 errorCode: ErrorCode.Unknown,
@@ -158,7 +185,7 @@ export class ErrorHandler extends React.Component<IErrorHandlerProps> {
 
     private getUnknownErrorMessage(e) {
         if (Env.get() !== "production") {
-            return (<pre>{JSON.stringify(e, null, 2)}</pre>);
+            return <pre>{JSON.stringify(e, null, 2)}</pre>;
         } else {
             return strings.errors.unknown.message;
         }
@@ -184,6 +211,10 @@ export class ErrorHandler extends React.Component<IErrorHandlerProps> {
     }
 
     private isReactDnDError(e) {
-        return e && e.name === "Invariant Violation" && e.message === "Expected to find a valid target.";
+        return (
+            e &&
+            e.name === "Invariant Violation" &&
+            e.message === "Expected to find a valid target."
+        );
     }
 }

@@ -1,15 +1,29 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
-import { Customizer, IColumn, ICustomizations, Modal, DetailsList, SelectionMode, DetailsListLayoutMode, PrimaryButton, TextField, FontIcon, Spinner, SpinnerSize } from "@fluentui/react";
-import { getDarkGreyTheme, getPrimaryGreenTheme, getPrimaryGreyTheme, getDefaultDarkTheme } from "../../../../common/themes";
+import {
+    Customizer,
+    IColumn,
+    ICustomizations,
+    Modal,
+    DetailsList,
+    SelectionMode,
+    DetailsListLayoutMode,
+    PrimaryButton,
+    TextField,
+    FontIcon,
+    Spinner,
+    SpinnerSize,
+} from "@fluentui/react";
+import {
+    getDarkGreyTheme,
+    getPrimaryGreenTheme,
+    getPrimaryGreyTheme,
+    getDefaultDarkTheme,
+} from "../../../../common/themes";
 import { strings } from "../../../../common/strings";
 import { IModel } from "./modelCompose";
-import { getAppInsights } from '../../../../services/telemetryService';
+import { getAppInsights } from "../../../../services/telemetryService";
 import "./modelCompose.scss";
 import { IRecentModel } from "../../../../models/applicationState";
-
 
 export interface IComposeModelViewProps {
     onComposeConfirm: (composeModelName: string) => void;
@@ -23,7 +37,10 @@ export interface IComposeModelViewState {
     composing: boolean;
 }
 
-export default class ComposeModelView extends React.Component<IComposeModelViewProps, IComposeModelViewState> {
+export default class ComposeModelView extends React.Component<
+    IComposeModelViewProps,
+    IComposeModelViewState
+> {
     /**
      *
      */
@@ -37,7 +54,7 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
             items: [],
             cannotBeIncludeModels: [],
             composing: false,
-        }
+        };
     }
 
     public componentDidMount() {
@@ -54,7 +71,13 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
                 className: "composed-icon-cell",
                 ariaLabel: strings.modelCompose.columnAria.icon,
                 isIconOnly: true,
-                onRender: (model) => model.attributes?.isComposed ? <FontIcon iconName={"Merge"} className="model-fontIcon" /> : null
+                onRender: (model) =>
+                    model.attributes?.isComposed ? (
+                        <FontIcon
+                            iconName={"Merge"}
+                            className="model-fontIcon"
+                        />
+                    ) : null,
             },
             {
                 key: "column2",
@@ -78,8 +101,12 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
                 minWidth: 100,
                 maxWidth: 200,
                 isResizable: true,
-                onRender: (model) => <span>{new Date(model.createdDateTime).toLocaleString()}</span>,
-            }
+                onRender: (model) => (
+                    <span>
+                        {new Date(model.createdDateTime).toLocaleString()}
+                    </span>
+                ),
+            },
         ];
 
         const modelDetailsColumns: IColumn[] = [
@@ -105,8 +132,14 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
                 minWidth: 100,
                 maxWidth: 250,
                 isResizable: true,
-                onRender: (model) => <span>{model.createdDateTime ? new Date(model.createdDateTime).toLocaleString() : "N/A"}</span>,
-            }
+                onRender: (model) => (
+                    <span>
+                        {model.createdDateTime
+                            ? new Date(model.createdDateTime).toLocaleString()
+                            : "N/A"}
+                    </span>
+                ),
+            },
         ];
 
         const dark: ICustomizations = {
@@ -125,16 +158,18 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
                     containerClassName="modal-container"
                     scrollableContentClassName="scrollable-content"
                 >
-                    {
-                        this.state.composing && <>
+                    {this.state.composing && (
+                        <>
                             <h4>Add name for composed model</h4>
                             <TextField
                                 className="modal-textfield"
-                                placeholder={strings.modelCompose.modelView.addComposeModelName}
+                                placeholder={
+                                    strings.modelCompose.modelView
+                                        .addComposeModelName
+                                }
                                 onChange={this.onTextChange}
                             />
-                            {
-                                this.state.items &&
+                            {this.state.items && (
                                 <DetailsList
                                     className="modal-list-container"
                                     items={this.state.items}
@@ -145,11 +180,17 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
                                     isHeaderVisible={true}
                                     layoutMode={DetailsListLayoutMode.justified}
                                 />
-                            }
-                            {
-                                this.state.cannotBeIncludeModels.length > 0 &&
+                            )}
+                            {this.state.cannotBeIncludeModels.length > 0 && (
                                 <div className="excluded-items-container">
-                                    <h6>{this.state.cannotBeIncludeModels.length > 1 ? strings.modelCompose.modelView.modelsCannotBeIncluded : strings.modelCompose.modelView.modelCannotBeIncluded}</h6>
+                                    <h6>
+                                        {this.state.cannotBeIncludeModels
+                                            .length > 1
+                                            ? strings.modelCompose.modelView
+                                                  .modelsCannotBeIncluded
+                                            : strings.modelCompose.modelView
+                                                  .modelCannotBeIncluded}
+                                    </h6>
                                     <DetailsList
                                         className="excluded-items-list"
                                         items={this.state.cannotBeIncludeModels}
@@ -158,36 +199,42 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
                                         setKey="none"
                                         selectionMode={SelectionMode.none}
                                         isHeaderVisible={true}
-                                        layoutMode={DetailsListLayoutMode.justified}
+                                        layoutMode={
+                                            DetailsListLayoutMode.justified
+                                        }
                                     />
                                 </div>
-                            }
-                            {
-                                this.state.items.length < 2 &&
-                                <div className="modal-alert">{strings.modelCompose.modelView.NotEnoughModels}</div>
-                            }
+                            )}
+                            {this.state.items.length < 2 && (
+                                <div className="modal-alert">
+                                    {
+                                        strings.modelCompose.modelView
+                                            .NotEnoughModels
+                                    }
+                                </div>
+                            )}
                             <div className="modal-buttons-container">
                                 <PrimaryButton
                                     className="model-confirm"
                                     theme={getPrimaryGreenTheme()}
-                                    onClick={this.confirm}>
+                                    onClick={this.confirm}
+                                >
                                     Compose
-                        </PrimaryButton>
+                                </PrimaryButton>
                                 <PrimaryButton
                                     className="modal-cancel"
                                     theme={getPrimaryGreyTheme()}
                                     onClick={this.close}
-                                >Close</PrimaryButton>
+                                >
+                                    Close
+                                </PrimaryButton>
                             </div>
                         </>
-                    }
-                    {!this.state.composing &&
+                    )}
+                    {!this.state.composing && (
                         <>
-                            <h4>
-                                Model information
-                            </h4>
-                            {
-                                this.state.items.length !== 0 &&
+                            <h4>Model information</h4>
+                            {this.state.items.length !== 0 && (
                                 <>
                                     <div className="model-information-container">
                                         <h6 className="mr-2 model-information-prop">
@@ -195,45 +242,65 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
                                         </h6>
                                         {this.state.items["modelId"]}
                                     </div>
-                                    {this.state.items["modelName"] &&
+                                    {this.state.items["modelName"] && (
                                         <div className="model-information-container">
                                             <h6 className="mr-2 model-information-prop">
                                                 Model name:
-                                    </h6> {this.state.items["modelName"]}
+                                            </h6>{" "}
+                                            {this.state.items["modelName"]}
                                         </div>
-                                    }
+                                    )}
                                     <div className="model-information-container">
                                         <h6 className="mr-2 model-information-prop">
                                             Created date:
-                                </h6>
-                                        {new Date(this.state.items["createdDateTime"]).toLocaleString()}
+                                        </h6>
+                                        {new Date(
+                                            this.state.items["createdDateTime"]
+                                        ).toLocaleString()}
                                     </div>
-                                    {this.state.items?.["composedTrainResults"]?.length > 0 &&
+                                    {this.state.items?.["composedTrainResults"]
+                                        ?.length > 0 && (
                                         <>
                                             <h6 className="mb-0">
                                                 Composed of:
-                                    </h6>
+                                            </h6>
                                             <div className="mr-4 ml-4 mb-2 composed-of-list">
                                                 <DetailsList
-                                                    items={this.state.items["composedTrainResults"]}
-                                                    columns={modelDetailsColumns}
+                                                    items={
+                                                        this.state.items[
+                                                            "composedTrainResults"
+                                                        ]
+                                                    }
+                                                    columns={
+                                                        modelDetailsColumns
+                                                    }
                                                     compact={true}
                                                     setKey="none"
-                                                    selectionMode={SelectionMode.none}
+                                                    selectionMode={
+                                                        SelectionMode.none
+                                                    }
                                                     isHeaderVisible={true}
-                                                    layoutMode={DetailsListLayoutMode.justified}
+                                                    layoutMode={
+                                                        DetailsListLayoutMode.justified
+                                                    }
                                                 />
                                             </div>
                                         </>
-                                    }  </>
-                            }
-                            {this.state.items.length === 0 && <Spinner
-                                label={strings.modelCompose.modelView.loadingDetails}
-                                ariaLive="assertive"
-                                labelPosition="right"
-                                theme={getDefaultDarkTheme()}
-                                size={SpinnerSize.large} />
-                            }
+                                    )}{" "}
+                                </>
+                            )}
+                            {this.state.items.length === 0 && (
+                                <Spinner
+                                    label={
+                                        strings.modelCompose.modelView
+                                            .loadingDetails
+                                    }
+                                    ariaLive="assertive"
+                                    labelPosition="right"
+                                    theme={getDefaultDarkTheme()}
+                                    size={SpinnerSize.large}
+                                />
+                            )}
                             <div className="modal-buttons-container mt-4">
                                 <PrimaryButton
                                     className="mr-3"
@@ -242,12 +309,23 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
                                     onClick={() => {
                                         this.props.addToRecentModels({
                                             modelInfo: {
-                                                isComposed: Boolean(this.state.items["composedTrainResults"]),
-                                                modelId: this.state.items["modelId"],
-                                                createdDateTime: this.state.items["createdDateTime"],
-                                                modelName: this.state.items?.["modelName"],
-                                            }
-                                        })
+                                                isComposed: Boolean(
+                                                    this.state.items[
+                                                        "composedTrainResults"
+                                                    ]
+                                                ),
+                                                modelId:
+                                                    this.state.items["modelId"],
+                                                createdDateTime:
+                                                    this.state.items[
+                                                        "createdDateTime"
+                                                    ],
+                                                modelName:
+                                                    this.state.items?.[
+                                                        "modelName"
+                                                    ],
+                                            },
+                                        });
                                     }}
                                 >
                                     {strings.recentModelsView.addToRecentModels}
@@ -260,28 +338,33 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
                                     Close
                                 </PrimaryButton>
                             </div>
-                        </>}
+                        </>
+                    )}
                 </Modal>
             </Customizer>
-        )
+        );
     }
 
-    public open = (models: any, cannotBeIncludeModels: any, composing: boolean) => {
+    public open = (
+        models: any,
+        cannotBeIncludeModels: any,
+        composing: boolean
+    ) => {
         this.setState({
             hideModal: false,
             items: models,
             cannotBeIncludeModels,
-            composing
-        })
-    }
+            composing,
+        });
+    };
 
     public close = () => this.setState({ hideModal: true });
 
     public getItems = (items) => {
         if (items.length !== 0) {
-            this.setState({ items })
+            this.setState({ items });
         }
-    }
+    };
 
     public confirm = () => {
         if (this.state.items.length > 1) {
@@ -293,9 +376,12 @@ export default class ComposeModelView extends React.Component<IComposeModelViewP
         if (this.appInsights) {
             this.appInsights.trackEvent({ name: "COMPOSE_MODEL_EVENT" });
         }
-    }
+    };
 
-    private onTextChange = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string) => {
+    private onTextChange = (
+        ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+        text: string
+    ) => {
         this.modelName = text;
-    }
+    };
 }

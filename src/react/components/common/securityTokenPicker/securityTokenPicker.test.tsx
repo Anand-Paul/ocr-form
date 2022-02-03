@@ -1,8 +1,8 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
-import { ISecurityTokenPickerProps, SecurityTokenPicker } from "./securityTokenPicker";
+import {
+    ISecurityTokenPickerProps,
+    SecurityTokenPicker,
+} from "./securityTokenPicker";
 import { ReactWrapper, mount } from "enzyme";
 import MockFactory from "../../../../common/mockFactory";
 
@@ -15,7 +15,9 @@ describe("Security Token Picker", () => {
         onChange: onChangeHandler,
     };
 
-    function createComponent(props: ISecurityTokenPickerProps): ReactWrapper<ISecurityTokenPickerProps> {
+    function createComponent(
+        props: ISecurityTokenPickerProps
+    ): ReactWrapper<ISecurityTokenPickerProps> {
         return mount(<SecurityTokenPicker {...props} />);
     }
 
@@ -23,7 +25,9 @@ describe("Security Token Picker", () => {
         const wrapper = createComponent(defaultProps);
         expect(wrapper.find("select").exists()).toBe(true);
         expect(wrapper.find("select").prop("value")).toEqual("");
-        expect(wrapper.find("option").text()).toEqual("Generate New Security Token");
+        expect(wrapper.find("option").text()).toEqual(
+            "Generate New Security Token"
+        );
     });
 
     it("renders and selected correct value", () => {
@@ -36,7 +40,9 @@ describe("Security Token Picker", () => {
         };
 
         const wrapper = createComponent(props);
-        expect(wrapper.find("select").prop("value")).toEqual(expectedToken.name);
+        expect(wrapper.find("select").prop("value")).toEqual(
+            expectedToken.name
+        );
     });
 
     it("renders a list of security tokens", () => {
@@ -45,7 +51,9 @@ describe("Security Token Picker", () => {
             securityTokens: MockFactory.createSecurityTokens(),
         };
         const wrapper = createComponent(props);
-        expect(wrapper.find("option").length).toEqual(props.securityTokens.length + 1);
+        expect(wrapper.find("option").length).toEqual(
+            props.securityTokens.length + 1
+        );
     });
 
     it("calls the onChange event handler when value changes", () => {
@@ -55,7 +63,9 @@ describe("Security Token Picker", () => {
         };
         const expectedToken = props.securityTokens[1];
         const wrapper = createComponent(props);
-        wrapper.find("select").simulate("change", { target: { value: expectedToken.name } });
+        wrapper
+            .find("select")
+            .simulate("change", { target: { value: expectedToken.name } });
 
         expect(onChangeHandler).toBeCalledWith(expectedToken.name);
     });

@@ -1,13 +1,12 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { IAssetPreviewProps } from "./assetPreview";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf";
 import { constants } from "../../../../common/constants";
-import {resizeCanvas} from "../../../../common/utils";
+import { resizeCanvas } from "../../../../common/utils";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = constants.pdfjsWorkerSrc(pdfjsLib.version);
+pdfjsLib.GlobalWorkerOptions.workerSrc = constants.pdfjsWorkerSrc(
+    pdfjsLib.version
+);
 
 export interface IPDFAssetState {
     imageUri: string;
@@ -16,7 +15,10 @@ export interface IPDFAssetState {
 /**
  * PDFAsset component used to render all PDF assets
  */
-export class PDFAsset extends React.Component<IAssetPreviewProps, IPDFAssetState> {
+export class PDFAsset extends React.Component<
+    IAssetPreviewProps,
+    IPDFAssetState
+> {
     private image: React.RefObject<HTMLImageElement> = React.createRef();
     private unmounted: boolean;
 
@@ -51,12 +53,14 @@ export class PDFAsset extends React.Component<IAssetPreviewProps, IPDFAssetState
 
     public render() {
         return (
-            <img ref={this.image}
+            <img
+                ref={this.image}
                 src={this.state.imageUri}
                 alt={this.props.asset.name}
                 onLoad={this.onLoad}
-                style={{display: this.state.imageUri ? "block" : "none"}}
-                crossOrigin="anonymous" />
+                style={{ display: this.state.imageUri ? "block" : "none" }}
+                crossOrigin="anonymous"
+            />
         );
     }
 
@@ -68,25 +72,23 @@ export class PDFAsset extends React.Component<IAssetPreviewProps, IPDFAssetState
         try {
             pdf = await pdfjsLib.getDocument(url).promise;
             await this.loadPdfPage(pdf, 1);
-        }
-        catch (err) {
+        } catch (err) {
             if (this.props.onError) {
                 this.props.onError(err);
             }
-        }
-        finally {
+        } finally {
             if (pdf) {
                 pdf.destroy();
             }
         }
-    }
+    };
 
     private loadPdfPage = async (pdf, pageNumber) => {
         const page: any = await pdf.getPage(pageNumber);
         if (page) {
             page.cleanupAfterRender = true;
             const defaultScale = 1;
-            const viewport = page.getViewport({scale: defaultScale});
+            const viewport = page.getViewport({ scale: defaultScale });
 
             // Prepare canvas using PDF page dimensions
             const canvas = document.createElement("canvas");
@@ -100,15 +102,17 @@ export class PDFAsset extends React.Component<IAssetPreviewProps, IPDFAssetState
                 viewport,
             };
             await page.render(renderContext).promise;
-            const thumbnailsUri = resizeCanvas(canvas, 240, 240).toDataURL(constants.convertedImageFormat,
-                constants.convertedThumbnailQuality);
+            const thumbnailsUri = resizeCanvas(canvas, 240, 240).toDataURL(
+                constants.convertedImageFormat,
+                constants.convertedThumbnailQuality
+            );
             if (!this.unmounted) {
                 this.setState({
-                    imageUri: thumbnailsUri
+                    imageUri: thumbnailsUri,
                 });
             }
         }
-    }
+    };
 
     private onLoad = () => {
         if (this.props.onLoaded) {
@@ -120,5 +124,5 @@ export class PDFAsset extends React.Component<IAssetPreviewProps, IPDFAssetState
         if (this.props.onDeactivated) {
             this.props.onDeactivated(this.image.current);
         }
-    }
+    };
 }

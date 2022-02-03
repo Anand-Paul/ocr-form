@@ -1,11 +1,7 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 /**
  * Static functions to assist in operations within Canvas component
  */
 export default class CanvasHelpers {
-
     /**
      * Adds tag (and remove others) to array if it does not contain the tag,
      * @param tags Array of tags

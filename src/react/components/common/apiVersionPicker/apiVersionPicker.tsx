@@ -1,9 +1,6 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { SyntheticEvent } from "react";
 import { APIVersionPatches } from "../../../../models/applicationState";
-import { constants } from "../../../../common/constants"
+import { constants } from "../../../../common/constants";
 
 /**
  * api version Picker Properties
@@ -27,9 +24,14 @@ interface IAPIVersions {
 }
 
 const APIVersions: IAPIVersions = {
-    versions: [APIVersionPatches.patch1, APIVersionPatches.patch2, APIVersionPatches.patch3, APIVersionPatches.patch4],
+    versions: [
+        APIVersionPatches.patch1,
+        APIVersionPatches.patch2,
+        APIVersionPatches.patch3,
+        APIVersionPatches.patch4,
+    ],
     defaultIndex: 3,
-}
+};
 
 export class APIVersionPicker extends React.Component<IAPIVersionPickerProps> {
     constructor(props) {
@@ -41,7 +43,8 @@ export class APIVersionPicker extends React.Component<IAPIVersionPickerProps> {
     public render() {
         const { versions, defaultIndex } = APIVersions;
         return (
-            <select id={this.props.id}
+            <select
+                id={this.props.id}
                 disabled={!constants.enableAPIVersionSelection}
                 defaultValue={versions[defaultIndex]}
                 className="form-control"
@@ -50,9 +53,12 @@ export class APIVersionPicker extends React.Component<IAPIVersionPickerProps> {
             >
                 {versions.map((version, index) => {
                     const isDefault = index === defaultIndex;
-                    return (<option key={version} value={version}>{`${version}${isDefault ? " (default)" : ""}`}</option>)
-                }
-                )}
+                    return (
+                        <option key={version} value={version}>{`${version}${
+                            isDefault ? " (default)" : ""
+                        }`}</option>
+                    );
+                })}
             </select>
         );
     }

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { ReactElement } from "react";
 import { MessageFormatHandler } from "../messageBox/messageBox";
 import { getDarkTheme, getPrimaryBlueTheme } from "../../../../common/themes";
@@ -53,14 +50,14 @@ export default class Alert extends React.Component<IAlertProps, IAlertState> {
     public render() {
         const dark: ICustomizations = {
             settings: {
-              theme: getDarkTheme(),
+                theme: getDarkTheme(),
             },
             scopedSettings: {},
         };
 
         return (
             <Customizer {...dark}>
-                {this.props.show &&
+                {this.props.show && (
                     <Dialog
                         onDismiss={this.onCloseClick}
                         hidden={!this.props.show}
@@ -73,15 +70,16 @@ export default class Alert extends React.Component<IAlertProps, IAlertState> {
                         modalProps={{
                             isBlocking: false,
                         }}
-                        >
+                    >
                         <DialogFooter>
                             <PrimaryButton
                                 theme={getPrimaryBlueTheme()}
                                 onClick={this.onCloseClick}
-                                text={this.props.closeButtonText || "OK"}/>
+                                text={this.props.closeButtonText || "OK"}
+                            />
                         </DialogFooter>
                     </Dialog>
-                }
+                )}
             </Customizer>
         );
     }
@@ -92,25 +90,38 @@ export default class Alert extends React.Component<IAlertProps, IAlertState> {
         }
     }
 
-    private getMessage = (message: string | MessageFormatHandler | ReactElement<any>) => {
+    private getMessage = (
+        message: string | MessageFormatHandler | ReactElement<any>
+    ) => {
         if (typeof message === "function") {
             return message.apply(this, this.state.params);
         } else {
-            if (message.toString().includes("\n")){
+            if (message.toString().includes("\n")) {
                 message = this.multilineMessage(message);
             }
             return message;
         }
-    }
+    };
 
-    private multilineMessage = (message: string | MessageFormatHandler | ReactElement<any>) => {
+    private multilineMessage = (
+        message: string | MessageFormatHandler | ReactElement<any>
+    ) => {
         const messageList = message.toString().split("\n");
         const leng = messageList.length;
-        const elements = [<div>{messageList[0]}<br/></div>];
-        messageList.splice(1,leng-1).forEach((m) => {
-            elements.push(<div>{m}<br/></div>);
-        })
+        const elements = [
+            <div>
+                {messageList[0]}
+                <br />
+            </div>,
+        ];
+        messageList.splice(1, leng - 1).forEach((m) => {
+            elements.push(
+                <div>
+                    {m}
+                    <br />
+                </div>
+            );
+        });
         return <div>{elements}</div>;
-    }
-
+    };
 }

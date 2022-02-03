@@ -1,11 +1,12 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { IErrorHandlerProps, ErrorHandler } from "./errorHandler";
 import { mount, ReactWrapper } from "enzyme";
 import Alert from "../alert/alert";
-import { ErrorCode, IAppError, AppError } from "../../../../models/applicationState";
+import {
+    ErrorCode,
+    IAppError,
+    AppError,
+} from "../../../../models/applicationState";
 import { strings } from "../../../../common/strings";
 jest.mock("../../../../common/environment");
 import { Env } from "../../../../common/environment";
@@ -19,7 +20,9 @@ describe("Error Handler Component", () => {
         onClearError: onClearErrorHandler,
     };
 
-    function createComponent(props: IErrorHandlerProps = null): ReactWrapper<IErrorHandlerProps> {
+    function createComponent(
+        props: IErrorHandlerProps = null
+    ): ReactWrapper<IErrorHandlerProps> {
         props = props || defaultProps;
         return mount(<ErrorHandler {...props} />);
     }
@@ -59,8 +62,12 @@ describe("Error Handler Component", () => {
         const wrapper = createComponent(props);
         const alert = wrapper.find(Alert);
         expect(alert.exists()).toBe(true);
-        expect(alert.prop("title")).toEqual(strings.errors.projectInvalidJson.title);
-        expect(alert.prop("message")).toEqual(strings.errors.projectInvalidJson.message);
+        expect(alert.prop("title")).toEqual(
+            strings.errors.projectInvalidJson.title
+        );
+        expect(alert.prop("message")).toEqual(
+            strings.errors.projectInvalidJson.message
+        );
     });
 
     it("calls onError when window Error is thrown", () => {
@@ -85,7 +92,11 @@ describe("Error Handler Component", () => {
     });
 
     it("calls onError when window AppError is thrown", () => {
-        const thrownError = new AppError(ErrorCode.ProjectInvalidJson, "message", "title");
+        const thrownError = new AppError(
+            ErrorCode.ProjectInvalidJson,
+            "message",
+            "title"
+        );
         const errorEvent = new ErrorEvent("error", {
             message: thrownError.message,
             lineno: 100,
@@ -124,7 +135,11 @@ describe("Error Handler Component", () => {
     });
 
     it("calls onError when unhandled rejection throws AppError", () => {
-        const thrownError = new AppError(ErrorCode.ProjectInvalidJson, "message", "title");
+        const thrownError = new AppError(
+            ErrorCode.ProjectInvalidJson,
+            "message",
+            "title"
+        );
         const errorEvent = new CustomEvent("unhandledrejection", {
             detail: thrownError,
         });

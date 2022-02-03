@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { SyntheticEvent } from "react";
 import { ISecurityToken } from "../../../../models/applicationState";
 
@@ -31,18 +28,26 @@ export class SecurityTokenPicker extends React.Component<ISecurityTokenPickerPro
 
     public render() {
         return (
-            <select id={this.props.id}
+            <select
+                id={this.props.id}
                 className="form-control"
                 value={this.props.value}
-                onChange={this.onChange}>
+                onChange={this.onChange}
+            >
                 <option value="">Generate New Security Token</option>
-                {this.props.securityTokens.map((item) => <option key={item.key} value={item.name}>{item.name}</option>)}
+                {this.props.securityTokens.map((item) => (
+                    <option key={item.key} value={item.name}>
+                        {item.name}
+                    </option>
+                ))}
             </select>
         );
     }
 
     private onChange(e: SyntheticEvent) {
         const inputElement = e.target as HTMLSelectElement;
-        this.props.onChange(inputElement.value ? inputElement.value : undefined);
+        this.props.onChange(
+            inputElement.value ? inputElement.value : undefined
+        );
     }
 }

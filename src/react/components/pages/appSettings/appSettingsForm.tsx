@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { FontIcon } from "@fluentui/react";
 import { strings, addLocValues } from "../../../../common/strings";
@@ -13,7 +10,10 @@ import { ProtectedInput } from "../../common/protectedInput/protectedInput";
 import { CustomField } from "../../common/customField/customField";
 import { generateKey } from "../../../../common/crypto";
 import { PrimaryButton } from "@fluentui/react";
-import { getPrimaryGreenTheme, getPrimaryGreyTheme } from "../../../../common/themes";
+import {
+    getPrimaryGreenTheme,
+    getPrimaryGreyTheme,
+} from "../../../../common/themes";
 // tslint:disable-next-line:no-var-requires
 const formSchema = addLocValues(require("./appSettingsForm.json"));
 // tslint:disable-next-line:no-var-requires
@@ -32,7 +32,10 @@ export interface IAppSettingsFormState {
     appSettings: IAppSettings;
 }
 
-export class AppSettingsForm extends React.Component<IAppSettingsFormProps, IAppSettingsFormState> {
+export class AppSettingsForm extends React.Component<
+    IAppSettingsFormProps,
+    IAppSettingsFormState
+> {
     private fields = {
         securityToken: CustomField(ProtectedInput, (props) => ({
             id: props.idSchema.$id,
@@ -84,18 +87,21 @@ export class AppSettingsForm extends React.Component<IAppSettingsFormProps, IApp
                         schema={this.state.formSchema}
                         uiSchema={this.state.uiSchema}
                         formData={this.state.appSettings}
-                        onSubmit={(form) => this.props.onSubmit(form.formData)}>
+                        onSubmit={(form) => this.props.onSubmit(form.formData)}
+                    >
                         <div>
                             <PrimaryButton
                                 theme={getPrimaryGreenTheme()}
                                 className="mr-2"
-                                type="submit">
+                                type="submit"
+                            >
                                 {strings.appSettings.save}
                             </PrimaryButton>
                             <PrimaryButton
                                 theme={getPrimaryGreyTheme()}
                                 type="button"
-                                onClick={this.onFormCancel}>
+                                onClick={this.onFormCancel}
+                            >
                                 {strings.common.cancel}
                             </PrimaryButton>
                         </div>
@@ -111,15 +117,23 @@ export class AppSettingsForm extends React.Component<IAppSettingsFormProps, IApp
             if (!token.name) {
                 return;
             }
-            const tokenName = token.name;  // not trimmed because user's might already have non trimmed token names
+            const tokenName = token.name; // not trimmed because user's might already have non trimmed token names
             if (tokensMap[tokenName] !== undefined) {
-                const initialSecurityTokenErrorName = errors.securityTokens[tokensMap[tokenName]].name;
-                const duplicateSecurityTokenErrorName = errors.securityTokens[index.toString()].name
+                const initialSecurityTokenErrorName =
+                    errors.securityTokens[tokensMap[tokenName]].name;
+                const duplicateSecurityTokenErrorName =
+                    errors.securityTokens[index.toString()].name;
                 if (duplicateSecurityTokenErrorName) {
-                    duplicateSecurityTokenErrorName.addError(strings.appSettings.securityToken.duplicateNameErrorMessage);
+                    duplicateSecurityTokenErrorName.addError(
+                        strings.appSettings.securityToken
+                            .duplicateNameErrorMessage
+                    );
                 }
                 if (initialSecurityTokenErrorName.__errors.length === 0) {
-                    initialSecurityTokenErrorName.addError(strings.appSettings.securityToken.duplicateNameErrorMessage);
+                    initialSecurityTokenErrorName.addError(
+                        strings.appSettings.securityToken
+                            .duplicateNameErrorMessage
+                    );
                 }
             } else {
                 tokensMap[tokenName] = index;

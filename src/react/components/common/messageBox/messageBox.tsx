@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { SyntheticEvent, ReactElement } from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
@@ -42,7 +39,10 @@ export interface IMessageBoxState {
 /**
  * Generic modal that displays a message
  */
-export default class MessageBox extends React.Component<IMessageBoxProps, IMessageBoxState> {
+export default class MessageBox extends React.Component<
+    IMessageBoxProps,
+    IMessageBoxState
+> {
     constructor(props, context) {
         super(props, context);
 
@@ -65,14 +65,20 @@ export default class MessageBox extends React.Component<IMessageBoxProps, IMessa
         }
 
         return (
-            <Modal className="messagebox-modal"
+            <Modal
+                className="messagebox-modal"
                 isOpen={this.state.isOpen}
-                onClosed={this.onClosed}>
-                <ModalHeader tag="div" toggle={this.toggle} role="heading">{this.props.title}</ModalHeader>
+                onClosed={this.onClosed}
+            >
+                <ModalHeader tag="div" toggle={this.toggle} role="heading">
+                    {this.props.title}
+                </ModalHeader>
                 <ModalBody>{this.getMessage(this.props.message)}</ModalBody>
-                {!this.props.hideFooter && <ModalFooter onClick={this.onFooterClick}>
-                    {this.props.children}
-                </ModalFooter>}
+                {!this.props.hideFooter && (
+                    <ModalFooter onClick={this.onFooterClick}>
+                        {this.props.children}
+                    </ModalFooter>
+                )}
             </Modal>
         );
     }
@@ -86,13 +92,16 @@ export default class MessageBox extends React.Component<IMessageBoxProps, IMessa
     }
 
     public close(): void {
-        this.setState({
-            isOpen: false,
-        }, () => {
-            if (!this.state.isButtonSelected && this.props.onCancel) {
-                this.props.onCancel();
+        this.setState(
+            {
+                isOpen: false,
+            },
+            () => {
+                if (!this.state.isButtonSelected && this.props.onCancel) {
+                    this.props.onCancel();
+                }
             }
-        });
+        );
     }
 
     public componentDidUpdate(prevProps: Readonly<IMessageBoxProps>): void {
@@ -104,25 +113,30 @@ export default class MessageBox extends React.Component<IMessageBoxProps, IMessa
         }
     }
 
-    private getMessage = (message: string | MessageFormatHandler | ReactElement<any>) => {
+    private getMessage = (
+        message: string | MessageFormatHandler | ReactElement<any>
+    ) => {
         if (typeof message === "function") {
             return message.apply(this, this.props.params);
         } else {
             return message;
         }
-    }
+    };
 
     private onFooterClick(evt: SyntheticEvent) {
         const htmlElement = evt.target as HTMLButtonElement;
         if (htmlElement.tagName === "BUTTON") {
-            this.setState({
-                isButtonSelected: true,
-            }, () => {
-                this.close();
-                if (this.props.onButtonSelect) {
-                    this.props.onButtonSelect(htmlElement);
+            this.setState(
+                {
+                    isButtonSelected: true,
+                },
+                () => {
+                    this.close();
+                    if (this.props.onButtonSelect) {
+                        this.props.onButtonSelect(htmlElement);
+                    }
                 }
-            });
+            );
         }
     }
 

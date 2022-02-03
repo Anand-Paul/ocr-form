@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { FontIcon } from "@fluentui/react";
 import { strings } from "../../../common/strings";
@@ -10,7 +7,6 @@ export interface IHelpMenuProps {}
 export interface IHelpMenuState {}
 
 export class HelpMenu extends React.Component<IHelpMenuProps, IHelpMenuState> {
-
     private akaMsLink = "https://aka.ms/form-recognizer/docs/label";
 
     public render() {
@@ -21,7 +17,8 @@ export class HelpMenu extends React.Component<IHelpMenuProps, IHelpMenuState> {
                 href={this.akaMsLink}
                 role="button"
                 target="_blank"
-                rel="noopener noreferrer">
+                rel="noopener noreferrer"
+            >
                 <FontIcon iconName="Help" />
             </a>
         );

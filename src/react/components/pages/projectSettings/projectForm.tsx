@@ -1,22 +1,37 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
-import Form, { FormValidation, ISubmitEvent, IChangeEvent, Widget } from "react-jsonschema-form";
+import Form, {
+    FormValidation,
+    ISubmitEvent,
+    IChangeEvent,
+    Widget,
+} from "react-jsonschema-form";
 import { addLocValues, strings } from "../../../../common/strings";
-import { IConnection, IProject, IAppSettings } from "../../../../models/applicationState";
+import {
+    IConnection,
+    IProject,
+    IAppSettings,
+} from "../../../../models/applicationState";
 import { StorageProviderFactory } from "../../../../providers/storage/storageProviderFactory";
 import { ConnectionPickerWithRouter } from "../../common/connectionPicker/connectionPicker";
 import { CustomField } from "../../common/customField/customField";
 import CustomFieldTemplate from "../../common/customField/customFieldTemplate";
-import { ISecurityTokenPickerProps, SecurityTokenPicker } from "../../common/securityTokenPicker/securityTokenPicker";
+import {
+    ISecurityTokenPickerProps,
+    SecurityTokenPicker,
+} from "../../common/securityTokenPicker/securityTokenPicker";
 import "vott-react/dist/css/tagsInput.css";
 import { IConnectionProviderPickerProps } from "../../common/connectionProviderPicker/connectionProviderPicker";
 import { ProjectSettingAction } from "./projectSettingAction";
 import { ProtectedInput } from "../../common/protectedInput/protectedInput";
 import { PrimaryButton } from "@fluentui/react";
-import { getPrimaryGreenTheme, getPrimaryGreyTheme } from "../../../../common/themes";
-import { APIVersionPicker, IAPIVersionPickerProps } from "../../common/apiVersionPicker/apiVersionPicker";
+import {
+    getPrimaryGreenTheme,
+    getPrimaryGreyTheme,
+} from "../../../../common/themes";
+import {
+    APIVersionPicker,
+    IAPIVersionPickerProps,
+} from "../../common/apiVersionPicker/apiVersionPicker";
 
 // tslint:disable-next-line:no-var-requires
 const newFormSchema = addLocValues(require("./newProjectForm.json"));
@@ -60,10 +75,13 @@ export interface IProjectFormState {
  * @name - Project Form
  * @description - Form for editing or creating VoTT projects
  */
-export default class ProjectForm extends React.Component<IProjectFormProps, IProjectFormState> {
+export default class ProjectForm extends React.Component<
+    IProjectFormProps,
+    IProjectFormState
+> {
     private widgets = {
-        protectedInput: (ProtectedInput as any) as Widget,
-        apiVersion: (APIVersionPicker as any) as Widget
+        protectedInput: ProtectedInput as any as Widget,
+        apiVersion: APIVersionPicker as any as Widget,
     };
 
     constructor(props, context) {
@@ -121,18 +139,21 @@ export default class ProjectForm extends React.Component<IProjectFormProps, IPro
                 uiSchema={this.state.uiSchema}
                 formData={this.state.formData}
                 onChange={this.onFormChange}
-                onSubmit={this.onFormSubmit}>
+                onSubmit={this.onFormSubmit}
+            >
                 <div>
                     <PrimaryButton
                         theme={getPrimaryGreenTheme()}
                         className="mr-2"
-                        type="submit">
+                        type="submit"
+                    >
                         {strings.projectSettings.save}
                     </PrimaryButton>
                     <PrimaryButton
                         theme={getPrimaryGreyTheme()}
                         type="button"
-                        onClick={this.onFormCancel}>
+                        onClick={this.onFormCancel}
+                    >
                         {strings.common.cancel}
                     </PrimaryButton>
                 </div>
@@ -142,52 +163,74 @@ export default class ProjectForm extends React.Component<IProjectFormProps, IPro
 
     private fields() {
         return {
-            securityToken: CustomField<ISecurityTokenPickerProps>(SecurityTokenPicker, (props) => ({
-                id: props.idSchema.$id,
-                schema: props.schema,
-                value: props.formData,
-                securityTokens: this.props.appSettings.securityTokens,
-                onChange: props.onChange,
-            })),
-            sourceConnection: CustomField<IConnectionProviderPickerProps>(ConnectionPickerWithRouter, (props) => {
-                return {
+            securityToken: CustomField<ISecurityTokenPickerProps>(
+                SecurityTokenPicker,
+                (props) => ({
+                    id: props.idSchema.$id,
+                    schema: props.schema,
+                    value: props.formData,
+                    securityTokens: this.props.appSettings.securityTokens,
+                    onChange: props.onChange,
+                })
+            ),
+            sourceConnection: CustomField<IConnectionProviderPickerProps>(
+                ConnectionPickerWithRouter,
+                (props) => {
+                    return {
+                        id: props.idSchema.$id,
+                        value: props.formData,
+                        connections: this.props.connections,
+                        onChange: props.onChange,
+                    };
+                }
+            ),
+            apiVersion: CustomField<IAPIVersionPickerProps>(
+                APIVersionPicker,
+                (props) => ({
                     id: props.idSchema.$id,
                     value: props.formData,
-                    connections: this.props.connections,
                     onChange: props.onChange,
-                };
-            }),
-            apiVersion: CustomField<IAPIVersionPickerProps>(APIVersionPicker, (props) => ({
-                id: props.idSchema.$id,
-                value: props.formData,
-                onChange: props.onChange,
-            })),
-            targetConnection: CustomField<IConnectionProviderPickerProps>(ConnectionPickerWithRouter, (props) => {
-                const targetConnections = this.props.connections
-                    .filter((connection) => StorageProviderFactory.isRegistered(connection.providerType));
+                })
+            ),
+            targetConnection: CustomField<IConnectionProviderPickerProps>(
+                ConnectionPickerWithRouter,
+                (props) => {
+                    const targetConnections = this.props.connections.filter(
+                        (connection) =>
+                            StorageProviderFactory.isRegistered(
+                                connection.providerType
+                            )
+                    );
 
-                return {
-                    id: props.idSchema.$id,
-                    value: props.formData,
-                    connections: targetConnections,
-                    onChange: props.onChange,
-                };
-            }),
+                    return {
+                        id: props.idSchema.$id,
+                        value: props.formData,
+                        connections: targetConnections,
+                        onChange: props.onChange,
+                    };
+                }
+            ),
         };
     }
 
     private onFormValidate(project: IProject, errors: FormValidation) {
-        if (this.props.action === ProjectSettingAction.Create &&
+        if (
+            this.props.action === ProjectSettingAction.Create &&
             project.sourceConnection &&
-            Object.keys(project.sourceConnection).length === 0) {
+            Object.keys(project.sourceConnection).length === 0
+        ) {
             errors.sourceConnection.addError("is a required property");
         }
         if (project.apiUriBase && errors.apiUriBase) {
             const urlRegex = new RegExp(/^(\s*)?(https?:\/\/)/);
             if (urlRegex.test(project.apiUriBase)) {
-                const urlRegexOnlyProtocalAndDomain = new RegExp(/^(\s*)?(https?:\/\/)([^\s/])+(\/)?(\s*)?$/);
+                const urlRegexOnlyProtocalAndDomain = new RegExp(
+                    /^(\s*)?(https?:\/\/)([^\s/])+(\/)?(\s*)?$/
+                );
                 if (!urlRegexOnlyProtocalAndDomain.test(project.apiUriBase)) {
-                    errors.apiUriBase.addError("should contain only protocol and domain name");
+                    errors.apiUriBase.addError(
+                        "should contain only protocol and domain name"
+                    );
                 }
             } else {
                 errors.apiUriBase.addError("should match URI format");
@@ -207,7 +250,7 @@ export default class ProjectForm extends React.Component<IProjectFormProps, IPro
         if (this.props.onChange) {
             this.props.onChange(changeEvent.formData);
         }
-    }
+    };
 
     private onFormSubmit(args: ISubmitEvent<IProject>) {
         const project: IProject = {
@@ -232,12 +275,22 @@ export default class ProjectForm extends React.Component<IProjectFormProps, IPro
         let normalizePath = folderPath ? folderPath.trim() : "";
 
         // trim left slash
-        while (normalizePath.length > 0 && (normalizePath.indexOf("/") === 0 || normalizePath.indexOf(".") === 0)) {
-            normalizePath = normalizePath.substr(normalizePath.indexOf("/") + 1, normalizePath.length - 1);
+        while (
+            normalizePath.length > 0 &&
+            (normalizePath.indexOf("/") === 0 ||
+                normalizePath.indexOf(".") === 0)
+        ) {
+            normalizePath = normalizePath.substr(
+                normalizePath.indexOf("/") + 1,
+                normalizePath.length - 1
+            );
         }
 
         // trim right slash
-        while (normalizePath.length > 0 && (normalizePath.lastIndexOf("/") === normalizePath.length - 1)) {
+        while (
+            normalizePath.length > 0 &&
+            normalizePath.lastIndexOf("/") === normalizePath.length - 1
+        ) {
             normalizePath = normalizePath.substr(0, normalizePath.length - 1);
         }
 

@@ -1,24 +1,31 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import MockFactory from "../../../../common/mockFactory";
 import { StorageProviderFactory } from "../../../../providers/storage/storageProviderFactory";
-import { CloudFilePicker, ICloudFilePickerProps, ICloudFilePickerState } from "./cloudFilePicker";
+import {
+    CloudFilePicker,
+    ICloudFilePickerProps,
+    ICloudFilePickerState,
+} from "./cloudFilePicker";
 import { IConnection } from "../../../../models/applicationState";
 
 describe("CloudFilePicker", () => {
-
     const mockFiles = MockFactory.createFileList();
 
     const mockStorageProvider = MockFactory.createStorageProvider();
     StorageProviderFactory.createFromConnection = jest.fn(
-        (connection: IConnection) => MockFactory.createStorageProviderFromConnection(connection));
+        (connection: IConnection) =>
+            MockFactory.createStorageProviderFromConnection(connection)
+    );
 
-    function createComponent(props: ICloudFilePickerProps):
-            ReactWrapper<ICloudFilePickerProps, ICloudFilePickerState, CloudFilePicker> {
-        return mount(<CloudFilePicker {...props}/>);
+    function createComponent(
+        props: ICloudFilePickerProps
+    ): ReactWrapper<
+        ICloudFilePickerProps,
+        ICloudFilePickerState,
+        CloudFilePicker
+    > {
+        return mount(<CloudFilePicker {...props} />);
     }
 
     function flushPromises() {
@@ -142,7 +149,9 @@ describe("CloudFilePicker", () => {
         wrapper.update();
 
         // Click back button
-        await wrapInPromise(() => wrapper.find("button.btn.btn-secondary").last().simulate("click"));
+        await wrapInPromise(() =>
+            wrapper.find("button.btn.btn-secondary").last().simulate("click")
+        );
         wrapper.update();
 
         const state = wrapper.find(CloudFilePicker).state();
@@ -171,7 +180,9 @@ describe("CloudFilePicker", () => {
         wrapper.update();
 
         // Click close button
-        await wrapInPromise(() => wrapper.find("button.close").last().simulate("click"));
+        await wrapInPromise(() =>
+            wrapper.find("button.close").last().simulate("click")
+        );
         wrapper.update();
 
         const state = wrapper.find(CloudFilePicker).state();
@@ -203,10 +214,14 @@ describe("CloudFilePicker", () => {
         wrapper.update();
 
         // Click ok button
-        await wrapInPromise(() => wrapper.find("button.btn.btn-success").simulate("click"));
+        await wrapInPromise(() =>
+            wrapper.find("button.btn.btn-success").simulate("click")
+        );
         wrapper.update();
 
-        expect(onSubmit).toBeCalledWith(await mockStorageProvider.readText(mockFiles[0]));
+        expect(onSubmit).toBeCalledWith(
+            await mockStorageProvider.readText(mockFiles[0])
+        );
     });
 
     function wrapInPromise(fn): Promise<void> {

@@ -1,12 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 // tslint:disable:no-empty-interface
 import { BaseComponent, IRefObject } from "@uifabric/utilities";
 import { ISelection } from "@fluentui/react";
 import * as React from "react";
 
-export interface IViewSelection { }
+export interface IViewSelection {}
 
 export interface IViewSelectionProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -28,12 +25,12 @@ export interface IViewSelectionProps
     passSelectedItems: (items: any[]) => void;
 }
 
-export interface IViewSelectionState { }
+export interface IViewSelectionState {}
 
 export class ViewSelection extends BaseComponent<
     IViewSelectionProps,
     IViewSelectionState
-    > {
+> {
     private selectedIndices: any[];
     private selectedItems: any[] = [];
     constructor(props: IViewSelectionProps) {
@@ -47,15 +44,24 @@ export class ViewSelection extends BaseComponent<
         return <div>{children}</div>;
     }
 
-    public componentWillUpdate(nextProps: IViewSelectionProps, nextState: IViewSelectionState) {
+    public componentWillUpdate(
+        nextProps: IViewSelectionProps,
+        nextState: IViewSelectionState
+    ) {
         this.saveSelection();
     }
 
-    public componentDidUpdate(prevProps: IViewSelectionProps, prevState: IViewSelectionState) {
+    public componentDidUpdate(
+        prevProps: IViewSelectionProps,
+        prevState: IViewSelectionState
+    ) {
         if (prevProps.columns === this.props.columns) {
             this.restoreSelection();
         }
-        if (prevProps.isComposing === true && (prevProps.isComposing !== this.props.isComposing)) {
+        if (
+            prevProps.isComposing === true &&
+            prevProps.isComposing !== this.props.isComposing
+        ) {
             this.props.selection.setAllSelected(false);
             this.selectedIndices = [];
             this.selectedItems = [];
@@ -97,11 +103,13 @@ export class ViewSelection extends BaseComponent<
         const unselectedIndices = this.props.selection
             .getItems()
             .map((item, index) => index)
-            .filter((index) => this.props.selection.isIndexSelected(index) === false)
+            .filter(
+                (index) => this.props.selection.isIndexSelected(index) === false
+            )
             .map((index) => this.toListIndex(index));
 
         this.selectedIndices = this.selectedIndices.filter(
-            (index) => unselectedIndices.indexOf(index) === -1,
+            (index) => unselectedIndices.indexOf(index) === -1
         );
         this.selectedIndices = [...this.selectedIndices, ...newIndices];
 

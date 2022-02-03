@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import Guard from "../../../../common/guard";
 import { KeyEventType } from "./keyboardManager";
 import { IKeyboardBindingProps } from "../keyboardBinding/keyboardBinding";
@@ -11,7 +8,7 @@ import { AppError, ErrorCode } from "../../../../models/applicationState";
  */
 export interface IKeyboardRegistrations {
     [keyEventType: string]: {
-        [key: string]: IKeyboardBindingProps,
+        [key: string]: IKeyboardBindingProps;
     };
 }
 
@@ -32,7 +29,7 @@ export class KeyboardRegistrationManager {
      * @returns a function for deregistering the keyboard binding
      */
     public registerBinding = (binding: IKeyboardBindingProps) => {
-        const {keyEventType, accelerators, handler, displayName} = binding;
+        const { keyEventType, accelerators, handler, displayName } = binding;
         Guard.null(keyEventType);
         Guard.expression(accelerators, (keyCodes) => keyCodes.length > 0);
         Guard.null(handler);
@@ -59,23 +56,24 @@ export class KeyboardRegistrationManager {
                 delete this.registrations[binding.keyEventType][keyCode];
             });
         };
-    }
+    };
 
     /**
      * Gets a list of registered event handlers for the specified key code
      * @param keyEventType Type of key event (keydown, keyup, keypress)
      * @param keyCode The key code combination, ex) CmdOrCtrl+1
      */
-    public getHandler(keyEventType: KeyEventType, keyCode: string): (evt?: KeyboardEvent) => void {
+    public getHandler(
+        keyEventType: KeyEventType,
+        keyCode: string
+    ): (evt?: KeyboardEvent) => void {
         Guard.null(keyEventType);
         Guard.null(keyCode);
 
         const keyEventTypeRegs = this.registrations[keyEventType];
-        return (keyEventTypeRegs && keyEventTypeRegs[keyCode])
-            ?
-            keyEventTypeRegs[keyCode].handler
-            :
-            null;
+        return keyEventTypeRegs && keyEventTypeRegs[keyCode]
+            ? keyEventTypeRegs[keyCode].handler
+            : null;
     }
 
     /**
@@ -84,7 +82,11 @@ export class KeyboardRegistrationManager {
      * @param keyCode The key code combination, ex) CmdOrCtrl+1
      * @param evt The keyboard event that was raised
      */
-    public invokeHandler(keyEventType: KeyEventType, keyCode: string, evt: KeyboardEvent) {
+    public invokeHandler(
+        keyEventType: KeyEventType,
+        keyCode: string,
+        evt: KeyboardEvent
+    ) {
         Guard.null(keyCode);
         Guard.null(evt);
 
@@ -96,5 +98,5 @@ export class KeyboardRegistrationManager {
 
     public getRegistrations = () => {
         return this.registrations;
-    }
+    };
 }

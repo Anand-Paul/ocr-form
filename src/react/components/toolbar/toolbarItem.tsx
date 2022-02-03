@@ -1,10 +1,11 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { Fragment } from "react";
 import { IProject } from "../../../models/applicationState";
 import IProjectActions from "../../../redux/actions/projectActions";
-import { IKeyboardContext, KeyboardContext, KeyEventType } from "../common/keyboardManager/keyboardManager";
+import {
+    IKeyboardContext,
+    KeyboardContext,
+    KeyEventType,
+} from "../common/keyboardManager/keyboardManager";
 import { KeyboardBinding } from "../common/keyboardBinding/keyboardBinding";
 import { ToolbarItemName, ToolbarItemGroup } from "../../../registerToolbar";
 import { IconButton } from "@fluentui/react";
@@ -75,8 +76,7 @@ export abstract class ToolbarItem extends React.Component<IToolbarItemProps> {
         const accelerators = this.props.accelerators;
         return (
             <Fragment>
-                {
-                    accelerators &&
+                {accelerators && (
                     <KeyboardBinding
                         displayName={this.props.tooltip}
                         accelerators={accelerators}
@@ -84,11 +84,11 @@ export abstract class ToolbarItem extends React.Component<IToolbarItemProps> {
                         icon={this.props.icon}
                         keyEventType={KeyEventType.KeyDown}
                     />
-                }
+                )}
                 <IconButton
                     className={className.join(" ")}
                     title={this.getTitle()}
-                    iconProps={{iconName: this.props.icon}}
+                    iconProps={{ iconName: this.props.icon }}
                     onClick={this.onClick}
                 />
             </Fragment>
@@ -99,23 +99,29 @@ export abstract class ToolbarItem extends React.Component<IToolbarItemProps> {
 
     private getTitle = () => {
         return `${this.props.tooltip}${this.getShortcut()}`;
-    }
+    };
 
     private getShortcut = () => {
-        return ` (${this.consolidateKeyCasings(this.props.accelerators).join(", ")})`;
-    }
+        return ` (${this.consolidateKeyCasings(this.props.accelerators).join(
+            ", "
+        )})`;
+    };
 
     private consolidateKeyCasings = (accelerators: string[]): string[] => {
         const consolidated: string[] = [];
         if (accelerators) {
             for (const a of accelerators) {
-                if (!consolidated.find((item) => item.toLowerCase() === a.toLowerCase())) {
+                if (
+                    !consolidated.find(
+                        (item) => item.toLowerCase() === a.toLowerCase()
+                    )
+                ) {
                     consolidated.push(a);
                 }
             }
         }
         return consolidated;
-    }
+    };
 
     private onClick = (e) => {
         e.stopPropagation();
@@ -124,5 +130,5 @@ export abstract class ToolbarItem extends React.Component<IToolbarItemProps> {
             this.onItemClick();
         }
         this.props.onClick(this);
-    }
+    };
 }

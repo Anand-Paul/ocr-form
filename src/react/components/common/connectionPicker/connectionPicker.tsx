@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { IConnection } from "../../../../models/applicationState";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -33,7 +30,10 @@ export interface IConnectionPickerState {
  * @name - Connection Picker
  * @description - Enhanced dropdown for selecting a Connection
  */
-export class ConnectionPicker extends React.Component<IConnectionPickerProps, IConnectionPickerState> {
+export class ConnectionPicker extends React.Component<
+    IConnectionPickerProps,
+    IConnectionPickerState
+> {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -57,23 +57,31 @@ export class ConnectionPicker extends React.Component<IConnectionPickerProps, IC
 
         return (
             <div className="input-group">
-                <select id={id} value={selectedValue} onChange={this.onChange}
-                    required className="form-control">
+                <select
+                    id={id}
+                    value={selectedValue}
+                    onChange={this.onChange}
+                    required
+                    className="form-control"
+                >
                     <option>Select Connection</option>
-                    {connections.map((connection) =>
+                    {connections.map((connection) => (
                         <option
                             className="connection-option"
                             key={connection.id}
-                            value={connection.id}>{connection.name}
-                        </option>)
-                    }
+                            value={connection.id}
+                        >
+                            {connection.name}
+                        </option>
+                    ))}
                 </select>
                 <div className="input-group-append">
                     <DefaultButton
                         className="connection-picker-button"
                         theme={getPrimaryGreyTheme()}
                         type="button"
-                        onClick={this.createConnection}>
+                        onClick={this.createConnection}
+                    >
                         Add Connection
                     </DefaultButton>
                 </div>
@@ -82,18 +90,25 @@ export class ConnectionPicker extends React.Component<IConnectionPickerProps, IC
     }
 
     private onChange = (e) => {
-        const selectedConnection = this.props.connections
-            .find((connection) => connection.id === e.target.value) || {};
+        const selectedConnection =
+            this.props.connections.find(
+                (connection) => connection.id === e.target.value
+            ) || {};
 
-        this.setState({
-            value: selectedConnection,
-        }, () => this.props.onChange(selectedConnection));
-    }
+        this.setState(
+            {
+                value: selectedConnection,
+            },
+            () => this.props.onChange(selectedConnection)
+        );
+    };
 
     private createConnection = () => {
         this.props.history.push("/connections/create");
-    }
+    };
 }
 
-export const ConnectionPickerWithRouter =
-    withRouter<IConnectionPickerProps, React.ComponentType<IConnectionPickerProps>>(ConnectionPicker);
+export const ConnectionPickerWithRouter = withRouter<
+    IConnectionPickerProps,
+    React.ComponentType<IConnectionPickerProps>
+>(ConnectionPicker);

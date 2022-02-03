@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { FontIcon, DefaultButton } from "@fluentui/react";
 import { getPrimaryGreyTheme } from "../../../../common/themes";
@@ -30,7 +27,10 @@ export interface IProtectedInputState {
  * Protected input Component
  * @description - Used for sensitive fields such as passwords, keys, tokens, etc
  */
-export class ProtectedInput extends React.Component<IProtectedInputProps, IProtectedInputState> {
+export class ProtectedInput extends React.Component<
+    IProtectedInputProps,
+    IProtectedInputState
+> {
     constructor(props) {
         super(props);
 
@@ -60,28 +60,32 @@ export class ProtectedInput extends React.Component<IProtectedInputProps, IProte
 
         return (
             <div className="input-group">
-                <input id={id}
+                <input
+                    id={id}
                     type={showKey ? "text" : "password"}
                     readOnly={readOnly}
                     required
                     autoComplete="new-password"
                     className="form-control"
                     value={value}
-                    onChange={this.onChange} />
+                    onChange={this.onChange}
+                />
                 <div className="input-group-append">
                     <DefaultButton
                         className="portected-input-margin"
                         theme={getPrimaryGreyTheme()}
                         type="button"
                         title={showKey ? "Hide" : "Show"}
-                        onClick={this.toggleKeyVisibility}>
-                        <FontIcon iconName={showKey ? "Hide3" : "View"}/>
+                        onClick={this.toggleKeyVisibility}
+                    >
+                        <FontIcon iconName={showKey ? "Hide3" : "View"} />
                     </DefaultButton>
                     <DefaultButton
                         theme={getPrimaryGreyTheme()}
                         type="button"
                         title="Copy"
-                        onClick={this.copyKey}>
+                        onClick={this.copyKey}
+                    >
                         <FontIcon iconName="Copy" />
                     </DefaultButton>
                 </div>
@@ -90,7 +94,9 @@ export class ProtectedInput extends React.Component<IProtectedInputProps, IProte
     }
 
     private onChange(e: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({ value: e.target.value }, () => this.props.onChange(this.state.value));
+        this.setState({ value: e.target.value }, () =>
+            this.props.onChange(this.state.value)
+        );
     }
 
     private toggleKeyVisibility() {
@@ -101,7 +107,11 @@ export class ProtectedInput extends React.Component<IProtectedInputProps, IProte
 
     private async copyKey() {
         const clipboard = (navigator as any).clipboard;
-        if (clipboard && clipboard.writeText && typeof clipboard.writeText === "function") {
+        if (
+            clipboard &&
+            clipboard.writeText &&
+            typeof clipboard.writeText === "function"
+        ) {
             await clipboard.writeText(this.state.value);
         }
     }

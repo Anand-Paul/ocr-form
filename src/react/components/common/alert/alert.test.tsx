@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { mount, ReactWrapper } from "enzyme";
 import Alert, { IAlertProps, IAlertState } from "./alert";
@@ -14,7 +11,9 @@ describe("Alert component", () => {
         show: false,
     };
 
-    function createComponent(props: IAlertProps): ReactWrapper<IAlertProps, IAlertState, Alert> {
+    function createComponent(
+        props: IAlertProps
+    ): ReactWrapper<IAlertProps, IAlertState, Alert> {
         return mount(<Alert {...props}></Alert>);
     }
 
@@ -33,7 +32,9 @@ describe("Alert component", () => {
         wrapper.update();
 
         expect(wrapper.find(".modal-title").text()).toEqual(defaultProps.title);
-        expect(wrapper.find(".modal-body").text()).toEqual(defaultProps.message);
+        expect(wrapper.find(".modal-body").text()).toEqual(
+            defaultProps.message
+        );
         expect(wrapper.find(".modal-footer button").length).toEqual(1);
     });
 
@@ -52,7 +53,7 @@ describe("Alert component", () => {
     });
 
     it("Calls onClose handler when clicking positive button", () => {
-        const arg = {value: "test"};
+        const arg = { value: "test" };
         const wrapper = createComponent(defaultProps);
 
         wrapper.update();
@@ -71,8 +72,9 @@ describe("Alert component", () => {
 
         const wrapper = createComponent(props);
         expect(wrapper.find(".modal-title").text()).toEqual(defaultProps.title);
-        expect(wrapper.find(".modal-body").text()).toEqual(defaultProps.message);
+        expect(wrapper.find(".modal-body").text()).toEqual(
+            defaultProps.message
+        );
         expect(wrapper.find(".modal-footer button").length).toEqual(1);
     });
-
 });

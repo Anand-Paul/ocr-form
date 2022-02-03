@@ -1,9 +1,6 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import {Feature} from "ol";
+import { Feature } from "ol";
 import Polygon from "ol/geom/Polygon";
-import {ImageMap} from "../../common/imageMap/imageMap";
+import { ImageMap } from "../../common/imageMap/imageMap";
 
 export interface ILayoutHelper {
     setImageMap(imageMap: ImageMap): void;
@@ -41,8 +38,12 @@ export class LayoutHelper implements ILayoutHelper {
         //    tagging if it's supported by FR service.
         // 2. Avoid rebuilding order index when users switch back and forth between pages.
         const ocrs = this.layoutData;
-        const ocrReadResults = (ocrs.recognitionResults || (ocrs.analyzeResult && ocrs.analyzeResult.readResults));
-        const ocrPageResults = (ocrs.recognitionResults || (ocrs.analyzeResult && ocrs.analyzeResult.pageResults));
+        const ocrReadResults =
+            ocrs.recognitionResults ||
+            (ocrs.analyzeResult && ocrs.analyzeResult.readResults);
+        const ocrPageResults =
+            ocrs.recognitionResults ||
+            (ocrs.analyzeResult && ocrs.analyzeResult.pageResults);
         const imageExtent = this.imageMap.getImageExtent();
         ocrReadResults.forEach((ocr) => {
             const ocrExtent = [0, 0, ocr.width, ocr.height];
@@ -55,19 +56,37 @@ export class LayoutHelper implements ILayoutHelper {
                     if (line.words) {
                         line.words.forEach((word) => {
                             if (this.shouldDisplayOcrWord(word.text)) {
-                                const feature = this.createBoundingBoxVectorFeature(
-                                    word.text, word.boundingBox, imageExtent, ocrExtent, ocr.page);
-                                this.regionOrders[pageIndex][feature.getId()] = order++;
-                                this.regionOrderById[pageIndex].push(feature.getId());
+                                const feature =
+                                    this.createBoundingBoxVectorFeature(
+                                        word.text,
+                                        word.boundingBox,
+                                        imageExtent,
+                                        ocrExtent,
+                                        ocr.page
+                                    );
+                                this.regionOrders[pageIndex][feature.getId()] =
+                                    order++;
+                                this.regionOrderById[pageIndex].push(
+                                    feature.getId()
+                                );
                             }
                         });
                     }
                 });
             }
-            const checkboxes = ocr.selectionMarks
-                || (ocrPageResults && ocrPageResults[pageIndex] && ocrPageResults[pageIndex].checkboxes);
+            const checkboxes =
+                ocr.selectionMarks ||
+                (ocrPageResults &&
+                    ocrPageResults[pageIndex] &&
+                    ocrPageResults[pageIndex].checkboxes);
             if (checkboxes) {
-                this.addCheckboxToRegionOrder(checkboxes, pageIndex, order, imageExtent, ocrExtent);
+                this.addCheckboxToRegionOrder(
+                    checkboxes,
+                    pageIndex,
+                    order,
+                    imageExtent,
+                    ocrExtent
+                );
             }
         });
     }
@@ -83,14 +102,26 @@ export class LayoutHelper implements ILayoutHelper {
         const ocrPageResults = ocrForCurrentPage["pageResults"];
         const imageExtent = this.imageMap.getImageExtent();
         if (ocrReadResults) {
-            const ocrExtent = [0, 0, ocrReadResults.width, ocrReadResults.height];
+            const ocrExtent = [
+                0,
+                0,
+                ocrReadResults.width,
+                ocrReadResults.height,
+            ];
             if (ocrReadResults.lines) {
                 ocrReadResults.lines.forEach((line) => {
                     if (line.words) {
                         line.words.forEach((word) => {
                             if (this.shouldDisplayOcrWord(word.text)) {
-                                textFeatures.push(this.createBoundingBoxVectorFeature(
-                                    word.text, word.boundingBox, imageExtent, ocrExtent, ocrReadResults.page));
+                                textFeatures.push(
+                                    this.createBoundingBoxVectorFeature(
+                                        word.text,
+                                        word.boundingBox,
+                                        imageExtent,
+                                        ocrExtent,
+                                        ocrReadResults.page
+                                    )
+                                );
                             }
                         });
                     }
@@ -99,13 +130,27 @@ export class LayoutHelper implements ILayoutHelper {
 
             if (ocrReadResults && ocrReadResults.selectionMarks) {
                 ocrReadResults.selectionMarks.forEach((checkbox) => {
-                    checkboxFeatures.push(this.createBoundingBoxVectorFeature(
-                        checkbox.state, checkbox.boundingBox, imageExtent, ocrExtent, ocrReadResults.page));
+                    checkboxFeatures.push(
+                        this.createBoundingBoxVectorFeature(
+                            checkbox.state,
+                            checkbox.boundingBox,
+                            imageExtent,
+                            ocrExtent,
+                            ocrReadResults.page
+                        )
+                    );
                 });
             } else if (ocrPageResults && ocrPageResults.checkboxes) {
                 ocrPageResults.checkboxes.forEach((checkbox) => {
-                    checkboxFeatures.push(this.createBoundingBoxVectorFeature(
-                        checkbox.state, checkbox.boundingBox, imageExtent, ocrExtent, ocrPageResults.page));
+                    checkboxFeatures.push(
+                        this.createBoundingBoxVectorFeature(
+                            checkbox.state,
+                            checkbox.boundingBox,
+                            imageExtent,
+                            ocrExtent,
+                            ocrPageResults.page
+                        )
+                    );
                 });
             }
 
@@ -119,7 +164,7 @@ export class LayoutHelper implements ILayoutHelper {
     }
 
     public getOcrResultForPage = (targetPage: number): any => {
-        const isTargetPage = result => result.page === targetPage;
+        const isTargetPage = (result) => result.page === targetPage;
         if (!this.layoutData) {
             return {};
         }
@@ -127,15 +172,25 @@ export class LayoutHelper implements ILayoutHelper {
             // OCR schema with analyzeResult/readResults property
             const ocrResultsForCurrentPage = {};
             if (this.layoutData.analyzeResult.pageResults) {
-                ocrResultsForCurrentPage["pageResults"] = this.layoutData.analyzeResult.pageResults.find(isTargetPage);
+                ocrResultsForCurrentPage["pageResults"] =
+                    this.layoutData.analyzeResult.pageResults.find(
+                        isTargetPage
+                    );
             }
-            ocrResultsForCurrentPage["readResults"] = this.layoutData.analyzeResult.readResults.find(isTargetPage);
+            ocrResultsForCurrentPage["readResults"] =
+                this.layoutData.analyzeResult.readResults.find(isTargetPage);
             return ocrResultsForCurrentPage;
         }
         return {};
-    }
+    };
 
-    private createBoundingBoxVectorFeature = (text, boundingBox, imageExtent, ocrExtent, page) => {
+    private createBoundingBoxVectorFeature = (
+        text,
+        boundingBox,
+        imageExtent,
+        ocrExtent,
+        page
+    ) => {
         const coordinates: any[] = [];
         const polygonPoints: number[] = [];
         const imageWidth = imageExtent[2] - imageExtent[0];
@@ -147,13 +202,16 @@ export class LayoutHelper implements ILayoutHelper {
             // An array of numbers representing an extent: [minx, miny, maxx, maxy]
             coordinates.push([
                 Math.round((boundingBox[i] / ocrWidth) * imageWidth),
-                Math.round((1 - (boundingBox[i + 1] / ocrHeight)) * imageHeight),
+                Math.round((1 - boundingBox[i + 1] / ocrHeight) * imageHeight),
             ]);
             polygonPoints.push(boundingBox[i] / ocrWidth);
             polygonPoints.push(boundingBox[i + 1] / ocrHeight);
         }
 
-        const featureId = this.createRegionIdFromBoundingBox(polygonPoints, page);
+        const featureId = this.createRegionIdFromBoundingBox(
+            polygonPoints,
+            page
+        );
         const feature = new Feature({
             geometry: new Polygon([coordinates]),
         });
@@ -167,29 +225,37 @@ export class LayoutHelper implements ILayoutHelper {
         feature.setId(featureId);
 
         return feature;
-    }
+    };
 
-    private createRegionIdFromBoundingBox = (boundingBox: number[], page: number): string => {
+    private createRegionIdFromBoundingBox = (
+        boundingBox: number[],
+        page: number
+    ): string => {
         return boundingBox.join(",") + ":" + page;
-    }
-
+    };
 
     private shouldDisplayOcrWord = (text: string): boolean => {
         const regex = new RegExp(/^[_]+$/);
         return !text.match(regex);
-    }
+    };
 
     private addCheckboxToRegionOrder = (
         checkboxes: any[],
         pageIndex: number,
         order: number,
         imageExtent: number[],
-        ocrExtent: any[]) => {
+        ocrExtent: any[]
+    ) => {
         checkboxes.forEach((checkbox) => {
             const checkboxFeature = this.createBoundingBoxVectorFeature(
-                checkbox.state, checkbox.boundingBox, imageExtent, ocrExtent, pageIndex + 1);
+                checkbox.state,
+                checkbox.boundingBox,
+                imageExtent,
+                ocrExtent,
+                pageIndex + 1
+            );
             this.regionOrders[pageIndex][checkboxFeature.getId()] = order++;
             this.regionOrderById[pageIndex].push(checkboxFeature.getId());
         });
-    }
+    };
 }

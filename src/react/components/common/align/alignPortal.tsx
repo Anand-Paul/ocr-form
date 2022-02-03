@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import ReactDOM from "react-dom";
 import { AlignProps } from "rc-align";
@@ -8,7 +5,6 @@ import { Align } from "./align";
 import "./align.scss";
 
 export class AlignPortal extends React.Component<AlignProps> {
-
     private portalElement: Element;
 
     constructor(props: AlignProps) {
@@ -26,10 +22,9 @@ export class AlignPortal extends React.Component<AlignProps> {
     }
 
     public render() {
-        return (
-            ReactDOM.createPortal(
-                <Align {...this.props}/>
-                , this.portalElement)
+        return ReactDOM.createPortal(
+            <Align {...this.props} />,
+            this.portalElement
         );
     }
 }

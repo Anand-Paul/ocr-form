@@ -1,9 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { mount, ReactWrapper } from "enzyme";
-import { KeyboardManager, KeyEventType } from "../keyboardManager/keyboardManager";
+import {
+    KeyboardManager,
+    KeyEventType,
+} from "../keyboardManager/keyboardManager";
 import { KeyboardBinding, IKeyboardBindingProps } from "./keyboardBinding";
 
 jest.mock("../keyboardManager/keyboardRegistrationManager");
@@ -22,7 +22,9 @@ describe("Keyboard Binding Component", () => {
         handler: onKeyDownHandler,
     };
 
-    const registrationMock = KeyboardRegistrationManager as jest.Mocked<typeof KeyboardRegistrationManager>;
+    const registrationMock = KeyboardRegistrationManager as jest.Mocked<
+        typeof KeyboardRegistrationManager
+    >;
     registrationMock.prototype.registerBinding = jest.fn(() => deregisterFunc);
 
     function createComponent(props?: IKeyboardBindingProps): ReactWrapper {
@@ -31,7 +33,7 @@ describe("Keyboard Binding Component", () => {
         return mount(
             <KeyboardManager>
                 <KeyboardBinding {...props} />
-            </KeyboardManager>,
+            </KeyboardManager>
         );
     }
 
@@ -53,7 +55,9 @@ describe("Keyboard Binding Component", () => {
             handler: defaultProps.handler,
             displayName: expect.any(String),
         };
-        expect(registrationMock.prototype.registerBinding).toBeCalledWith(expectedBindingProps);
+        expect(registrationMock.prototype.registerBinding).toBeCalledWith(
+            expectedBindingProps
+        );
     });
 
     it("registered the keyup key code and event handler", () => {
@@ -67,7 +71,9 @@ describe("Keyboard Binding Component", () => {
             handler: defaultProps.handler,
             displayName: expect.any(String),
         };
-        expect(registrationMock.prototype.registerBinding).toBeCalledWith(expectedBindingProps);
+        expect(registrationMock.prototype.registerBinding).toBeCalledWith(
+            expectedBindingProps
+        );
     });
 
     it("registered the keypress key code and event handler", () => {
@@ -81,7 +87,9 @@ describe("Keyboard Binding Component", () => {
             handler: defaultProps.handler,
             displayName: expect.any(String),
         };
-        expect(registrationMock.prototype.registerBinding).toBeCalledWith(expectedBindingProps);
+        expect(registrationMock.prototype.registerBinding).toBeCalledWith(
+            expectedBindingProps
+        );
     });
 
     it("deregisters the event handler", () => {

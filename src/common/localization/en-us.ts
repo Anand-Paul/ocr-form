@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { IAppStrings } from "../strings";
 
 /*eslint-disable no-template-curly-in-string, no-multi-str*/
@@ -52,26 +49,30 @@ export const english: IAppStrings = {
         },
         importProject: {
             title: "Import Project",
-            confirmation: "Are you sure you want to convert project ${project.file.name} project settings " +
+            confirmation:
+                "Are you sure you want to convert project ${project.file.name} project settings " +
                 "to v2 format? We recommend you backup the project file first.",
         },
         messages: {
             deleteSuccess: "Successfully deleted ${project.name}",
         },
         homeProjectView: {
-            title: "Use Custom to train a model with labels and get key value pairs"
+            title: "Use Custom to train a model with labels and get key value pairs",
         },
         prebuiltPredict: {
             title: "Use prebuilt model to get data",
-            description: "Start with a pre-built model to extract data from your forms – Invoices, Receipts, Business cards and more. Submit your data and get results right away."
+            description:
+                "Start with a pre-built model to extract data from your forms – Invoices, Receipts, Business cards and more. Submit your data and get results right away.",
         },
         layoutPredict: {
             title: "Use Layout to get text, tables and selection marks",
-            description: "Try out the Form Recognizer Layout service to extract text, tables, selection marks and the structure of your document."
+            description:
+                "Try out the Form Recognizer Layout service to extract text, tables, selection marks and the structure of your document.",
         },
         trainWithLabels: {
             title: "Use Custom to train a model with labels and get key value pairs",
-            description: "You provide your own training data and do the learning. The model you create can train to your industry-specific forms."
+            description:
+                "You provide your own training data and do the learning. The model you create can train to your industry-specific forms.",
         },
         quickStartGuide: "Quick start guide",
     },
@@ -87,18 +88,21 @@ export const english: IAppStrings = {
             key: {
                 title: "Key",
             },
-            duplicateNameErrorMessage: "Token name must be unique for all tokens",
+            duplicateNameErrorMessage:
+                "Token name must be unique for all tokens",
         },
         securityTokens: {
             title: "Security Tokens",
-            description: "Security tokens are used to encrypt sensitive data within your project configuration",
+            description:
+                "Security tokens are used to encrypt sensitive data within your project configuration",
         },
         version: {
             description: "Version:",
         },
         commit: "Commit SHA",
         devTools: {
-            description: "Open application developer tools to help diagnose issues",
+            description:
+                "Open application developer tools to help diagnose issues",
             button: "Toggle Developer Tools",
         },
         reload: {
@@ -127,12 +131,14 @@ export const english: IAppStrings = {
         videoSettings: {
             title: "Video Settings",
             description: "The rate at which frames are extracted for tagging.",
-            frameExtractionRate: "Frame Extraction Rate (frames per a video second)",
+            frameExtractionRate:
+                "Frame Extraction Rate (frames per a video second)",
         },
         addConnection: "Add Connection",
         messages: {
             saveSuccess: "Successfully saved ${project.name} project settings",
-            projectExisted: "A project with name ${project.name} already exists, please use another name.",
+            projectExisted:
+                "A project with name ${project.name} already exists, please use another name.",
         },
     },
     train: {
@@ -143,19 +149,21 @@ export const english: IAppStrings = {
         training: "Training",
         pleaseWait: "Please wait",
         notTrainedYet: "Not trained yet",
-        backEndNotAvailable: "Checkbox feature will work in future version of Form Recognizer service, please stay tuned.",
+        backEndNotAvailable:
+            "Checkbox feature will work in future version of Form Recognizer service, please stay tuned.",
         addName: "Add a model name...",
         downloadJson: "Download JSON file",
         trainConfirm: {
             title: "Labels not revised yet",
-            message: "There are newly auto-labeled files not yet revised by you, do you want to train with those files?"
+            message:
+                "There are newly auto-labeled files not yet revised by you, do you want to train with those files?",
         },
         errors: {
             electron: {
-                cantAccessFiles: "Cannot access files in '${folderUri}' for training. Please check if specified folder URI is correct."
-            }
-        }
-
+                cantAccessFiles:
+                    "Cannot access files in '${folderUri}' for training. Please check if specified folder URI is correct.",
+            },
+        },
     },
     modelCompose: {
         title: "Model compose",
@@ -164,7 +172,8 @@ export const english: IAppStrings = {
         },
         loading: "Loading models...",
         composing: "Model is composing, please wait...",
-        limitQuantityComposedModel:"Form Recognizer free resource supports up to 5 models in a composed model. Please upgrade to a paid resource",
+        limitQuantityComposedModel:
+            "Form Recognizer free resource supports up to 5 models in a composed model. Please upgrade to a paid resource",
         column: {
             icon: {
                 name: "Composed Icon",
@@ -193,12 +202,16 @@ export const english: IAppStrings = {
         modelView: {
             titleAria: "Compose Model View",
             addComposeModelName: "Add compose model name...",
-            NotEnoughModels: " Should have at least more than one selected model to compose a new model",
-            modelsCannotBeIncluded: "Warning: These models will not be included in composed model!",
-            modelCannotBeIncluded: "Warning: This model will not be included in composed model!",
+            NotEnoughModels:
+                " Should have at least more than one selected model to compose a new model",
+            modelsCannotBeIncluded:
+                "Warning: These models will not be included in composed model!",
+            modelCannotBeIncluded:
+                "Warning: This model will not be included in composed model!",
             addModelToRecentModels: "Model [${modelID}] added to recent models",
-            recentModelsAlreadyContainsModel: "Recent models already contains model [${modelID}]",
-            loadingDetails: "Loading model details..."
+            recentModelsAlreadyContainsModel:
+                "Recent models already contains model [${modelID}]",
+            loadingDetails: "Loading model details...",
         },
         commandBar: {
             ariaLabel: "Please use command bar to compose models",
@@ -211,18 +224,20 @@ export const english: IAppStrings = {
             headerAria: "List of models header",
             checkButtonAria: "Select model check button",
             checkAllButtonAria: "Select all models check button",
-
         },
         errors: {
-            failedCompose: "Something went wrong composed model was not created!",
-            noInfoAboutModel: "ℹ️ Original model not found. No information available.",
-        }
+            failedCompose:
+                "Something went wrong composed model was not created!",
+            noInfoAboutModel:
+                "ℹ️ Original model not found. No information available.",
+        },
     },
     predict: {
         title: "Analyze",
         uploadFile: "Choose an image to analyze with",
         inProgress: "Analysis in progress...",
-        noRecentModels: "This project doesn't have any recent models. Please train or compose a new model to analyze with.",
+        noRecentModels:
+            "This project doesn't have any recent models. Please train or compose a new model to analyze with.",
         selectModelHeader: "Model to analyze with",
         modelIDPrefix: "Model ID: ",
         modelNamePrefix: "Model name: ",
@@ -230,19 +245,22 @@ export const english: IAppStrings = {
         defaultLocalFileInput: "Browse for a file...",
         defaultURLInput: "Paste or type URL...",
         editAndUploadToTrainingSet: "Edit & upload to training set",
-        editAndUploadToTrainingSetNotify: "by clicking on this button, this form will be added to this project, where you can edit these labels.",
-        editAndUploadToTrainingSetNotify2: "We are adding this file to your training set, where you can edit the labels and re-train the model.",
+        editAndUploadToTrainingSetNotify:
+            "by clicking on this button, this form will be added to this project, where you can edit these labels.",
+        editAndUploadToTrainingSetNotify2:
+            "We are adding this file to your training set, where you can edit the labels and re-train the model.",
         uploadInPrgoress: "Upload in progress...",
         analysis: "Analysis",
         runAnalysis: "Run analysis",
         confirmDuplicatedAssetName: {
             title: "Asset name exists",
-            message: "Asset with name '${name}' exists in project, override?"
-        }
+            message: "Asset with name '${name}' exists in project, override?",
+        },
     },
     pageRange: {
         title: "Page range:",
-        tooltip: "Specify page number or range of page numbers to process, e.g: 1, 5, 7, 9-10"
+        tooltip:
+            "Specify page number or range of page numbers to process, e.g: 1, 5, 7, 9-10",
     },
     prebuiltPredict: {
         title: "Prebuilt analyze",
@@ -257,7 +275,8 @@ export const english: IAppStrings = {
         analysis: "Analysis",
         runAnalysis: "Run analysis",
         noFieldCanBeExtracted: "No field can be extracted.",
-        pdfPageNumberLimit: 'Free Tier Form Recognizer resource processes only first 2 pages from PDF'
+        pdfPageNumberLimit:
+            "Free Tier Form Recognizer resource processes only first 2 pages from PDF",
     },
     prebuiltSetting: {
         serviceConfigurationTitle: "Service configuration",
@@ -265,7 +284,8 @@ export const english: IAppStrings = {
         apiKeyTitle: "API key",
         endpointTooltip: "e.g: https://xxx.cognitiveservices.azure.com/",
         endpointPlaceholder: "need endpoint",
-        apiKeyTooltip: "get key info from Azure Subscription Resource Keys & Endpoint page",
+        apiKeyTooltip:
+            "get key info from Azure Subscription Resource Keys & Endpoint page",
         apiKeyPlaceholder: "need apikey",
     },
     documentFilePicker: {
@@ -329,10 +349,13 @@ export const english: IAppStrings = {
             existingName: "Tag name already exists. Choose another name",
             emptyName: "Cannot have an empty tag name",
             unknownTagName: "Unknown",
-            notCompatibleTagType: "Tag type is not compatible with this feature. If you want to change type of this tag, please remove or reassign all labels which using this tag in your project.",
+            notCompatibleTagType:
+                "Tag type is not compatible with this feature. If you want to change type of this tag, please remove or reassign all labels which using this tag in your project.",
             checkboxPerTagLimit: "Cannot assign more than one checkbox per tag",
-            notCompatibleWithDrawnRegionTag: "Drawn regions and ${otherCategory} values cannot both be assigned to the same document's tag",
-            replaceAllExitingLabels: "Are you sure you want to replace selected tag's labels?",
+            notCompatibleWithDrawnRegionTag:
+                "Drawn regions and ${otherCategory} values cannot both be assigned to the same document's tag",
+            replaceAllExitingLabels:
+                "Are you sure you want to replace selected tag's labels?",
             replaceAllExitingLabelsTitle: "Replace tag's labels",
         },
         preText: {
@@ -344,35 +367,40 @@ export const english: IAppStrings = {
                 errors: {
                     atLeastOneColumn: "Please assign at least one column.",
                     atLeastOneRow: "Please assign at least one row.",
-                    checkFields: "Please check if you filled out all required fields correctly.",
+                    checkFields:
+                        "Please check if you filled out all required fields correctly.",
                     assignTagName: "Tag name cannot be empty",
                     notUniqueTagName: "Tag name should be unique",
                     emptyTagName: "Please assign name for your table tag.",
                     emptyName: "Name cannot be empty",
                     notUniqueName: "Name should be unique",
-                    notCompatibleTableColOrRowType: "${kind} type is not compatible with this type. If you want to change type of this ${kind} please remove or assign all labels which using this ${kind} in your project.",
-                }
+                    notCompatibleTableColOrRowType:
+                        "${kind} type is not compatible with this type. If you want to change type of this ${kind} please remove or assign all labels which using this ${kind} in your project.",
+                },
             },
             tableLabeling: {
                 title: "Label table",
                 tableName: "Table name",
                 description: {
                     title: "To start labeling your table:",
-                    stepOne: "Select the words on the document you want to label",
-                    stepTwo: "Click the table cell you want to label selected words to",
+                    stepOne:
+                        "Select the words on the document you want to label",
+                    stepTwo:
+                        "Click the table cell you want to label selected words to",
                 },
                 buttons: {
                     done: "Done",
                     reconfigureTable: "Reconfigure table",
-                    addRow: "Add row"
+                    addRow: "Add row",
                 },
             },
             confirm: {
                 reconfigure: {
                     title: "Reconfigure tag",
-                    message: "Are you sure you want to reconfigure this tag? \n It will be reconfigured for all documents.",
-                }
-            }
+                    message:
+                        "Are you sure you want to reconfigure this tag? \n It will be reconfigured for all documents.",
+                },
+            },
         },
         toolbar: {
             addTable: "Add new table tag",
@@ -401,15 +429,19 @@ export const english: IAppStrings = {
         instructions: "Please select a connection to edit",
         new: "New Connection",
         save: "Save Connection",
-        genericInvalid: "\"${project.sourceConnection.name}\" is an invalid connection. Please check it in the Connections page",
+        genericInvalid:
+            '"${project.sourceConnection.name}" is an invalid connection. Please check it in the Connections page',
         messages: {
             saveSuccess: "Successfully saved ${connection.name}",
             deleteSuccess: "Successfully deleted ${connection.name}",
-            doNotAllowDuplicateNames: "Connection with name \"${connection.name}\" already exists. Please, use another name"
+            doNotAllowDuplicateNames:
+                'Connection with name "${connection.name}" already exists. Please, use another name',
         },
-        imageCorsWarning: "Warning: When using VoTT in a Web browser, some assets from Bing Image \
+        imageCorsWarning:
+            "Warning: When using VoTT in a Web browser, some assets from Bing Image \
                           Search may not export correctly due to CORS (Cross Origin Resource Sharing) restrictions.",
-        blobCorsWarning: "Warning: CORS (Cross Domain Resource Sharing) must be enabled on the Azure Blob Storage \
+        blobCorsWarning:
+            "Warning: CORS (Cross Domain Resource Sharing) must be enabled on the Azure Blob Storage \
                           account, in order to use it as a source or target connection. More information on \
                           enabling CORS can be found in the {0}",
         azDocLinkText: "Azure Documentation.",
@@ -427,13 +459,16 @@ export const english: IAppStrings = {
                 },
                 sas: {
                     title: "SAS URI",
-                    description: "Shared access signature URI to the blob container",
+                    description:
+                        "Shared access signature URI to the blob container",
                 },
                 createContainer: {
                     title: "Create Container",
-                    description: "Creates the blob container if it does not already exist",
+                    description:
+                        "Creates the blob container if it does not already exist",
                 },
-                invalidSASMessage: "Please check if you have unexpired read/write/list/delete permission to blob container/blob.",
+                invalidSASMessage:
+                    "Please check if you have unexpired read/write/list/delete permission to blob container/blob.",
             },
             bing: {
                 title: "Bing Image Search",
@@ -454,7 +489,8 @@ export const english: IAppStrings = {
                 browse: "Browse",
                 selectFolder: "Select folder",
                 chooseFolder: "Choose folder",
-                invalidFolderMessage: "Connection [${project.sourceConnection.providerOptions.folderPath}] and/or project folder [${project.folderPath}] are invalid. Please check the specified folders in the Connection and Project Settings pages",
+                invalidFolderMessage:
+                    "Connection [${project.sourceConnection.providerOptions.folderPath}] and/or project folder [${project.folderPath}] are invalid. Please check the specified folders in the Connection and Project Settings pages",
             },
         },
     },
@@ -498,7 +534,7 @@ export const english: IAppStrings = {
             delete: {
                 title: "Delete document",
                 confirmation: "Are you sure you want to delete ",
-            }
+            },
         },
         help: {
             title: "Toggle Help Menu",
@@ -508,7 +544,8 @@ export const english: IAppStrings = {
             incorrectFileExtension: {
                 attention: "Attention!",
                 text: "- extension of this file doesn't correspond MIME type. Please check file:",
-                failedToFetch: "Failed to fetch ${fileName} for mime type validation",
+                failedToFetch:
+                    "Failed to fetch ${fileName} for mime type validation",
             },
         },
         assetError: "Unable to load asset",
@@ -519,11 +556,13 @@ export const english: IAppStrings = {
             },
             rename: {
                 title: "Rename Tag",
-                confirmation: "Are you sure you want to rename this tag? It will be renamed throughout all assets",
+                confirmation:
+                    "Are you sure you want to rename this tag? It will be renamed throughout all assets",
             },
             delete: {
                 title: "Delete Tag",
-                confirmation: "Are you sure you want to delete this tag? It will be deleted throughout all assets \
+                confirmation:
+                    "Are you sure you want to delete this tag? It will be deleted throughout all assets \
                 and any regions where this is the only tag will also be deleted",
             },
         },
@@ -541,7 +580,7 @@ export const english: IAppStrings = {
                             tables: "Tables",
                             selectionMarks: "Selection marks",
                             drawnRegions: "Drawn regions",
-                            labels: "Labels"
+                            labels: "Labels",
                         },
                     },
                     drawRegion: "Draw region",
@@ -558,31 +597,40 @@ export const english: IAppStrings = {
                     additionalActions: {
                         text: "Additional actions",
                         subIMenuItems: {
-                            runOcrOnCurrentDocument: "Run Layout on current document",
+                            runOcrOnCurrentDocument:
+                                "Run Layout on current document",
                             runOcrOnAllDocuments: "Run Layout on all documents",
-                            runAutoLabelingCurrentDocument: "Auto-label the current document",
-                            runAutoLabelingOnMultipleUnlabeledDocuments: "Auto-label multiple unlabeled documents",
-                            noPredictModelOnProject: "Predict model not available, please train the model first.",
-                            costWarningMessage: "This feature will incur usage to your account for custom analyze",
-                        }
-                    }
+                            runAutoLabelingCurrentDocument:
+                                "Auto-label the current document",
+                            runAutoLabelingOnMultipleUnlabeledDocuments:
+                                "Auto-label multiple unlabeled documents",
+                            noPredictModelOnProject:
+                                "Predict model not available, please train the model first.",
+                            costWarningMessage:
+                                "This feature will incur usage to your account for custom analyze",
+                        },
+                    },
                 },
                 warings: {
-                    drawRegionUnsupportedAPIVersion: "Region labeling is not supported with API ${apiVersion}. It will be supported with the release of v2.1",
-                }
-            }
+                    drawRegionUnsupportedAPIVersion:
+                        "Region labeling is not supported with API ${apiVersion}. It will be supported with the release of v2.1",
+                },
+            },
         },
         messages: {
             enforceTaggedRegions: {
                 title: "Invalid region(s) detected",
-                description: "1 or more regions have not been tagged.  Ensure all regions are tagged before \
+                description:
+                    "1 or more regions have not been tagged.  Ensure all regions are tagged before \
                     continuing to next asset.",
             },
         },
         warningMessage: {
-            PreventLeavingWhileRunningOCR: "An Layout operation is currently in progress, are you sure you want to leave?",
-            PreventLeavingRunningAutoLabeling: "Auto-labeling is currently in progress, are you sure you want to leave?",
-        }
+            PreventLeavingWhileRunningOCR:
+                "An Layout operation is currently in progress, are you sure you want to leave?",
+            PreventLeavingRunningAutoLabeling:
+                "Auto-labeling is currently in progress, are you sure you want to leave?",
+        },
     },
     profile: {
         settings: "Profile Settings",
@@ -627,7 +675,8 @@ export const english: IAppStrings = {
             },
             description: {
                 delete: "Remove selection and delete labels of selected words",
-                backSpace: "Remove selection and delete labels of selected words",
+                backSpace:
+                    "Remove selection and delete labels of selected words",
             },
         },
         drawnRegions: {
@@ -639,12 +688,13 @@ export const english: IAppStrings = {
             description: {
                 deleteSelectedDrawnRegions: "Delete selected drawn regions",
                 cancelDrawOrReshape: "Cancel drawing or reshaping of regions",
-            }
+            },
         },
         tips: {
             quickLabeling: {
                 name: "Label with hot keys",
-                description: "Hotkeys 1 through 0 and all letters are assigned to first 36 tags. After selecting one or multiple words, press tag's assigned hotkey.",
+                description:
+                    "Hotkeys 1 through 0 and all letters are assigned to first 36 tags. After selecting one or multiple words, press tag's assigned hotkey.",
             },
             renameTag: {
                 name: "Rename tag",
@@ -652,22 +702,25 @@ export const english: IAppStrings = {
             },
             multipleWordSelection: {
                 name: "Select multiple words by dragging pointer across words",
-                description: "Click and hold on a word. Then, hover over additional words with pointer.",
+                description:
+                    "Click and hold on a word. Then, hover over additional words with pointer.",
             },
             deleteAllLabelsForTag: {
                 name: "Delete all labels for a tag",
-                description: "Select all labels for a tag on document and press 'delete' key"
+                description:
+                    "Select all labels for a tag on document and press 'delete' key",
             },
             groupSelect: {
                 name: "Select multiple words by drawing a bounding box around encompassed words",
-                description: "Press and hold the shift key. Then, click and hold left mouse button. Then, drag the pointer to draw the bounding box around encompassed words"
-            }
+                description:
+                    "Press and hold the shift key. Then, click and hold left mouse button. Then, drag the pointer to draw the bounding box around encompassed words",
+            },
         },
         headers: {
             keyboardShortcuts: "Keyboard shortcuts",
             otherTips: "Other tips",
         },
-        iconTitle: "Keyboard shortcuts and useful tips"
+        iconTitle: "Keyboard shortcuts and useful tips",
     },
     errors: {
         unknown: {
@@ -681,7 +734,8 @@ export const english: IAppStrings = {
         },
         genericRenderError: {
             title: "Error Loading Application",
-            message: "An error occurred while rendering the application. Please try again",
+            message:
+                "An error occurred while rendering the application. Please try again",
         },
         projectInvalidSecurityToken: {
             title: "Error loading project file",
@@ -690,7 +744,8 @@ export const english: IAppStrings = {
         },
         projectInvalidJson: {
             title: "Error parsing project file",
-            message: "The selected project files does not contain valid JSON. Please check the file any try again.",
+            message:
+                "The selected project files does not contain valid JSON. Please check the file any try again.",
         },
         projectDeleteError: {
             title: "Error deleting project",
@@ -699,11 +754,13 @@ export const english: IAppStrings = {
         },
         projectDeleteErrorSecurityTokenNotFound: {
             title: "Security token not found when delete project",
-            message: "Security Token Not Found. Project [${project.name}] has been removed from FoTT tool."
+            message:
+                "Security Token Not Found. Project [${project.name}] has been removed from FoTT tool.",
         },
         projectNotFound: {
             title: "Error loading project",
-            message: "We couldn't find the project file ${file} at the target blob container ${container}.\
+            message:
+                "We couldn't find the project file ${file} at the target blob container ${container}.\
              The project file might have been removed from the container, \
              or the connection settings associated with this project might have changed to a new container where this project doesn't exist.",
         },
@@ -714,23 +771,28 @@ export const english: IAppStrings = {
         },
         canvasError: {
             title: "Error loading canvas",
-            message: "There was an error loading the canvas, check the project's assets and try again.",
+            message:
+                "There was an error loading the canvas, check the project's assets and try again.",
         },
         importError: {
             title: "Error importing V1 project",
-            message: "There was an error importing the V1 project. Check the project file and try again",
+            message:
+                "There was an error importing the V1 project. Check the project file and try again",
         },
         pasteRegionTooBigError: {
             title: "Error pasting region",
-            message: "Region too big for this asset. Try copying another region",
+            message:
+                "Region too big for this asset. Try copying another region",
         },
         exportFormatNotFound: {
             title: "Error exporting project",
-            message: "Project is missing export format.  Please select an export format in the export setting page.",
+            message:
+                "Project is missing export format.  Please select an export format in the export setting page.",
         },
         activeLearningPredictionError: {
             title: "Active Learning Error",
-            message: "An error occurred while predicting regions in the current asset. \
+            message:
+                "An error occurred while predicting regions in the current asset. \
                 Please verify your active learning configuration and try again",
         },
         blobContainerIONotFound: {
@@ -739,87 +801,106 @@ export const english: IAppStrings = {
         },
         blobContainerIOForbidden: {
             title: "Cannot access blob container/blob",
-            message: "Check if you have unexpired read/write/list/delete permission to blob container/blob.",
+            message:
+                "Check if you have unexpired read/write/list/delete permission to blob container/blob.",
         },
         projectDeleteForbidden: {
             title: "Error deleting project",
-            message: "Cannot remove ${file} from your Azure storage blob container due to missing delete permission in SAS URI.",
+            message:
+                "Cannot remove ${file} from your Azure storage blob container due to missing delete permission in SAS URI.",
         },
         projectDeleteNotFound: {
             title: "Error deleting project",
-            message: "Cannot find ${file} in your Azure storage blob container. Please check if it's already removed.",
+            message:
+                "Cannot find ${file} in your Azure storage blob container. Please check if it's already removed.",
         },
         predictWithoutTrainForbidden: {
             title: "Prediction Error",
-            message: "We couldn't find a trained model. Please go to the \"Train\" tab and ensure a model is trained.",
+            message:
+                'We couldn\'t find a trained model. Please go to the "Train" tab and ensure a model is trained.',
         },
         missingRequiredFieldInLabelFile: {
             title: "Error loading label file",
-            message: "Label visualization disabled. Please ensure that both 'document' and 'labels' fields exist and are not empty in label file ${labelFileName}.",
+            message:
+                "Label visualization disabled. Please ensure that both 'document' and 'labels' fields exist and are not empty in label file ${labelFileName}.",
         },
         noLabelInLabelFile: {
             title: "Error loading label file",
-            message: "Label visualization disabled. There are no labels in label file ${labelFileName}. This label file cannot be used for training. Consider adding labels for this document.",
+            message:
+                "Label visualization disabled. There are no labels in label file ${labelFileName}. This label file cannot be used for training. Consider adding labels for this document.",
         },
         duplicateFieldKeyInLabelsFile: {
             title: "Error loading label file",
-            message: "Label visualization disabled. There are duplicate label names in ${labelFileName}. Please correct your label file in Azure storage and ensure all names are unique when trimmed and converted to lower case.",
+            message:
+                "Label visualization disabled. There are duplicate label names in ${labelFileName}. Please correct your label file in Azure storage and ensure all names are unique when trimmed and converted to lower case.",
         },
         invalidJSONFormat: {
             title: "Error loading label file",
-            message: "Label visualization disabled. Invalid JSON format in ${labelFileName}. Please correct your label file in Azure storage.",
+            message:
+                "Label visualization disabled. Invalid JSON format in ${labelFileName}. Please correct your label file in Azure storage.",
         },
         sameLabelInDifferentPageError: {
             title: "Error loading label file",
-            message: "Label visualization disabled. There are cross-page regions with the same tag ${tagName}. Please correct your label file in Azure storage.",
+            message:
+                "Label visualization disabled. There are cross-page regions with the same tag ${tagName}. Please correct your label file in Azure storage.",
         },
         duplicateBoxInLabelFile: {
             title: "Error loading label file",
-            message: "Label visualization disabled. There are duplicate bounding boxes on page ${page}. Please correct your label file in Azure storage.",
+            message:
+                "Label visualization disabled. There are duplicate bounding boxes on page ${page}. Please correct your label file in Azure storage.",
         },
         endpointConnectionError: {
             title: "Error connecting to endpoint",
-            message: "Cannot connect to ${endpoint}. Please make sure the network connection is good and specified endpoint is correct.",
+            message:
+                "Cannot connect to ${endpoint}. Please make sure the network connection is good and specified endpoint is correct.",
         },
         tooManyRequests: {
             title: "Too many requests",
-            message: "We've got too many requests in a short period of time. Please try again later.",
+            message:
+                "We've got too many requests in a short period of time. Please try again later.",
         },
         modelCountLimitExceeded: {
             title: "Too many models",
-            message: "The number of models associated with the given API key has exceeded the maximum allowed value.",
+            message:
+                "The number of models associated with the given API key has exceeded the maximum allowed value.",
         },
         requestSendError: {
             title: "Request send error",
-            message: "Failed to send request to Azure Blob Container. Common issues: \n • SAS URI not valid \n • Cross-Origin Resource Sharing (CORS) is not configured server-side \n • Network error",
-
+            message:
+                "Failed to send request to Azure Blob Container. Common issues: \n • SAS URI not valid \n • Cross-Origin Resource Sharing (CORS) is not configured server-side \n • Network error",
         },
         modelNotFound: {
             title: "Model not found",
-            message: "Model \"${modelID}\" not found. Please use another model.",
+            message: 'Model "${modelID}" not found. Please use another model.',
         },
         connectionNotExistError: {
             title: "Connection doesn't exist",
-            message: "Connection doesn't exist."
+            message: "Connection doesn't exist.",
         },
         getOcrError: {
             title: "Cannot load OCR file",
-            message: "Failed to load from OCR file. Please check your connection or network settings.",
-        }
+            message:
+                "Failed to load from OCR file. Please check your connection or network settings.",
+        },
     },
     shareProject: {
         name: "Share Project",
         errors: {
-            cannotDecodeString: "Cannot decode shared token. Check if shared token has been modified.",
-            connectionNotFound: "Connection not found. Add shared project's connection to your connections.",
-            connectionRequirement: "Shared project's connection must be added before opening it",
-            tokenNameExist: "Warning! You already have token with same name as in shared project. Please create a new token, and update the existing project which uses ''${sharedTokenName}'' with new token name."
+            cannotDecodeString:
+                "Cannot decode shared token. Check if shared token has been modified.",
+            connectionNotFound:
+                "Connection not found. Add shared project's connection to your connections.",
+            connectionRequirement:
+                "Shared project's connection must be added before opening it",
+            tokenNameExist:
+                "Warning! You already have token with same name as in shared project. Please create a new token, and update the existing project which uses ''${sharedTokenName}'' with new token name.",
         },
         copy: {
-            success: "Project token copied to clipboard and ready to share. Receiver of project token can click 'Open Cloud Project' from the Home page to use shared token.",
-        }
+            success:
+                "Project token copied to clipboard and ready to share. Receiver of project token can click 'Open Cloud Project' from the Home page to use shared token.",
+        },
     },
-    appSurveyText: "Help us improve Form Recognizer. Take our survey!"
+    appSurveyText: "Help us improve Form Recognizer. Take our survey!",
 };
 
 /*eslint-enable no-template-curly-in-string, no-multi-str*/

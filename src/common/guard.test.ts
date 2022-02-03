@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import Guard from "./guard";
 
 describe("Guard", () => {
@@ -38,7 +35,9 @@ describe("Guard", () => {
         });
 
         it("throws specific error message", () => {
-            expect(() => methodWithRequiredNameWithParam(null)).toThrowError("Name is required");
+            expect(() => methodWithRequiredNameWithParam(null)).toThrowError(
+                "Name is required"
+            );
         });
     });
 

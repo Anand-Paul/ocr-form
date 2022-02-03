@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import Guard from "../guard";
 
 /**
@@ -12,7 +9,8 @@ import Guard from "../guard";
 export async function forEachAsync<T>(
     this: T[],
     action: (item: T) => Promise<void>,
-    batchSize: number = 5): Promise<void> {
+    batchSize: number = 5
+): Promise<void> {
     Guard.null(this);
     Guard.null(action);
     Guard.expression(batchSize, (value) => value > 0);
@@ -40,7 +38,8 @@ export async function forEachAsync<T>(
 export async function mapAsync<T, R>(
     this: T[],
     action: (item: T) => Promise<R>,
-    batchSize: number = 5): Promise<R[]> {
+    batchSize: number = 5
+): Promise<R[]> {
     Guard.null(this);
     Guard.null(action);
     Guard.expression(batchSize, (value) => value > 0);
@@ -73,10 +72,12 @@ export async function mapAsync<T, R>(
 export function containsDuplicates<T>(
     this: T[],
     keySelectorFn: (t: T) => string,
-    keyNormalizerFn?: (s: string) => string) {
+    keyNormalizerFn?: (s: string) => string
+) {
     Guard.null(this);
     Guard.null(keySelectorFn);
-    keyNormalizerFn = keyNormalizerFn || ((s: string) => s.trim().toLowerCase());
+    keyNormalizerFn =
+        keyNormalizerFn || ((s: string) => s.trim().toLowerCase());
     const set = new Set<string>();
     for (const t of this) {
         const originalStr = keySelectorFn(t);

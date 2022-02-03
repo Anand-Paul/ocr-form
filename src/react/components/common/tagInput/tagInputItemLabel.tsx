@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { ILabel, IFormRegion, ITag } from "../../../../models/applicationState";
 import { FontIcon } from "@fluentui/react";
@@ -12,13 +9,13 @@ export interface ITagInputItemLabelProps {
     isOrigin: boolean;
     onLabelEnter?: (label: ILabel) => void;
     onLabelLeave?: (label: ILabel) => void;
-    prefixText?: string
+    prefixText?: string;
 }
 
-export interface ITagInputItemLabelState { }
+export interface ITagInputItemLabelState {}
 
 export default function TagInputItemLabel(props: ITagInputItemLabelProps) {
-    const { label, onLabelEnter, onLabelLeave, value } = props
+    const { label, onLabelEnter, onLabelLeave, value } = props;
     const texts = [];
     let hasEmptyTextValue = false;
     value?.forEach((formRegion: IFormRegion, idx) => {
@@ -27,7 +24,7 @@ export default function TagInputItemLabel(props: ITagInputItemLabelProps) {
         } else {
             texts.push(formRegion.text);
         }
-    })
+    });
     const text = texts.join(" ");
 
     const handleMouseEnter = () => {
@@ -45,13 +42,20 @@ export default function TagInputItemLabel(props: ITagInputItemLabelProps) {
         <div
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className={[props.isOrigin ? "tag-item-label-origin" : "tag-item-label", "flex-center", "px-2"].join(" ")}
+            className={[
+                props.isOrigin ? "tag-item-label-origin" : "tag-item-label",
+                "flex-center",
+                "px-2",
+            ].join(" ")}
         >
             <div className="flex-center">
                 {text ? props.prefixText : undefined} {text}
-                {hasEmptyTextValue &&
-                    <FontIcon className="pr-1 pl-1" iconName="FieldNotChanged" />
-                }
+                {hasEmptyTextValue && (
+                    <FontIcon
+                        className="pr-1 pl-1"
+                        iconName="FieldNotChanged"
+                    />
+                )}
             </div>
         </div>
     );

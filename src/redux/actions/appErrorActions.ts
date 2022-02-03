@@ -1,9 +1,10 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { Dispatch, Action } from "redux";
 import { IAppError } from "../../models/applicationState";
-import { createPayloadAction, IPayloadAction, createAction } from "./actionCreators";
+import {
+    createPayloadAction,
+    IPayloadAction,
+    createAction,
+} from "./actionCreators";
 import { ActionTypes } from "./actionTypes";
 
 /**
@@ -55,10 +56,14 @@ export interface IClearErrorAction extends Action<string> {
 /**
  * Instance of show error action
  */
-export const showErrorAction = createPayloadAction<IShowAppErrorAction>(ActionTypes.SHOW_ERROR);
+export const showErrorAction = createPayloadAction<IShowAppErrorAction>(
+    ActionTypes.SHOW_ERROR
+);
 
 /**
  * Instance of clear error action
  * @type {() => Action<IClearErrorAction["type"]>}
  */
-export const clearErrorAction = createAction<IClearErrorAction>(ActionTypes.CLEAR_ERROR);
+export const clearErrorAction = createAction<IClearErrorAction>(
+    ActionTypes.CLEAR_ERROR
+);

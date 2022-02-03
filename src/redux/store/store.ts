@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { applyMiddleware, createStore, Store } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers";
@@ -15,18 +12,21 @@ import { Env } from "../../common/environment";
  */
 export default async function createReduxStore(
     initialState?: IApplicationState,
-    useLocalStorage: boolean = false): Promise<Store> {
-    const paths: string[] = ["appSettings", "connections", "recentProjects", "prebuiltSettings"];
+    useLocalStorage: boolean = false
+): Promise<Store> {
+    const paths: string[] = [
+        "appSettings",
+        "connections",
+        "recentProjects",
+        "prebuiltSettings",
+    ];
 
     let middlewares = [thunk];
 
     if (useLocalStorage) {
         const localStorage = require("../middleware/localStorage");
-        const storage = localStorage.createLocalStorage({paths});
-        middlewares = [
-            ...middlewares,
-            storage,
-        ];
+        const storage = localStorage.createLocalStorage({ paths });
+        middlewares = [...middlewares, storage];
     }
 
     if (Env.get() === "development") {
@@ -44,6 +44,6 @@ export default async function createReduxStore(
     return createStore(
         rootReducer,
         useLocalStorage ? mergedInitialState : initialState,
-        applyMiddleware(...middlewares),
+        applyMiddleware(...middlewares)
     );
 }

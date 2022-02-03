@@ -1,9 +1,13 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import _ from "lodash";
 import { reducer } from "./currentProjectReducer";
-import { IProject, IAssetMetadata, AssetState, ITag, FieldType, FieldFormat } from "../../models/applicationState";
+import {
+    IProject,
+    IAssetMetadata,
+    AssetState,
+    ITag,
+    FieldType,
+    FieldFormat,
+} from "../../models/applicationState";
 import MockFactory from "../../common/mockFactory";
 import {
     loadProjectAction,
@@ -47,7 +51,9 @@ describe("Current Project Reducer", () => {
     it("Updating connection not in use by current project performs noop", () => {
         const currentProject = MockFactory.createTestProject("1");
         const state: IProject = currentProject;
-        const unrelatedConnection = MockFactory.createTestConnection("Unrelated Connection");
+        const unrelatedConnection = MockFactory.createTestConnection(
+            "Unrelated Connection"
+        );
         const action = saveConnectionAction(unrelatedConnection);
         const result = reducer(state, action);
         expect(result).toEqual(currentProject);
@@ -84,7 +90,9 @@ describe("Current Project Reducer", () => {
         const testAssets = MockFactory.createTestAssets();
         state.assets = _.keyBy(testAssets, "id");
 
-        const assetMetadata = MockFactory.createTestAssetMetadata(testAssets[0]);
+        const assetMetadata = MockFactory.createTestAssetMetadata(
+            testAssets[0]
+        );
 
         const action = loadAssetMetadataAction(assetMetadata);
         const result = reducer(state, action);
@@ -130,16 +138,13 @@ describe("Current Project Reducer", () => {
 
         const assetMetadata = MockFactory.createTestAssetMetadata(
             testAssets[0],
-            [MockFactory.createTestRegion("Region 1", [expectedTag.name])],
+            [MockFactory.createTestRegion("Region 1", [expectedTag.name])]
         );
 
         const action = saveAssetMetadataAction(assetMetadata);
         const result = reducer(state, action);
         expect(result).not.toBe(state);
-        expect(result.tags).toEqual([
-            ...state.tags,
-            expectedTag,
-        ]);
+        expect(result.tags).toEqual([...state.tags, expectedTag]);
     });
 
     it("Unknown action performs a noop", () => {

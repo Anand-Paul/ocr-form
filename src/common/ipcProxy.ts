@@ -1,7 +1,4 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-export const IpcEventNames  = {
+export const IpcEventNames = {
     Renderer: "ipc-renderer-proxy",
     Main: "ipc-main-proxy",
 };

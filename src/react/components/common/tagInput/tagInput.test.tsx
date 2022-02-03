@@ -1,18 +1,20 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { ReactWrapper, mount } from "enzyme";
-import { TagInput, TagOperationMode, ITagInputProps, ITagInputState } from "./tagInput";
+import {
+    TagInput,
+    TagOperationMode,
+    ITagInputProps,
+    ITagInputState,
+} from "./tagInput";
 import MockFactory from "../../../../common/mockFactory";
 import { ITag } from "../../../../models/applicationState";
 import TagInputItem, { ITagInputItemProps } from "./tagInputItem";
 import { ColorPicker } from "../colorPicker";
 
 describe("Tag Input Component", () => {
-
-    function createComponent(props?: ITagInputProps):
-        ReactWrapper<ITagInputProps, ITagInputState> {
+    function createComponent(
+        props?: ITagInputProps
+    ): ReactWrapper<ITagInputProps, ITagInputState> {
         return mount(<TagInput {...(props || createProps())} />);
     }
 
@@ -39,7 +41,7 @@ describe("Tag Input Component", () => {
             selectedTableTagBody: null,
             splitPaneWidth: null,
             handleTableCellMouseEnter: null,
-            handleTableCellMouseLeave: null
+            handleTableCellMouseLeave: null,
         };
     }
 
@@ -55,14 +57,19 @@ describe("Tag Input Component", () => {
         const wrapper = createComponent(props);
         wrapper.find(".tag-color").first().simulate("click");
         expect(props.onTagClick).toBeCalledWith(props.tags[0]);
-        expect(wrapper.state().tagOperation === TagOperationMode.ColorPicker).toBe(true);
+        expect(
+            wrapper.state().tagOperation === TagOperationMode.ColorPicker
+        ).toBe(true);
         expect(props.onCtrlTagClick).not.toBeCalled();
     });
 
     it("Edits tag name when alt clicked", () => {
         const props = createProps();
         const wrapper = createComponent(props);
-        wrapper.find("div.tag-name-container").first().simulate("click", { altKey: true } );
+        wrapper
+            .find("div.tag-name-container")
+            .first()
+            .simulate("click", { altKey: true });
         expect(wrapper.state().selectedTag).toEqual(props.tags[0]);
         expect(wrapper.exists("input.tag-name-editor")).toBe(true);
     });
@@ -70,10 +77,17 @@ describe("Tag Input Component", () => {
     it("Edits tag color when alt clicked", () => {
         const props = createProps();
         const wrapper = createComponent(props);
-        expect(wrapper.state().tagOperation === TagOperationMode.None).toBe(false);
+        expect(wrapper.state().tagOperation === TagOperationMode.None).toBe(
+            false
+        );
         expect(wrapper.exists("div.color-picker-container")).toBe(false);
-        wrapper.find("div.tag-color").first().simulate("click", { altKey: true } );
-        expect(wrapper.state().tagOperation === TagOperationMode.ColorPicker).toBe(true);
+        wrapper
+            .find("div.tag-color")
+            .first()
+            .simulate("click", { altKey: true });
+        expect(
+            wrapper.state().tagOperation === TagOperationMode.ColorPicker
+        ).toBe(true);
         expect(wrapper.state().selectedTag).toEqual(props.tags[0]);
         expect(wrapper.exists("div.color-picker-container")).toBe(true);
         // Get color picker and call onEditColor function
@@ -96,14 +110,19 @@ describe("Tag Input Component", () => {
         const wrapper = createComponent(props);
         wrapper.find(".tag-color").first().simulate("click", { ctrlKey: true });
         expect(props.onCtrlTagClick).toBeCalledWith(props.tags[0]);
-        expect(wrapper.state().tagOperation === TagOperationMode.ColorPicker).toBe(true);
+        expect(
+            wrapper.state().tagOperation === TagOperationMode.ColorPicker
+        ).toBe(true);
         expect(props.onTagClick).not.toBeCalled();
     });
 
     it("Calls onClick handler when clicking text", () => {
         const props: ITagInputProps = createProps();
         const wrapper = createComponent(props);
-        wrapper.find(".tag-name-text").first().simulate("click", { ctrlKey: true });
+        wrapper
+            .find(".tag-name-text")
+            .first()
+            .simulate("click", { ctrlKey: true });
         expect(props.onCtrlTagClick).toBeCalledWith(props.tags[0]);
         expect(props.onTagClick).not.toBeCalled();
     });
@@ -115,7 +134,12 @@ describe("Tag Input Component", () => {
         };
         const wrapper = createComponent(props);
         const newTagName = "New Tag";
-        wrapper.find(".tag-input-box").simulate("keydown", { key: "Enter", target: { value: newTagName } } );
+        wrapper
+            .find(".tag-input-box")
+            .simulate("keydown", {
+                key: "Enter",
+                target: { value: newTagName },
+            });
         expect(props.onChange).toBeCalledWith([
             ...props.tags,
             {
@@ -152,7 +176,9 @@ describe("Tag Input Component", () => {
             expect(wrapper.exists(".tag-input-box")).toBe(true);
             expect(wrapper.state().addTags).toBe(true);
 
-            wrapper.find(".tag-input-box").simulate("keydown", { key: "Escape" });
+            wrapper
+                .find(".tag-input-box")
+                .simulate("keydown", { key: "Escape" });
             expect(wrapper.exists(".tag-input-box")).toBe(false);
             expect(wrapper.state().addTags).toBe(false);
         });
@@ -165,7 +191,9 @@ describe("Tag Input Component", () => {
             expect(wrapper.exists(".tag-search-box")).toBe(true);
             expect(wrapper.state().searchTags).toBe(true);
 
-            wrapper.find(".tag-search-box").simulate("keydown", { key: "Escape" });
+            wrapper
+                .find(".tag-search-box")
+                .simulate("keydown", { key: "Escape" });
             await MockFactory.flushUi();
             expect(wrapper.state().searchTags).toBe(false);
 
@@ -186,10 +214,14 @@ describe("Tag Input Component", () => {
             const tags = MockFactory.createTestTags();
             const props = createProps(tags);
             const wrapper = createComponent(props);
-            expect(wrapper.state().tagOperation === TagOperationMode.None).toBe(false);
+            expect(wrapper.state().tagOperation === TagOperationMode.None).toBe(
+                false
+            );
             expect(wrapper.exists("div.color-picker-container")).toBe(false);
             wrapper.find("div.tag-color").first().simulate("click");
-            expect(wrapper.state().tagOperation === TagOperationMode.ColorPicker).toBe(true);
+            expect(
+                wrapper.state().tagOperation === TagOperationMode.ColorPicker
+            ).toBe(true);
             wrapper.find("div.tag-input-toolbar-item.edit").simulate("click");
             expect(wrapper.state().selectedTag).toEqual(tags[0]);
             expect(wrapper.exists("div.color-picker-container")).toBe(true);
@@ -245,7 +277,9 @@ describe("Tag Input Component", () => {
             showTagInputBox: true,
         };
         const wrapper = createComponent(props);
-        wrapper.find(".tag-input-box").simulate("keydown", { key: "Enter", target: { value: "" } });
+        wrapper
+            .find(".tag-input-box")
+            .simulate("keydown", { key: "Enter", target: { value: "" } });
         expect(props.onChange).not.toBeCalled();
     });
 
@@ -255,7 +289,12 @@ describe("Tag Input Component", () => {
             showTagInputBox: true,
         };
         const wrapper = createComponent(props);
-        wrapper.find(".tag-input-box").simulate("keydown", { key: "Enter", target: { value: props.tags[0].name } });
+        wrapper
+            .find(".tag-input-box")
+            .simulate("keydown", {
+                key: "Enter",
+                target: { value: props.tags[0].name },
+            });
         expect(props.onChange).not.toBeCalled();
     });
 
@@ -293,12 +332,19 @@ describe("Tag Input Component", () => {
         const newTagName = "new tag name";
         const firstTag = tags[0];
         wrapper.find(".tag-content").first().simulate("click");
-        wrapper.find("input.tag-name-editor").simulate("keydown", { key: "Enter", target: { value: newTagName } });
+        wrapper
+            .find("input.tag-name-editor")
+            .simulate("keydown", {
+                key: "Enter",
+                target: { value: newTagName },
+            });
         const expectedTags = tags.map((t) => {
-            return (t.name === firstTag.name) ? {
-                name: newTagName,
-                color: firstTag.color,
-            } : t;
+            return t.name === firstTag.name
+                ? {
+                      name: newTagName,
+                      color: firstTag.color,
+                  }
+                : t;
         });
         expect(wrapper.state().tags).toEqual(expectedTags);
         expect(onChange).toBeCalledWith(expectedTags);
@@ -314,7 +360,9 @@ describe("Tag Input Component", () => {
         };
         const wrapper = createComponent(props);
         wrapper.find(".tag-content").first().simulate("click");
-        wrapper.find("input.tag-name-editor").simulate("keydown", { key: "Enter", target: { value: "" } });
+        wrapper
+            .find("input.tag-name-editor")
+            .simulate("keydown", { key: "Enter", target: { value: "" } });
         expect(wrapper.state().tags).toEqual(tags);
         expect(onChange).not.toBeCalled();
     });
@@ -329,7 +377,12 @@ describe("Tag Input Component", () => {
         };
         const wrapper = createComponent(props);
         wrapper.find(".tag-content").first().simulate("click");
-        wrapper.find("input.tag-name-editor").simulate("keydown", { key: "Enter", target: { value: tags[0].name } });
+        wrapper
+            .find("input.tag-name-editor")
+            .simulate("keydown", {
+                key: "Enter",
+                target: { value: tags[0].name },
+            });
         expect(wrapper.state().tags).toEqual(tags);
         expect(onChange).not.toBeCalled();
     });
@@ -344,7 +397,12 @@ describe("Tag Input Component", () => {
         };
         const wrapper = createComponent(props);
         wrapper.find(".tag-content").first().simulate("click");
-        wrapper.find("input.tag-name-editor").simulate("keydown", { key: "Enter", target: { value: tags[1].name } });
+        wrapper
+            .find("input.tag-name-editor")
+            .simulate("keydown", {
+                key: "Enter",
+                target: { value: tags[1].name },
+            });
         expect(wrapper.state().tags).toEqual(tags);
         expect(onChange).not.toBeCalled();
     });
@@ -369,7 +427,9 @@ describe("Tag Input Component", () => {
         };
         const wrapper = createComponent(props);
         expect(wrapper.find(".tag-item-block").length).toBeGreaterThan(1);
-        wrapper.find(".tag-search-box").simulate("change", { target: { value: "1" } });
+        wrapper
+            .find(".tag-search-box")
+            .simulate("change", { target: { value: "1" } });
         expect(wrapper.state().searchQuery).toEqual("1");
         expect(wrapper.find(".tag-item-block")).toHaveLength(1);
         expect(wrapper.find(".tag-name-body").first().text()).toEqual("Tag 1");
@@ -388,10 +448,14 @@ describe("Tag Input Component", () => {
             selectedRegions: [selectedRegion],
         });
 
-        const selectedTags = wrapper
-            .findWhere((el: ReactWrapper<ITagInputItemProps>) => {
-                return el.type() === TagInputItem && el.props().appliedToSelectedRegions;
-            });
+        const selectedTags = wrapper.findWhere(
+            (el: ReactWrapper<ITagInputItemProps>) => {
+                return (
+                    el.type() === TagInputItem &&
+                    el.props().appliedToSelectedRegions
+                );
+            }
+        );
 
         expect(wrapper.state().selectedTag).toBeNull();
         expect(selectedTags).toHaveLength(2);

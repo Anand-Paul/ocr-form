@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import ConnectionService, { IConnectionService } from "./connectionService";
 import { AssetProviderFactory } from "../providers/storage/assetProviderFactory";
 import MockFactory from "../common/mockFactory";

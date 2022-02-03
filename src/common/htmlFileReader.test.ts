@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import axios, { AxiosResponse } from "axios";
 import HtmlFileReader from "./htmlFileReader";
 import { AssetService } from "../services/assetService";
@@ -29,7 +26,9 @@ describe("Html File Reader", () => {
     });
 
     it("Loads attributes for an image asset", async () => {
-        const imageAsset = await AssetService.createAssetFromFilePath("https://server.com/image.jpg");
+        const imageAsset = await AssetService.createAssetFromFilePath(
+            "https://server.com/image.jpg"
+        );
         imageAsset.size = {
             width: 1920,
             height: 1080,
@@ -44,7 +43,9 @@ describe("Html File Reader", () => {
 
     describe("Download asset binaries", () => {
         it("Downloads a blob from the asset path", async () => {
-            const asset = await AssetService.createAssetFromFilePath("https://server.com/image.jpg");
+            const asset = await AssetService.createAssetFromFilePath(
+                "https://server.com/image.jpg"
+            );
             axios.get = jest.fn((url, config) => {
                 return Promise.resolve<AxiosResponse>({
                     config,
@@ -58,11 +59,15 @@ describe("Html File Reader", () => {
             const result = await HtmlFileReader.getAssetBlob(asset);
             expect(result).not.toBeNull();
             expect(result).toBeInstanceOf(Blob);
-            expect(axios.get).toBeCalledWith(asset.path, { responseType: "blob" });
+            expect(axios.get).toBeCalledWith(asset.path, {
+                responseType: "blob",
+            });
         });
 
         it("Rejects the promise when request receives non 200 result", async () => {
-            const asset = await AssetService.createAssetFromFilePath("https://server.com/image.jpg");
+            const asset = await AssetService.createAssetFromFilePath(
+                "https://server.com/image.jpg"
+            );
             axios.get = jest.fn((url, config) => {
                 return Promise.resolve<AxiosResponse>({
                     config,
@@ -73,8 +78,12 @@ describe("Html File Reader", () => {
                 });
             });
 
-            await expect(HtmlFileReader.getAssetBlob(asset)).rejects.not.toBeNull();
-            expect(axios.get).toBeCalledWith(asset.path, { responseType: "blob" });
+            await expect(
+                HtmlFileReader.getAssetBlob(asset)
+            ).rejects.not.toBeNull();
+            expect(axios.get).toBeCalledWith(asset.path, {
+                responseType: "blob",
+            });
         });
     });
 
@@ -92,17 +101,25 @@ describe("Html File Reader", () => {
         });
 
         it("Downloads a byte array from the asset path", async () => {
-            const asset = await AssetService.createAssetFromFilePath("https://server.com/image.jpg");
+            const asset = await AssetService.createAssetFromFilePath(
+                "https://server.com/image.jpg"
+            );
             const result = await HtmlFileReader.getAssetArray(asset);
             expect(result).not.toBeNull();
             expect(result).toBeInstanceOf(ArrayBuffer);
-            expect(axios.get).toBeCalledWith(asset.path, { responseType: "blob" });
+            expect(axios.get).toBeCalledWith(asset.path, {
+                responseType: "blob",
+            });
         });
 
         it("Test non valid asset type", async () => {
-            const imageAsset = await AssetService.createAssetFromFilePath("https://server.com/image.notsupported");
+            const imageAsset = await AssetService.createAssetFromFilePath(
+                "https://server.com/image.notsupported"
+            );
             try {
-                const result = await HtmlFileReader.readAssetAttributes(imageAsset);
+                const result = await HtmlFileReader.readAssetAttributes(
+                    imageAsset
+                );
             } catch (error) {
                 expect(error).toEqual(new Error("Asset not supported"));
             }

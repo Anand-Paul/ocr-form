@@ -1,14 +1,17 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import { appInfo } from "./appInfo"
+import { appInfo } from "./appInfo";
 
 const appVersion = appInfo.version;
 const enableAPIVersionSelection = appInfo.enableAPIVersionSelection;
 const enablePredictionResultUpload = appInfo.enablePredictionResultUpload;
 const apiVersion = "v2.1";
-const supportedFieldsSchemas = new Set(["http://www.azure.com/schema/formrecognizer/fields.json", "https://schema.cognitiveservices.azure.com/formrecognizer/2021-03-01/fields.json"]);
-const supportedLabelsSchemas = new Set(["http://www.azure.com/schema/formrecognizer/labels.json", "https://schema.cognitiveservices.azure.com/formrecognizer/2021-03-01/labels.json"]);
+const supportedFieldsSchemas = new Set([
+    "http://www.azure.com/schema/formrecognizer/fields.json",
+    "https://schema.cognitiveservices.azure.com/formrecognizer/2021-03-01/fields.json",
+]);
+const supportedLabelsSchemas = new Set([
+    "http://www.azure.com/schema/formrecognizer/labels.json",
+    "https://schema.cognitiveservices.azure.com/formrecognizer/2021-03-01/labels.json",
+]);
 
 /**
  * Constants used throughout application
@@ -42,8 +45,10 @@ export const constants = {
     autoLabelBatchSizeMax: 10,
     autoLabelBatchSizeMin: 3,
     showOriginLabelsByDefault: true,
-    fieldsSchema: "https://schema.cognitiveservices.azure.com/formrecognizer/2021-03-01/fields.json",
-    labelsSchema: "https://schema.cognitiveservices.azure.com/formrecognizer/2021-03-01/labels.json",
+    fieldsSchema:
+        "https://schema.cognitiveservices.azure.com/formrecognizer/2021-03-01/fields.json",
+    labelsSchema:
+        "https://schema.cognitiveservices.azure.com/formrecognizer/2021-03-01/labels.json",
     supportedFieldsSchemas,
     supportedLabelsSchemas,
     enableMultiPageField: false,
@@ -56,5 +61,5 @@ export const constants = {
     },
     insightsKey: "",
     prebuiltServiceVersion: "v2.1",
-    pages: "pages"
+    pages: "pages",
 };

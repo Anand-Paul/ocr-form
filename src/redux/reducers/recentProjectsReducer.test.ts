@@ -1,10 +1,10 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { reducer } from "./recentProjectsReducer";
 import { IProject } from "../../models/applicationState";
 import MockFactory from "../../common/mockFactory";
-import { saveProjectAction, deleteProjectAction } from "../actions/projectActions";
+import {
+    saveProjectAction,
+    deleteProjectAction,
+} from "../actions/projectActions";
 import { saveConnectionAction } from "../actions/connectionActions";
 import { anyOtherAction } from "../actions/actionCreators";
 

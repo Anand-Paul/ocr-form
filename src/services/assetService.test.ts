@@ -1,10 +1,16 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { AssetService } from "./assetService";
-import { AssetType, IAssetMetadata, AssetState, IAsset, IProject } from "../models/applicationState";
+import {
+    AssetType,
+    IAssetMetadata,
+    AssetState,
+    IAsset,
+    IProject,
+} from "../models/applicationState";
 import MockFactory from "../common/mockFactory";
-import { AssetProviderFactory, IAssetProvider } from "../providers/storage/assetProviderFactory";
+import {
+    AssetProviderFactory,
+    IAssetProvider,
+} from "../providers/storage/assetProviderFactory";
 import { StorageProviderFactory } from "../providers/storage/storageProviderFactory";
 import { encodeFileURI } from "../common/utils";
 import _ from "lodash";
@@ -83,7 +89,8 @@ describe("Asset Service", () => {
         beforeEach(() => {
             assetProviderMock = {
                 getAssets: () => Promise.resolve(testAssets),
-                getAsset:(folderPath: string, assetName: string) => Promise.resolve(testAssets[0]),
+                getAsset: (folderPath: string, assetName: string) =>
+                    Promise.resolve(testAssets[0]),
             };
 
             storageProviderMock = {
@@ -122,7 +129,9 @@ describe("Asset Service", () => {
         it("Loads the asset metadata from the asset when file does not exist", async () => {
             const expectedError = new Error("File not found");
 
-            storageProviderMock.writeText.mockImplementationOnce(() => { throw expectedError; });
+            storageProviderMock.writeText.mockImplementationOnce(() => {
+                throw expectedError;
+            });
 
             const asset = testAssets[0];
             const result = await assetService.getAssetMetadata(asset);
@@ -174,14 +183,15 @@ describe("Asset Service", () => {
             testAssets.push(testAsset);
 
             const result = await assetService.getAssets();
-            const expected = encodeFileURI("C:\\Desktop\\asset~!@#$&*()=:,;?+'.jpg");
+            const expected = encodeFileURI(
+                "C:\\Desktop\\asset~!@#$&*()=:,;?+'.jpg"
+            );
 
             expect(result[12].path).toEqual(expected);
         });
     });
 
     describe("Tag Update functions", () => {
-
         function populateProjectAssets(project?: IProject, assetCount = 10) {
             if (!project) {
                 project = MockFactory.createTestProject();
@@ -202,24 +212,28 @@ describe("Asset Service", () => {
         it("Deletes tag from assets", async () => {
             const tag1 = "tag1";
             const tag2 = "tag2";
-            const region = MockFactory.createTestRegion(undefined, [tag1, tag2]);
+            const region = MockFactory.createTestRegion(undefined, [
+                tag1,
+                tag2,
+            ]);
             const asset: IAsset = {
                 ...MockFactory.createTestAsset("1"),
                 state: AssetState.Tagged,
             };
-            const assetMetadata = MockFactory.createTestAssetMetadata(asset, [region]);
-            AssetService.prototype.getAssetMetadata = jest.fn((asset: IAsset) => Promise.resolve(assetMetadata));
+            const assetMetadata = MockFactory.createTestAssetMetadata(asset, [
+                region,
+            ]);
+            AssetService.prototype.getAssetMetadata = jest.fn((asset: IAsset) =>
+                Promise.resolve(assetMetadata)
+            );
 
             const expectedAssetMetadata: IAssetMetadata = {
-                ...MockFactory.createTestAssetMetadata(
-                    asset,
-                    [
-                        {
-                            ...region,
-                            tags: [tag2],
-                        },
-                    ],
-                ),
+                ...MockFactory.createTestAssetMetadata(asset, [
+                    {
+                        ...region,
+                        tags: [tag2],
+                    },
+                ]),
             };
 
             const project = populateProjectAssets();
@@ -236,10 +250,15 @@ describe("Asset Service", () => {
                 ...MockFactory.createTestAsset("1"),
                 state: AssetState.Tagged,
             };
-            const assetMetadata = MockFactory.createTestAssetMetadata(asset, [region]);
-            AssetService.prototype.getAssetMetadata = jest.fn((asset: IAsset) => Promise.resolve(assetMetadata));
+            const assetMetadata = MockFactory.createTestAssetMetadata(asset, [
+                region,
+            ]);
+            AssetService.prototype.getAssetMetadata = jest.fn((asset: IAsset) =>
+                Promise.resolve(assetMetadata)
+            );
 
-            const expectedAssetMetadata: IAssetMetadata = MockFactory.createTestAssetMetadata(asset, []);
+            const expectedAssetMetadata: IAssetMetadata =
+                MockFactory.createTestAssetMetadata(asset, []);
             const project = populateProjectAssets();
             const assetService = new AssetService(project);
             const assetUpdates = null;
@@ -256,19 +275,20 @@ describe("Asset Service", () => {
                 ...MockFactory.createTestAsset("1"),
                 state: AssetState.Tagged,
             };
-            const assetMetadata = MockFactory.createTestAssetMetadata(asset, [region]);
-            AssetService.prototype.getAssetMetadata = jest.fn((asset: IAsset) => Promise.resolve(assetMetadata));
+            const assetMetadata = MockFactory.createTestAssetMetadata(asset, [
+                region,
+            ]);
+            AssetService.prototype.getAssetMetadata = jest.fn((asset: IAsset) =>
+                Promise.resolve(assetMetadata)
+            );
 
             const expectedAssetMetadata: IAssetMetadata = {
-                ...MockFactory.createTestAssetMetadata(
-                    asset,
-                    [
-                        {
-                            ...region,
-                            tags: [newTag],
-                        },
-                    ],
-                ),
+                ...MockFactory.createTestAssetMetadata(asset, [
+                    {
+                        ...region,
+                        tags: [newTag],
+                    },
+                ]),
             };
 
             const project = populateProjectAssets();

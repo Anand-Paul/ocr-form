@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import createMockStore, { MockStoreEnhanced } from "redux-mock-store";
 import thunk from "redux-thunk";
 import * as applicationActions from "./applicationActions";
@@ -32,7 +29,9 @@ describe("Application Redux Actions", () => {
             ],
         };
 
-        const result = await applicationActions.saveAppSettings(appSettings)(store.dispatch);
+        const result = await applicationActions.saveAppSettings(appSettings)(
+            store.dispatch
+        );
         const actions = store.getActions();
 
         expect(actions.length).toEqual(1);
@@ -62,7 +61,9 @@ describe("Application Redux Actions", () => {
 
         const testProject = MockFactory.createTestProject("TestProject");
 
-        const result = await applicationActions.ensureSecurityToken(testProject)(store.dispatch, store.getState);
+        const result = await applicationActions.ensureSecurityToken(
+            testProject
+        )(store.dispatch, store.getState);
         const actions = store.getActions();
 
         expect(actions.length).toEqual(1);

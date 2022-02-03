@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import MockFactory from "../mockFactory";
 import registerMixins from "../../registerMixins";
 import { IAsset } from "../../models/applicationState";
@@ -13,7 +10,7 @@ describe("Array Extensions", () => {
     describe("forEachAsync", () => {
         const output = [];
 
-        beforeEach(() => output.length = 0);
+        beforeEach(() => (output.length = 0));
 
         const actionFunc = async (asset): Promise<void> => {
             return new Promise<void>((resolve) => {
@@ -25,7 +22,7 @@ describe("Array Extensions", () => {
         };
 
         const sortFunc = (a: IAsset, b: IAsset) => {
-            return a.id > b.id ? 1 : (b.id > a.id ? -1 : 0);
+            return a.id > b.id ? 1 : b.id > a.id ? -1 : 0;
         };
 
         it("processes items in a batches of default size", async () => {
@@ -43,7 +40,9 @@ describe("Array Extensions", () => {
         });
 
         it("fails when called with invalid batch size", async () => {
-            await expect(testArray.forEachAsync(() => null, 0)).rejects.not.toBeNull();
+            await expect(
+                testArray.forEachAsync(() => null, 0)
+            ).rejects.not.toBeNull();
         });
     });
 
@@ -71,7 +70,9 @@ describe("Array Extensions", () => {
         });
 
         it("fails when called with invalid batch size", async () => {
-            await expect(testArray.mapAsync(() => null, 0)).rejects.not.toBeNull();
+            await expect(
+                testArray.mapAsync(() => null, 0)
+            ).rejects.not.toBeNull();
         });
     });
 });

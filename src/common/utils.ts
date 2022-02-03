@@ -1,14 +1,19 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import Guard from "./guard";
-import { IProject, ISecurityToken, IProviderOptions, ISecureString, ITag, FieldType, FieldFormat } from "../models/applicationState";
+import {
+    IProject,
+    ISecurityToken,
+    IProviderOptions,
+    ISecureString,
+    ITag,
+    FieldType,
+    FieldFormat,
+} from "../models/applicationState";
 import { encryptObject, decryptObject, encrypt, decrypt } from "./crypto";
 import UTIF from "utif";
-import { useState, useEffect } from 'react';
-import {constants} from "./constants";
+import { useState, useEffect } from "react";
+import { constants } from "./constants";
 import _ from "lodash";
-import JsZip from 'jszip';
+import JsZip from "jszip";
 import { match, compile, pathToRegexp } from "path-to-regexp";
 
 // tslint:disable-next-line:no-var-requires
@@ -63,16 +68,19 @@ export function createQueryString(object: any): string {
     return parts.join("&");
 }
 
-export function encodeFileURI(path: string, additionalEncodings?: boolean): string {
+export function encodeFileURI(
+    path: string,
+    additionalEncodings?: boolean
+): string {
     // encodeURI() will not encode: ~!@#$&*()=:/,;?+'
     // extend it to support all of these except # and ?
     // all other non encoded characters are implicitly supported with no reason to encoding them
     const matchString = /(#|\?)/g;
     const encodings = {
         // eslint-disable-next-line
-        "\#": "%23",
+        "#": "%23",
         // eslint-disable-next-line
-        "\?": "%3F",
+        "?": "%3F",
     };
     const encodedURI = `file:${encodeURI(normalizeSlashes(path))}`;
     if (additionalEncodings) {
@@ -90,14 +98,19 @@ export function normalizeSlashes(path: string): string {
  * @param project The project to encrypt
  * @param securityToken The security token used to encrypt the project
  */
-export async function encryptProject(project: IProject, securityToken: ISecurityToken) {
+export async function encryptProject(
+    project: IProject,
+    securityToken: ISecurityToken
+) {
     const encrypted: IProject = {
         ...project,
         sourceConnection: { ...project.sourceConnection },
     };
 
-    encrypted.sourceConnection.providerOptions =
-        await encryptProviderOptions(project.sourceConnection.providerOptions, securityToken.key);
+    encrypted.sourceConnection.providerOptions = await encryptProviderOptions(
+        project.sourceConnection.providerOptions,
+        securityToken.key
+    );
 
     encrypted.apiKey = await encryptString(project.apiKey, securityToken.key);
 
@@ -109,21 +122,29 @@ export async function encryptProject(project: IProject, securityToken: ISecurity
  * @param project The project to decrypt
  * @param securityToken The security token used to decrypt the project
  */
-export async function decryptProject(project: IProject, securityToken: ISecurityToken) {
+export async function decryptProject(
+    project: IProject,
+    securityToken: ISecurityToken
+) {
     const decrypted: IProject = {
         ...project,
         sourceConnection: { ...project.sourceConnection },
     };
 
-    decrypted.sourceConnection.providerOptions =
-        await decryptProviderOptions(decrypted.sourceConnection.providerOptions, securityToken.key);
+    decrypted.sourceConnection.providerOptions = await decryptProviderOptions(
+        decrypted.sourceConnection.providerOptions,
+        securityToken.key
+    );
 
     decrypted.apiKey = await decryptString(project.apiKey, securityToken.key);
 
     return decrypted;
 }
 
-async function encryptProviderOptions(providerOptions: IProviderOptions | ISecureString, secret: string) {
+async function encryptProviderOptions(
+    providerOptions: IProviderOptions | ISecureString,
+    secret: string
+) {
     if (!providerOptions) {
         return null;
     }
@@ -139,13 +160,14 @@ async function encryptProviderOptions(providerOptions: IProviderOptions | ISecur
 
 async function decryptProviderOptions<T = IProviderOptions>(
     providerOptions: IProviderOptions | ISecureString,
-    secret: string) {
+    secret: string
+) {
     const secureString = providerOptions as ISecureString;
     if (!(secureString && secureString.encrypted)) {
         return providerOptions as T;
     }
 
-    return await decryptObject(providerOptions.encrypted, secret) as T;
+    return (await decryptObject(providerOptions.encrypted, secret)) as T;
 }
 
 async function encryptString(str: string | ISecureString, secret: string) {
@@ -169,10 +191,14 @@ async function decryptString(str: string | ISecureString, secret) {
         return str as string;
     }
 
-    return await decrypt(secureString.encrypted, secret) as string;
+    return (await decrypt(secureString.encrypted, secret)) as string;
 }
 
-export async function throttle<T>(max: number, arr: T[], worker: (payload: T) => Promise<any>) {
+export async function throttle<T>(
+    max: number,
+    arr: T[],
+    worker: (payload: T) => Promise<any>
+) {
     const allPromises: Promise<any>[] = [];
     const runningPromises: Promise<any>[] = [];
     let i = 0;
@@ -180,13 +206,15 @@ export async function throttle<T>(max: number, arr: T[], worker: (payload: T) =>
         const payload = arr[i];
         i++;
         const promise = worker(payload);
-        promise.then((result) => {
-            runningPromises.splice(runningPromises.indexOf(promise), 1);
-            return result;
-        }).catch((err) => {
-            runningPromises.splice(runningPromises.indexOf(promise), 1);
-            throw err;
-        });
+        promise
+            .then((result) => {
+                runningPromises.splice(runningPromises.indexOf(promise), 1);
+                return result;
+            })
+            .catch((err) => {
+                runningPromises.splice(runningPromises.indexOf(promise), 1);
+                throw err;
+            });
         runningPromises.push(promise);
         allPromises.push(promise);
 
@@ -228,7 +256,9 @@ export function renderTiffToCanvas(tiffImage): HTMLCanvasElement {
     return canvas;
 }
 
-export async function loadImageToCanvas(imageUrl: string): Promise<HTMLCanvasElement> {
+export async function loadImageToCanvas(
+    imageUrl: string
+): Promise<HTMLCanvasElement> {
     return new Promise((resolve, reject) => {
         const img: HTMLImageElement = document.createElement("img");
         img.onload = async () => {
@@ -241,19 +271,37 @@ export async function loadImageToCanvas(imageUrl: string): Promise<HTMLCanvasEle
     });
 }
 
-export function resizeCanvas(canvas: HTMLCanvasElement, maxWidth: number, maxHeight: number) {
-    const widthRatio = (canvas.width > maxWidth) ? maxWidth / canvas.width : 1;
-    const heightRatio = (canvas.height > maxHeight) ? maxHeight / canvas.height : 1;
+export function resizeCanvas(
+    canvas: HTMLCanvasElement,
+    maxWidth: number,
+    maxHeight: number
+) {
+    const widthRatio = canvas.width > maxWidth ? maxWidth / canvas.width : 1;
+    const heightRatio =
+        canvas.height > maxHeight ? maxHeight / canvas.height : 1;
     const ratio = Math.min(widthRatio, heightRatio);
     const canvasCopy = document.createElement("canvas");
     const copyContext = canvasCopy.getContext("2d");
     canvasCopy.width = canvas.width * ratio;
     canvasCopy.height = canvas.height * ratio;
-    copyContext.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, canvasCopy.width, canvasCopy.height);
+    copyContext.drawImage(
+        canvas,
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+        0,
+        0,
+        canvasCopy.width,
+        canvasCopy.height
+    );
     return canvasCopy;
 }
 
-export function renderRotatedImageToCanvas(image: HTMLImageElement, orientation: number): HTMLCanvasElement {
+export function renderRotatedImageToCanvas(
+    image: HTMLImageElement,
+    orientation: number
+): HTMLCanvasElement {
     const width = image.width;
     const height = image.height;
 
@@ -315,19 +363,27 @@ export function renderRotatedImageToCanvas(image: HTMLImageElement, orientation:
 }
 
 export function joinPath(seperator: string, ...paths: string[]) {
-    const leadingSeperator = (paths && paths[0] && paths[0][0] === seperator) ? seperator : "";
+    const leadingSeperator =
+        paths && paths[0] && paths[0][0] === seperator ? seperator : "";
     const joined = paths.join(seperator);
     const parts = joined.split(seperator);
-    const normalized = parts.filter((p) => p && p.trim() !== "").join(seperator);
+    const normalized = parts
+        .filter((p) => p && p.trim() !== "")
+        .join(seperator);
     return leadingSeperator + normalized;
 }
 
-export function patch<T, K extends keyof T>(data: T[], diff: T[], key: K, properties: K[]): T[] {
+export function patch<T, K extends keyof T>(
+    data: T[],
+    diff: T[],
+    key: K,
+    properties: K[]
+): T[] {
     return data.map((item) => {
         const change = diff.find((i) => i[key] === item[key]);
         if (change) {
-            const update = {...item};
-            properties.forEach((p) => update[p] = change[p]);
+            const update = { ...item };
+            properties.forEach((p) => (update[p] = change[p]));
             return update;
         }
         return item;
@@ -352,17 +408,15 @@ export function getNextColor(tags: ITag[]): string {
     return tagColors[randomIntInRange(0, tagColors.length - 1)];
 }
 
-export function getSasFolderString(sas:string): string {
-    return sas.substr(0, sas.indexOf("?"))
+export function getSasFolderString(sas: string): string {
+    return sas.substr(0, sas.indexOf("?"));
 }
-
 
 export function fixedEncodeURIComponent(str: string) {
     return encodeURIComponent(str).replace(/[!'()*]/g, (c) => {
-      return '%' + c.charCodeAt(0).toString(16)
-    })
+        return "%" + c.charCodeAt(0).toString(16);
+    });
 }
-
 
 /**
  * Filters tag's format according to chosen tag's type
@@ -378,10 +432,7 @@ export function filterFormat(type: FieldType | string): any[] {
                 FieldFormat.NoWhiteSpaces,
             ];
         case FieldType.Number:
-            return [
-                FieldFormat.NotSpecified,
-                FieldFormat.Currency,
-            ];
+            return [FieldFormat.NotSpecified, FieldFormat.Currency];
         case FieldType.Date:
             return [
                 FieldFormat.NotSpecified,
@@ -391,11 +442,9 @@ export function filterFormat(type: FieldType | string): any[] {
             ];
         case FieldType.Object:
         case FieldType.Array:
-            return [
-                FieldFormat.NotSpecified,
-            ];
+            return [FieldFormat.NotSpecified];
         default:
-            return [ FieldFormat.NotSpecified ];
+            return [FieldFormat.NotSpecified];
     }
 }
 
@@ -405,26 +454,24 @@ export function filterFormat(type: FieldType | string): any[] {
  * @param delay - delay after which the change will be registered in milliseconds
  */
 export function useDebounce(value: any, delay: number) {
-        const [debouncedValue, setDebouncedValue] = useState(value);
-        useEffect(
-          () => {
-            // Update debounced value after delay
-            const delayHandler = setTimeout(() => {
-              setDebouncedValue(value);
-            }, delay);
-            // cleanup
-            return () => {
-              clearTimeout(delayHandler);
-            };
-          },
-          [value, delay]
-        );
-        return debouncedValue;
-      }
-export function getAPIVersion(projectAPIVersion: string): string {
-    return (constants.enableAPIVersionSelection && projectAPIVersion) ? projectAPIVersion : constants.apiVersion;
+    const [debouncedValue, setDebouncedValue] = useState(value);
+    useEffect(() => {
+        // Update debounced value after delay
+        const delayHandler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+        // cleanup
+        return () => {
+            clearTimeout(delayHandler);
+        };
+    }, [value, delay]);
+    return debouncedValue;
 }
-
+export function getAPIVersion(projectAPIVersion: string): string {
+    return constants.enableAPIVersionSelection && projectAPIVersion
+        ? projectAPIVersion
+        : constants.apiVersion;
+}
 
 /**
  * Poll function to repeatly check if request succeeded
@@ -439,13 +486,22 @@ export function poll(func, timeout, interval): Promise<any> {
     const checkSucceeded = (resolve, reject) => {
         const ajax = func();
         ajax.then((response) => {
-            if (response.data.status.toLowerCase() === constants.statusCodeSucceeded) {
+            if (
+                response.data.status.toLowerCase() ===
+                constants.statusCodeSucceeded
+            ) {
                 resolve(response.data);
-            } else if (response.data.status.toLowerCase() === constants.statusCodeFailed) {
-                reject(_.get(
-                    response,
-                    "data.analyzeResult.errors[0].errorMessage",
-                    "Generic error during prediction"));
+            } else if (
+                response.data.status.toLowerCase() ===
+                constants.statusCodeFailed
+            ) {
+                reject(
+                    _.get(
+                        response,
+                        "data.analyzeResult.errors[0].errorMessage",
+                        "Generic error during prediction"
+                    )
+                );
             } else if (Number(new Date()) < endTime) {
                 // If the request isn't succeeded and the timeout hasn't elapsed, go again
                 setTimeout(checkSucceeded, interval, resolve, reject);
@@ -465,10 +521,14 @@ export function poll(func, timeout, interval): Promise<any> {
  * @param fileName
  * @param prefix
  */
-export function downloadFile(data: any, fileName: string, prefix?: string): void {
+export function downloadFile(
+    data: any,
+    fileName: string,
+    prefix?: string
+): void {
     const fileURL = window.URL.createObjectURL(new Blob([data]));
     const fileLink = document.createElement("a");
-    const downloadFileName = prefix + "Result-" + fileName ;
+    const downloadFileName = prefix + "Result-" + fileName;
 
     fileLink.href = fileURL;
     fileLink.setAttribute("download", downloadFileName);
@@ -476,15 +536,15 @@ export function downloadFile(data: any, fileName: string, prefix?: string): void
     fileLink.click();
 }
 
-export function  getTagCategory (tagType: string) {
+export function getTagCategory(tagType: string) {
     switch (tagType) {
         case FieldType.SelectionMark:
         case "checkbox":
             return "checkbox";
-            case FieldType.Object:
-                return FieldType.Object;
-            case FieldType.Array:
-                return FieldType.Array;
+        case FieldType.Object:
+            return FieldType.Object;
+        case FieldType.Array:
+            return FieldType.Array;
         default:
             return "text";
     }
@@ -493,52 +553,66 @@ export function  getTagCategory (tagType: string) {
 export type zipData = {
     fileName: string;
     data: any;
-}
+};
 
 export function downloadZipFile(data: zipData[], fileName: string): void {
     const zip = new JsZip();
-    data.forEach(item => {
+    data.forEach((item) => {
         zip.file(item.fileName, item.data);
-    })
-    zip.generateAsync({type: "blob"}).then(content => {
+    });
+    zip.generateAsync({ type: "blob" }).then((content) => {
         const fileLink = document.createElement("a");
         fileLink.href = window.URL.createObjectURL(content);
-        fileLink.setAttribute("download", fileName+".zip");
+        fileLink.setAttribute("download", fileName + ".zip");
         document.body.appendChild(fileLink);
         fileLink.click();
     });
 }
 
 export class URIUtils {
-
     public static normalizePath(path: string): string {
         return "/" + path.replace(/(\r\n|\n|\r)/gm, "").replace(/^\/+/, "");
     }
 
     public static matchPath(pathTemplate: string, path: string): object {
         const matcher = match(pathTemplate, { decode: decodeURIComponent });
-        const result = matcher(path)
+        const result = matcher(path);
         return (result && result.params) || {};
     }
 
-    public static compilePath(pathTemplate: string, params: object, defaultPathParams: object): string {
+    public static compilePath(
+        pathTemplate: string,
+        params: object,
+        defaultPathParams: object
+    ): string {
         /* Add required default key, value pairs for the "toPath" function into a cloned params object. */
-        const withDefaultParams = (pathTemplate: string, params: object, defaultPathParams: object): object => {
+        const withDefaultParams = (
+            pathTemplate: string,
+            params: object,
+            defaultPathParams: object
+        ): object => {
             const requiredKeys = [];
-            const retParams = {...params};
+            const retParams = { ...params };
             pathToRegexp(pathTemplate, requiredKeys);
             for (const { name } of requiredKeys) {
                 if (!retParams.hasOwnProperty(name)) {
-                    retParams[name] = defaultPathParams.hasOwnProperty(name) ? defaultPathParams[name] : "";
+                    retParams[name] = defaultPathParams.hasOwnProperty(name)
+                        ? defaultPathParams[name]
+                        : "";
                 }
             }
             return retParams;
-        }
+        };
         const toPath = compile(pathTemplate, { encode: encodeURIComponent });
-        return toPath(withDefaultParams(pathTemplate, params, defaultPathParams));
+        return toPath(
+            withDefaultParams(pathTemplate, params, defaultPathParams)
+        );
     }
 
-    public static composeQueryString(params: object, blacklist = new Set<string>()) {
+    public static composeQueryString(
+        params: object,
+        blacklist = new Set<string>()
+    ) {
         const kvList = [];
         const connector = "&";
         for (const [key, value] of Object.entries(params)) {
@@ -551,7 +625,7 @@ export class URIUtils {
 
     public static matchQueryString(queryString: string) {
         const params = {};
-        queryString.split("&").forEach(s => {
+        queryString.split("&").forEach((s) => {
             const [key, value] = s.split("=");
             params[key] = value;
         });
@@ -566,7 +640,9 @@ export function fillTagsColor(project: IProject): IProject {
         ...project,
         tags: project.tags.map((tag: ITag) => ({
             ...tag,
-            color: supportedColors.has(tag.color) ? tag.color : getNextColor(project.tags)
-        }))
-    }
+            color: supportedColors.has(tag.color)
+                ? tag.color
+                : getNextColor(project.tags),
+        })),
+    };
 }

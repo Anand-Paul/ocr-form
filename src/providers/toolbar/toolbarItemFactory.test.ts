@@ -1,9 +1,13 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { ToolbarItemFactory } from "./toolbarItemFactory";
-import { IToolbarItemMetadata, ToolbarItemType, ToolbarItem } from "../../react/components/toolbar/toolbarItem";
-import registerToolbar, { ToolbarItemName, ToolbarItemGroup } from "../../registerToolbar";
+import {
+    IToolbarItemMetadata,
+    ToolbarItemType,
+    ToolbarItem,
+} from "../../react/components/toolbar/toolbarItem";
+import registerToolbar, {
+    ToolbarItemName,
+    ToolbarItemGroup,
+} from "../../registerToolbar";
 
 class TestToolbarItem extends ToolbarItem {
     protected onItemClick() {
@@ -33,8 +37,12 @@ describe("Toolbar Item Factory", () => {
 
     it("Registering a toolbar item with invalid values throws an exception", () => {
         expect(() => ToolbarItemFactory.register(null, null)).toThrowError();
-        expect(() => ToolbarItemFactory.register(null, TestToolbarItem)).toThrowError();
-        expect(() => ToolbarItemFactory.register(testToolbarItemConfig, null)).toThrowError();
+        expect(() =>
+            ToolbarItemFactory.register(null, TestToolbarItem)
+        ).toThrowError();
+        expect(() =>
+            ToolbarItemFactory.register(testToolbarItemConfig, null)
+        ).toThrowError();
     });
 
     it("Calling 'getToolbarItems' returns a copy of the component registry", () => {

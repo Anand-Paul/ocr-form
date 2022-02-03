@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import App from "./App";
 import { Provider } from "react-redux";
@@ -20,7 +17,7 @@ describe("App Component", () => {
         return mount(
             <Provider store={store}>
                 <App />
-            </Provider>,
+            </Provider>
         );
     }
 

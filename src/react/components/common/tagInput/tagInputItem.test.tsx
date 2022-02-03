@@ -1,13 +1,9 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import TagInputItem, { ITagInputItemProps } from "./tagInputItem";
 import MockFactory from "../../../../common/mockFactory";
 import { mount } from "enzyme";
 
 describe("Tag Input Item", () => {
-
     function createProps(): ITagInputItemProps {
         return {
             tag: MockFactory.createTestTag(),
@@ -23,7 +19,7 @@ describe("Tag Input Item", () => {
             onLabelLeave: jest.fn(),
             handleLabelTable: null,
             addRowToDynamicTable: null,
-            showOriginLabels:false,
+            showOriginLabels: false,
         };
     }
 
@@ -31,9 +27,7 @@ describe("Tag Input Item", () => {
         if (!props) {
             props = createProps();
         }
-        return mount(
-            <TagInputItem {...props} />,
-        );
+        return mount(<TagInputItem {...props} />);
     }
 
     it("Renders correctly", () => {
@@ -47,21 +41,27 @@ describe("Tag Input Item", () => {
         const props = createProps();
         const wrapper = createComponent(props);
         wrapper.find(".tag-color").simulate("click");
-        expect(props.onClick).toBeCalledWith(props.tag, {clickedColor: true});
+        expect(props.onClick).toBeCalledWith(props.tag, { clickedColor: true });
     });
 
     it("Ctrl Clicking color calls onClickHandler", () => {
         const props = createProps();
         const wrapper = createComponent(props);
-        wrapper.find(".tag-color").simulate("click", {ctrlKey: true});
-        expect(props.onClick).toBeCalledWith(props.tag, {ctrlKey: true, clickedColor: true});
+        wrapper.find(".tag-color").simulate("click", { ctrlKey: true });
+        expect(props.onClick).toBeCalledWith(props.tag, {
+            ctrlKey: true,
+            clickedColor: true,
+        });
     });
 
     it("Alt Clicking color calls onClickHandler", () => {
         const props = createProps();
         const wrapper = createComponent(props);
-        wrapper.find(".tag-color").simulate("click", {altKey: true});
-        expect(props.onClick).toBeCalledWith(props.tag, {altKey: true, clickedColor: true});
+        wrapper.find(".tag-color").simulate("click", { altKey: true });
+        expect(props.onClick).toBeCalledWith(props.tag, {
+            altKey: true,
+            clickedColor: true,
+        });
     });
 
     it("Clicking text calls onClickHandler", () => {
@@ -74,14 +74,20 @@ describe("Tag Input Item", () => {
     it("Ctrl Clicking text calls onClickHandler", () => {
         const props = createProps();
         const wrapper = createComponent(props);
-        wrapper.find(".tag-content").simulate("click", {ctrlKey: true});
-        expect(props.onClick).toBeCalledWith(props.tag, {ctrlKey: true, altKey: undefined});
+        wrapper.find(".tag-content").simulate("click", { ctrlKey: true });
+        expect(props.onClick).toBeCalledWith(props.tag, {
+            ctrlKey: true,
+            altKey: undefined,
+        });
     });
 
     it("Alt Clicking text calls onClickHandler", () => {
         const props = createProps();
         const wrapper = createComponent(props);
-        wrapper.find(".tag-content").simulate("click", {altKey: true});
-        expect(props.onClick).toBeCalledWith(props.tag, {ctrlKey: undefined, altKey: true});
+        wrapper.find(".tag-content").simulate("click", { altKey: true });
+        expect(props.onClick).toBeCalledWith(props.tag, {
+            ctrlKey: undefined,
+            altKey: true,
+        });
     });
 });

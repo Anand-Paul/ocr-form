@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 // tslint:disable-next-line:no-var-requires
 const packageJson = require("../../package.json");
 // tslint:disable-next-line:no-var-requires
@@ -24,4 +21,8 @@ export interface IAppInfo {
 /**
  * Gets current application info
  */
-export const appInfo = { ...packageJson, enableAPIVersionSelection: appConfig["enableAPIVersionSelection"], enablePredictionResultUpload: appConfig["enablePredictionResultUpload"] } as IAppInfo;
+export const appInfo = {
+    ...packageJson,
+    enableAPIVersionSelection: appConfig["enableAPIVersionSelection"],
+    enablePredictionResultUpload: appConfig["enablePredictionResultUpload"],
+} as IAppInfo;

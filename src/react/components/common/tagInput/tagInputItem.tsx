@@ -1,11 +1,15 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { FontIcon, IconButton } from "@fluentui/react";
 import _ from "lodash";
 import React, { Fragment, MouseEvent } from "react";
 import { strings } from "../../../../common/strings";
-import { FieldFormat, FieldType, ILabel, ITableLabel, ITag, TagInputMode } from "../../../../models/applicationState";
+import {
+    FieldFormat,
+    FieldType,
+    ILabel,
+    ITableLabel,
+    ITag,
+    TagInputMode,
+} from "../../../../models/applicationState";
 import { tagIndexKeys } from "./tagIndexKeys";
 import TagInputItemLabel from "./tagInputItemLabel";
 
@@ -40,11 +44,18 @@ export interface ITagInputItemProps {
     /** Function to call upon clicking item */
     onClick: (tag: ITag, props: ITagClickProps) => void;
     /** Apply new name to tag */
-    onRename: (oldTag: ITag, newName: string, cancelCallback: () => void) => void;
+    onRename: (
+        oldTag: ITag,
+        newName: string,
+        cancelCallback: () => void
+    ) => void;
     onLabelEnter: (label: ILabel | ITableLabel) => void;
     onLabelLeave: (label: ILabel) => void;
     onTagChanged?: (oldTag: ITag, newTag: ITag) => void;
-    handleLabelTable: (tagInputMode: TagInputMode, selectedTableTagToLabel) => void;
+    handleLabelTable: (
+        tagInputMode: TagInputMode,
+        selectedTableTagToLabel
+    ) => void;
     addRowToDynamicTable: () => void;
     onTagDoubleClick?: (label: ILabel) => void;
 }
@@ -57,8 +68,10 @@ export interface ITagInputItemState {
     isLocked: boolean;
 }
 
-export default class TagInputItem extends React.Component<ITagInputItemProps, ITagInputItemState> {
-
+export default class TagInputItem extends React.Component<
+    ITagInputItemProps,
+    ITagInputItemState
+> {
     public state: ITagInputItemState = {
         isRenaming: false,
         isLocked: false,
@@ -69,13 +82,16 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
 
     public componentDidUpdate(prevProps: ITagInputItemProps) {
         if (prevProps.isRenaming !== this.props.isRenaming) {
-            this.setState({
-                isRenaming: this.props.isRenaming,
-            }, () => {
-                if (this.props.isRenaming) {
-                    this.inputElement.focus();
+            this.setState(
+                {
+                    isRenaming: this.props.isRenaming,
+                },
+                () => {
+                    if (this.props.isRenaming) {
+                        this.inputElement.focus();
+                    }
                 }
-            });
+            );
         }
 
         if (prevProps.isLocked !== this.props.isLocked) {
@@ -94,27 +110,25 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
                 <div
                     className={"tag-color"}
                     style={style}
-                    onClick={this.onColorClick}>
-                </div>
+                    onClick={this.onColorClick}
+                ></div>
                 <div className={"tag-item-block-2"}>
-                    {
-                        this.props.tag &&
+                    {this.props.tag && (
                         <div
                             ref={this.itemRef}
                             className={this.getItemClassName()}
-                            style={style}>
+                            style={style}
+                        >
                             <div
                                 className={"tag-content pr-2"}
                                 onDoubleClick={this.onNameDoubleClick}
-                                onClick={this.onNameClick}>
+                                onClick={this.onNameClick}
+                            >
                                 {this.getTagContent()}
                             </div>
-                            {
-                                this.state.isLocked &&
-                                <div></div>
-                            }
+                            {this.state.isLocked && <div></div>}
                         </div>
-                    }
+                    )}
                     {this.renderTagDetail()}
                 </div>
             </div>
@@ -130,13 +144,15 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
 
         const clickedDropDown = true;
         this.props.onClick(this.props.tag, { clickedDropDown });
-    }
+    };
 
-    private handleContextMenu = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+    private handleContextMenu = (
+        e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+    ) => {
         e.preventDefault();
         const clickedDropDown = true;
         this.props.onClick(this.props.tag, { clickedDropDown });
-    }
+    };
 
     private onColorClick = (e: MouseEvent) => {
         e.stopPropagation();
@@ -145,7 +161,7 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
         const altKey = e.altKey;
         const clickedColor = true;
         this.props.onClick(this.props.tag, { ctrlKey, altKey, clickedColor });
-    }
+    };
 
     private onNameClick = (e: MouseEvent) => {
         e.stopPropagation();
@@ -153,7 +169,7 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
         const ctrlKey = e.ctrlKey || e.metaKey;
         const altKey = e.altKey;
         this.props.onClick(this.props.tag, { ctrlKey, altKey });
-    }
+    };
 
     private onNameDoubleClick = (e: MouseEvent) => {
         e.stopPropagation();
@@ -161,7 +177,7 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
         if (labels.length > 0) {
             this.props.onTagDoubleClick(labels[0]);
         }
-    }
+    };
 
     private getItemClassName = () => {
         const classNames = ["tag-item"];
@@ -172,127 +188,153 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
             classNames.push("tag-item-applied");
         }
         return classNames.join(" ");
-    }
+    };
 
     private getTagContent = () => {
         const displayIndex = this.getDisplayIndex();
         return (
-            <div className={"tag-name-container"}
+            <div
+                className={"tag-name-container"}
                 onContextMenu={this.handleContextMenu}
                 onMouseEnter={this.handleMouseEnter}
-                onMouseLeave={this.handleMouseLeave}>
-                {
-                    (this.isTypeOrFormatSpecified()) &&
+                onMouseLeave={this.handleMouseLeave}
+            >
+                {this.isTypeOrFormatSpecified() && (
                     <FontIcon iconName="Link" className="pl-1" />
-                }
+                )}
                 <div className="tag-name-body">
-                    {
-                        this.state.isRenaming
-                            ?
-                            <input
-                                ref={this.onInputRef}
-                                className={`tag-name-editor ${this.getContentClassName()}`}
-                                type="text"
-                                defaultValue={this.props.tag.name}
-                                onKeyDown={(e) => this.onInputKeyDown(e)}
-                                onBlur={this.onInputBlur}
-                                autoFocus={true}
-                            />
-                            :
-                            <span title={this.props.tag.name} className={this.getContentClassName()}>
-                                {this.props.tag.name}
-                            </span>
-                    }
+                    {this.state.isRenaming ? (
+                        <input
+                            ref={this.onInputRef}
+                            className={`tag-name-editor ${this.getContentClassName()}`}
+                            type="text"
+                            defaultValue={this.props.tag.name}
+                            onKeyDown={(e) => this.onInputKeyDown(e)}
+                            onBlur={this.onInputBlur}
+                            autoFocus={true}
+                        />
+                    ) : (
+                        <span
+                            title={this.props.tag.name}
+                            className={this.getContentClassName()}
+                        >
+                            {this.props.tag.name}
+                        </span>
+                    )}
                 </div>
                 <div className={"tag-icons-container"}>
-                    {(displayIndex !== null)
-                        ?
-                        <span className="tag-index-span border border-white rounded-sm ">{displayIndex}</span>
-                        :
+                    {displayIndex !== null ? (
+                        <span className="tag-index-span border border-white rounded-sm ">
+                            {displayIndex}
+                        </span>
+                    ) : (
                         <span className="tag-index-span"></span>
-                    }
+                    )}
                     <IconButton
                         title={strings.tags.toolbar.contextualMenu}
                         ariaLabel={strings.tags.toolbar.contextualMenu}
                         className="tag-input-toolbar-iconbutton ml-2"
                         iconProps={{ iconName: "ChevronDown" }}
-                        onClick={this.onDropdownClick} />
+                        onClick={this.onDropdownClick}
+                    />
                 </div>
             </div>
         );
-    }
+    };
 
     private renderTagDetail = () => {
-        if (this.props.tag.type === FieldType.Object || this.props.tag.type === FieldType.Array) {
+        if (
+            this.props.tag.type === FieldType.Object ||
+            this.props.tag.type === FieldType.Array
+        ) {
             return (
                 <div
                     className={"tag-item-label px-2"}
                     onClick={() => {
-                        this.props.handleLabelTable(TagInputMode.LabelTable, this.props.tag);
+                        this.props.handleLabelTable(
+                            TagInputMode.LabelTable,
+                            this.props.tag
+                        );
                         this.props.onLabelLeave(this.props.labels[0]);
                     }}
-                    onMouseEnter={() => this.props.onLabelEnter(this.props.labels[0])}
-                    onMouseLeave={() => this.props.onLabelLeave(this.props.labels[0])}
+                    onMouseEnter={() =>
+                        this.props.onLabelEnter(this.props.labels[0])
+                    }
+                    onMouseLeave={() =>
+                        this.props.onLabelLeave(this.props.labels[0])
+                    }
                 >
-                    <FontIcon
-                        className="pr-1 pl-1" iconName="Table"
-                    />
-                Click to assign labels
+                    <FontIcon className="pr-1 pl-1" iconName="Table" />
+                    Click to assign labels
                 </div>
             );
         } else {
             let confidence = _.get(this.props, "labels[0].confidence", null);
-            if (confidence > .995) {
+            if (confidence > 0.995) {
                 confidence = 0.995;
             }
             const revised = _.get(this.props, "labels[0].revised", false);
-            return this.props.labels.map((label, idx) =>
+            return this.props.labels.map((label, idx) => (
                 <Fragment key={idx}>
                     <div className="tag-item-label-container">
-                        {(confidence || revised) &&
+                        {(confidence || revised) && (
                             <div className="tag-item-label-container-item1">
-                                {!revised && confidence &&
+                                {!revised && confidence && (
                                     <div className="tag-item-confidence">
                                         {confidence}
                                     </div>
-                                }
-                                {revised &&
-                                    <FontIcon iconName="StatusCircleCheckmark" className="ms-Icon-25px" />
-                                }
+                                )}
+                                {revised && (
+                                    <FontIcon
+                                        iconName="StatusCircleCheckmark"
+                                        className="ms-Icon-25px"
+                                    />
+                                )}
                             </div>
-                        }
+                        )}
                         <div className="tag-item-label-container-item2">
-                            {this.props.showOriginLabels && label.originValue &&
-                                <TagInputItemLabel
-                                    label={label}
-                                    isOrigin={true}
-                                    value={label.originValue}
-                                    prefixText={strings.tags.preText.autoLabel} />
-                            }
-                            {(label.originValue?.length > 0 || label.value?.length > 0) &&
+                            {this.props.showOriginLabels &&
+                                label.originValue && (
+                                    <TagInputItemLabel
+                                        label={label}
+                                        isOrigin={true}
+                                        value={label.originValue}
+                                        prefixText={
+                                            strings.tags.preText.autoLabel
+                                        }
+                                    />
+                                )}
+                            {(label.originValue?.length > 0 ||
+                                label.value?.length > 0) && (
                                 <TagInputItemLabel
                                     label={label}
                                     value={label.value}
                                     isOrigin={false}
                                     onLabelEnter={this.props.onLabelEnter}
                                     onLabelLeave={this.props.onLabelLeave}
-                                    prefixText={revised ? strings.tags.preText.revised : undefined} />
-                            }
+                                    prefixText={
+                                        revised
+                                            ? strings.tags.preText.revised
+                                            : undefined
+                                    }
+                                />
+                            )}
                         </div>
                     </div>
-                </Fragment>);
+                </Fragment>
+            ));
         }
-    }
+    };
     private onInputRef = (element: HTMLInputElement) => {
         this.inputElement = element;
         if (element) {
             element.select();
         }
-    }
+    };
 
     onInputBlur = () => {
         this.onRenameTag();
-    }
+    };
 
     private onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
@@ -302,7 +344,7 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
                 isRenaming: false,
             });
         }
-    }
+    };
 
     private onRenameTag() {
         if (!this.inputElement) {
@@ -324,7 +366,7 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
             classNames.push("tag-name-text-typed");
         }
         return classNames.join(" ");
-    }
+    };
 
     private getDisplayIndex = () => {
         const index = this.props.index;
@@ -332,25 +374,27 @@ export default class TagInputItem extends React.Component<ITagInputItemProps, IT
             return tagIndexKeys[index];
         }
         return null;
-    }
+    };
 
     private isTypeOrFormatSpecified = () => {
         const { tag } = this.props;
-        return (tag.type && tag.type !== FieldType.String) ||
-            (tag.format && tag.format !== FieldFormat.NotSpecified);
-    }
+        return (
+            (tag.type && tag.type !== FieldType.String) ||
+            (tag.format && tag.format !== FieldFormat.NotSpecified)
+        );
+    };
 
     private handleMouseEnter = () => {
         const { labels } = this.props;
         if (labels.length > 0) {
             this.props.onLabelEnter(labels[0]);
         }
-    }
+    };
 
     private handleMouseLeave = () => {
         const { labels } = this.props;
         if (labels.length > 0) {
             this.props.onLabelLeave(labels[0]);
         }
-    }
+    };
 }

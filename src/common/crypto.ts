@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import Guard from "./guard";
 
 const ALGO = "AES-CBC";
@@ -19,7 +16,10 @@ export function generateKey(): string {
  * @param message The message to encrypt
  * @param secret The base64 encoded secret
  */
-export async function encrypt(message: string, secret: string): Promise<string> {
+export async function encrypt(
+    message: string,
+    secret: string
+): Promise<string> {
     Guard.empty(message);
     Guard.empty(secret);
 
@@ -34,7 +34,8 @@ export async function encrypt(message: string, secret: string): Promise<string> 
                 iv,
             },
             key,
-            data);
+            data
+        );
         const json = {
             ciphertext: encodeHex(encrypted),
             iv: encodeHex(iv.buffer),
@@ -79,7 +80,8 @@ export async function decrypt(encodedMessage: string, secret: string) {
                 iv: iv.slice(0, 16),
             },
             key,
-            data);
+            data
+        );
 
         return decodeUtf8(decrypted);
     } catch (e) {
@@ -91,28 +93,35 @@ export async function decrypt(encodedMessage: string, secret: string) {
  * @param message - The encrypted base64 encded message
  * @param secret - The secret to decrypt the message
  */
-export async function decryptObject<T = any>(encodedMessage: string, secret: string) {
+export async function decryptObject<T = any>(
+    encodedMessage: string,
+    secret: string
+) {
     const json = await decrypt(encodedMessage, secret);
     return JSON.parse(json) as T;
 }
 
 export async function sha256Hash(message: string, nodejsMode?: boolean) {
     if (nodejsMode) {
-        const nodejsCrypto = await require('crypto');
-        return await nodejsCrypto.createHash('sha256').update(message).digest("hex");
+        const nodejsCrypto = await require("crypto");
+        return await nodejsCrypto
+            .createHash("sha256")
+            .update(message)
+            .digest("hex");
     } else {
-        const buffer = await crypto.subtle.digest("SHA-256", encodeUtf8(message));
+        const buffer = await crypto.subtle.digest(
+            "SHA-256",
+            encodeUtf8(message)
+        );
         return encodeHex(buffer);
     }
 }
 
 async function importKey(secretBytes: ArrayBuffer) {
-    return await crypto.subtle.importKey(
-        "raw",
-        secretBytes,
-        ALGO,
-        false,
-        ["encrypt", "decrypt"]);
+    return await crypto.subtle.importKey("raw", secretBytes, ALGO, false, [
+        "encrypt",
+        "decrypt",
+    ]);
 }
 
 function encodeBase64(buffer: ArrayBuffer) {
@@ -136,7 +145,7 @@ function decodeBase64(base64: string) {
 }
 
 function encodeHex(buffer: ArrayBuffer) {
-    const hex  = [];
+    const hex = [];
     const bytes = new Uint8Array(buffer);
     const len = bytes.byteLength;
     for (let i = 0; i < len; i++) {
@@ -200,7 +209,7 @@ function encodeUtf8(utf8: string) {
             bytes[++pos] = (0x0 << 7) | point;
         } else if (point <= 0x07ff) {
             bytes[++pos] = (0x6 << 5) | (point >>> 6);
-            bytes[++pos] = (0x2 << 6)  | (point & 0x3f);
+            bytes[++pos] = (0x2 << 6) | (point & 0x3f);
         } else {
             bytes[++pos] = (0xe << 4) | (point >>> 12);
             bytes[++pos] = (0x2 << 6) | ((point >>> 6) & 0x3f);
@@ -220,20 +229,32 @@ function decodeUtf8(buffer: ArrayBuffer) {
     const utf8 = [];
     const bytes = new Uint8Array(buffer);
     const len = bytes.byteLength;
-    for (let i = 0; i < len;) {
+    for (let i = 0; i < len; ) {
         const b = bytes[i++];
 
         if (b < 0x7f) {
             utf8.push(String.fromCharCode(b));
         } else if (b <= 0xdf) {
-            utf8.push(String.fromCharCode(
-                ((b & 0x1f) << 6) | (bytes[i++] & 0x3f)));
+            utf8.push(
+                String.fromCharCode(((b & 0x1f) << 6) | (bytes[i++] & 0x3f))
+            );
         } else if (b <= 0xef) {
-            utf8.push(String.fromCharCode(
-                ((b & 0x0f) << 12) | ((bytes[i++] & 0x3f) << 6) | (bytes[i++] & 0x3f)));
+            utf8.push(
+                String.fromCharCode(
+                    ((b & 0x0f) << 12) |
+                        ((bytes[i++] & 0x3f) << 6) |
+                        (bytes[i++] & 0x3f)
+                )
+            );
         } else if (String.fromCodePoint) {
-            utf8.push(String.fromCodePoint(
-                ((b & 0x07) << 18) | ((bytes[i++] & 0x3f) << 12) | ((bytes[i++] & 0x3f) << 6) | (bytes[i++] & 0x3f)));
+            utf8.push(
+                String.fromCodePoint(
+                    ((b & 0x07) << 18) |
+                        ((bytes[i++] & 0x3f) << 12) |
+                        ((bytes[i++] & 0x3f) << 6) |
+                        (bytes[i++] & 0x3f)
+                )
+            );
         } else {
             utf8.push("?");
             i += 3;

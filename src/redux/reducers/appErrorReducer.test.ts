@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { reducer } from "./appErrorReducer";
 import { IAppError, ErrorCode } from "../../models/applicationState";
 import { clearErrorAction, showErrorAction } from "../actions/appErrorActions";
@@ -10,7 +7,7 @@ import MockFactory from "../../common/mockFactory";
 describe("AppError Reducer", () => {
     let state: IAppError;
 
-    beforeEach( () => {
+    beforeEach(() => {
         state = MockFactory.createAppError();
     });
 
@@ -18,7 +15,7 @@ describe("AppError Reducer", () => {
         const appError = MockFactory.createAppError(
             ErrorCode.Unknown,
             "Sample Error Title",
-            "Sample Error Message",
+            "Sample Error Message"
         );
         const action = showErrorAction(appError);
 

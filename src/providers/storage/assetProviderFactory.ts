@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { IAsset, IConnection } from "../../models/applicationState";
 import Guard from "../../common/guard";
 import getHostProcess, { HostProcessType } from "../../common/hostProcess";
@@ -37,7 +34,6 @@ export interface IAssetProviderRegistrationOptions {
  * @description - Creates instance of Asset Providers based on request provider type
  */
 export class AssetProviderFactory {
-
     /**
      * @returns - Dictionary of registered Asset Providers
      */
@@ -55,19 +51,26 @@ export class AssetProviderFactory {
      * @param name - Name of Asset Provider
      * @param factory - Function that instantiates Asset Provider
      */
-    public static register(name: string, factory: (options?: any) => IAssetProvider);
+    public static register(
+        name: string,
+        factory: (options?: any) => IAssetProvider
+    );
 
     /**
      * Register Asset provider based on name and a factory
      * @param name - Name of Asset Provider
      * @param factory - Function that instantiates Asset Provider
      */
-    public static register(nameOrOptions: any, factory?: (options?: any) => IAssetProvider) {
+    public static register(
+        nameOrOptions: any,
+        factory?: (options?: any) => IAssetProvider
+    ) {
         Guard.null(nameOrOptions);
 
-        let options: IAssetProviderRegistrationOptions = nameOrOptions as IAssetProviderRegistrationOptions;
+        let options: IAssetProviderRegistrationOptions =
+            nameOrOptions as IAssetProviderRegistrationOptions;
 
-        if (typeof (nameOrOptions) === "string") {
+        if (typeof nameOrOptions === "string") {
             Guard.null(factory);
 
             options = {
@@ -92,7 +95,9 @@ export class AssetProviderFactory {
      * Create Asset Provider from provider type and options specified in connection
      * @param connection - Connection for an Asset Provider
      */
-    public static createFromConnection(connection: IConnection): IAssetProvider {
+    public static createFromConnection(
+        connection: IConnection
+    ): IAssetProvider {
         return this.create(connection.providerType, connection.providerOptions);
     }
 
@@ -106,11 +111,15 @@ export class AssetProviderFactory {
 
         const registrationOptions = AssetProviderFactory.providerRegistry[name];
         if (!registrationOptions) {
-            throw new Error(`No asset provider has been registered with name '${name}'`);
+            throw new Error(
+                `No asset provider has been registered with name '${name}'`
+            );
         }
 
         return registrationOptions.factory(options);
     }
 
-    private static providerRegistry: { [id: string]: IAssetProviderRegistrationOptions } = {};
+    private static providerRegistry: {
+        [id: string]: IAssetProviderRegistrationOptions;
+    } = {};
 }

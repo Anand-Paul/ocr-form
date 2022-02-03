@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { reducer } from "./applicationReducer";
 import { IAppSettings } from "../../models/applicationState";
 import { saveAppSettingsAction } from "../actions/applicationActions";

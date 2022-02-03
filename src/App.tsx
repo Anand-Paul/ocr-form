@@ -1,12 +1,14 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React, { Fragment } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { IAppError, IApplicationState, IProject, ErrorCode } from "./models/applicationState";
+import {
+    IAppError,
+    IApplicationState,
+    IProject,
+    ErrorCode,
+} from "./models/applicationState";
 import IAppErrorActions, * as appErrorActions from "./redux/actions/appErrorActions";
 import { ErrorHandler } from "./react/components/common/errorHandler/errorHandler";
 import { KeyboardManager } from "./react/components/common/keyboardManager/keyboardManager";
@@ -20,7 +22,7 @@ import { TitleBar } from "./react/components/shell/titleBar";
 import ShareProjectButton from "./react/components/shell/shareProjectButton";
 import AppSurveyLink from "./react/components/shell/appSurveyLink";
 
-import { getAppInsights } from './services/telemetryService';
+import { getAppInsights } from "./services/telemetryService";
 import TelemetryProvider from "./providers/telemetry/telemetryProvider";
 import "./App.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -67,20 +69,30 @@ export default class App extends React.Component<IAppProps> {
     }
 
     public render() {
-        const platform = global && global.process ? global.process.platform : "web";
+        const platform =
+            global && global.process ? global.process.platform : "web";
 
         return (
             <Fragment>
                 <ErrorHandler
                     error={this.props.appError}
                     onError={this.props.actions.showError}
-                    onClearError={this.props.actions.clearError} />
+                    onClearError={this.props.actions.clearError}
+                />
                 {/* Don't render app contents during a render error */}
-                {(!this.props.appError || this.props.appError.errorCode !== ErrorCode.GenericRenderError) &&
+                {(!this.props.appError ||
+                    this.props.appError.errorCode !==
+                        ErrorCode.GenericRenderError) && (
                     <KeyboardManager>
                         <BrowserRouter>
-                            <TelemetryProvider after={() => { this.appInsights = getAppInsights() }}>
-                                <div className={`app-shell platform-${platform}`}>
+                            <TelemetryProvider
+                                after={() => {
+                                    this.appInsights = getAppInsights();
+                                }}
+                            >
+                                <div
+                                    className={`app-shell platform-${platform}`}
+                                >
                                     <TitleBar icon="TagGroup">
                                         <div className="app-servey-link">
                                             <AppSurveyLink />
@@ -96,18 +108,27 @@ export default class App extends React.Component<IAppProps> {
                                         </div>
                                     </TitleBar>
                                     <div className="app-main">
-                                        <Sidebar project={this.props.currentProject} />
+                                        <Sidebar
+                                            project={this.props.currentProject}
+                                        />
                                         <MainContentRouter />
                                     </div>
-                                    <StatusBar project={this.props.currentProject} >
-                                        <StatusBarMetrics project={this.props.currentProject} />
+                                    <StatusBar
+                                        project={this.props.currentProject}
+                                    >
+                                        <StatusBarMetrics
+                                            project={this.props.currentProject}
+                                        />
                                     </StatusBar>
-                                    <ToastContainer className="frtt-toast-container" role="alert" />
+                                    <ToastContainer
+                                        className="frtt-toast-container"
+                                        role="alert"
+                                    />
                                 </div>
                             </TelemetryProvider>
                         </BrowserRouter>
                     </KeyboardManager>
-                }
+                )}
             </Fragment>
         );
     }

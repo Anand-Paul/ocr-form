@@ -1,13 +1,20 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
 import { BlobServiceClient, ContainerClient } from "@azure/storage-blob";
 import { constants } from "../../common/constants";
 import { strings } from "../../common/strings";
-import { AppError, AssetState, AssetType, ErrorCode, IAsset, StorageType, ILabelData, AssetLabelingState } from "../../models/applicationState";
+import {
+    AppError,
+    AssetState,
+    AssetType,
+    ErrorCode,
+    IAsset,
+    StorageType,
+    ILabelData,
+    AssetLabelingState,
+} from "../../models/applicationState";
 import { throwUnhandledRejectionForEdge } from "../../react/components/common/errorHandler/errorHandler";
 import { AssetService } from "../../services/assetService";
 import { IStorageProvider } from "./storageProviderFactory";
-import {withQueueMap} from "../../common/queueMap/withQueueMap"
+import { withQueueMap } from "../../common/queueMap/withQueueMap";
 
 /**
  * Options for Azure Cloud Storage
@@ -44,13 +51,16 @@ export class AzureBlobStorage implements IStorageProvider {
      * connect to Azure Blob Storage
      */
     // tslint:disable-next-line:no-empty
-    public async initialize(): Promise<void> { }
+    public async initialize(): Promise<void> {}
 
     /**
      * Reads text from specified blob
      * @param blobName - Name of blob in container
      */
-    public async readText(blobName: string, ignoreNotFound?: boolean | undefined): Promise<string> {
+    public async readText(
+        blobName: string,
+        ignoreNotFound?: boolean | undefined
+    ): Promise<string> {
         try {
             const client = this.containerClient.getBlockBlobClient(blobName);
             const result = await client.download();
@@ -61,10 +71,13 @@ export class AzureBlobStorage implements IStorageProvider {
         }
     }
 
-    public async isValidProjectConnection(filepath?: string | undefined): Promise<boolean> {
+    public async isValidProjectConnection(
+        filepath?: string | undefined
+    ): Promise<boolean> {
         try {
             const client = new BlobServiceClient(this.options!.sas!);
-            return await client.getAccountInfo()
+            return await client
+                .getAccountInfo()
                 .then(() => {
                     return true;
                 })
@@ -85,7 +98,9 @@ export class AzureBlobStorage implements IStorageProvider {
             const client = this.containerClient.getBlockBlobClient(blobName);
             const result = await client.download();
 
-            const arrayBuffer = await this.blobToArrayBuffer(await result.blobBody!);
+            const arrayBuffer = await this.blobToArrayBuffer(
+                await result.blobBody!
+            );
             return Buffer.from(arrayBuffer);
         } catch (exception) {
             this.azureBlobStorageErrorHandler(exception);
@@ -99,7 +114,11 @@ export class AzureBlobStorage implements IStorageProvider {
      */
     public async writeText(blobName: string, content: string | Buffer) {
         try {
-            await this.containerClient.uploadBlockBlob(blobName, content, content.length);
+            await this.containerClient.uploadBlockBlob(
+                blobName,
+                content,
+                content.length
+            );
         } catch (exception) {
             this.azureBlobStorageErrorHandler(exception);
         }
@@ -112,7 +131,11 @@ export class AzureBlobStorage implements IStorageProvider {
      */
     public async writeBinary(blobName: string, content: Buffer) {
         try {
-            await this.containerClient.uploadBlockBlob(blobName, content, content.length);
+            await this.containerClient.uploadBlockBlob(
+                blobName,
+                content,
+                content.length
+            );
         } catch (exception) {
             this.azureBlobStorageErrorHandler(exception);
         }
@@ -122,11 +145,19 @@ export class AzureBlobStorage implements IStorageProvider {
      * Deletes file from container
      * @param blobName - Name of blob in container
      */
-    public async deleteFile(blobName: string, ignoreNotFound?: boolean, ignoreForbidden?: boolean): Promise<void> {
+    public async deleteFile(
+        blobName: string,
+        ignoreNotFound?: boolean,
+        ignoreForbidden?: boolean
+    ): Promise<void> {
         try {
             await this.containerClient.deleteBlob(blobName);
         } catch (exception) {
-            this.azureBlobStorageErrorHandler(exception, ignoreNotFound, ignoreForbidden);
+            this.azureBlobStorageErrorHandler(
+                exception,
+                ignoreNotFound,
+                ignoreForbidden
+            );
         }
     }
 
@@ -141,7 +172,10 @@ export class AzureBlobStorage implements IStorageProvider {
     public async listFiles(path?: string, ext?: string): Promise<string[]> {
         try {
             const result: string[] = [];
-            for await (const blob of this.containerClient.listBlobsFlat({ prefix: path, includeDeleted: false })) {
+            for await (const blob of this.containerClient.listBlobsFlat({
+                prefix: path,
+                includeDeleted: false,
+            })) {
                 if ((ext && blob.name.endsWith(ext)) || !ext) {
                     result.push(blob.name);
                 }
@@ -156,7 +190,7 @@ export class AzureBlobStorage implements IStorageProvider {
      * check file is exists
      * @param filePath
      */
-    public async isFileExists(filePath: string) :Promise<boolean> {
+    public async isFileExists(filePath: string): Promise<boolean> {
         const client = this.containerClient.getBlobClient(filePath);
         return await client.exists();
     }
@@ -204,52 +238,82 @@ export class AzureBlobStorage implements IStorageProvider {
     /**
      * Retrieves assets from Azure Blob Storage container
      */
-    public async getAssets(folderPath?: string, folderName?: string): Promise<IAsset[]> {
+    public async getAssets(
+        folderPath?: string,
+        folderName?: string
+    ): Promise<IAsset[]> {
         const files: string[] = await this.listFiles(folderPath);
         const result: IAsset[] = [];
-        await Promise.all(files.map(async (file) => {
-            const url = this.getUrl(file);
-            const asset = await AssetService.createAssetFromFilePath(url, this.getFileName(url));
-            if (this.isSupportedAssetType(asset.type)) {
-                const labelFileName = decodeURIComponent(`${asset.name}${constants.labelFileExtension}`);
-                const ocrFileName = decodeURIComponent(`${asset.name}${constants.ocrFileExtension}`);
+        await Promise.all(
+            files.map(async (file) => {
+                const url = this.getUrl(file);
+                const asset = await AssetService.createAssetFromFilePath(
+                    url,
+                    this.getFileName(url)
+                );
+                if (this.isSupportedAssetType(asset.type)) {
+                    const labelFileName = decodeURIComponent(
+                        `${asset.name}${constants.labelFileExtension}`
+                    );
+                    const ocrFileName = decodeURIComponent(
+                        `${asset.name}${constants.ocrFileExtension}`
+                    );
 
-                if (files.find((str) => str === labelFileName)) {
-                    asset.state = AssetState.Tagged;
-                    const labelFileName = decodeURIComponent(`${asset.name}${constants.labelFileExtension}`);
-                    const json = await this.readText(labelFileName, true);
-                    const labelData = JSON.parse(json) as ILabelData;
-                    if (labelData) {
-                        asset.labelingState = labelData.labelingState || AssetLabelingState.ManuallyLabeled;
-                        asset.schema = labelData.$schema;
+                    if (files.find((str) => str === labelFileName)) {
+                        asset.state = AssetState.Tagged;
+                        const labelFileName = decodeURIComponent(
+                            `${asset.name}${constants.labelFileExtension}`
+                        );
+                        const json = await this.readText(labelFileName, true);
+                        const labelData = JSON.parse(json) as ILabelData;
+                        if (labelData) {
+                            asset.labelingState =
+                                labelData.labelingState ||
+                                AssetLabelingState.ManuallyLabeled;
+                            asset.schema = labelData.$schema;
+                        }
+                    } else if (files.find((str) => str === ocrFileName)) {
+                        asset.state = AssetState.Visited;
+                    } else {
+                        asset.state = AssetState.NotVisited;
                     }
-                } else if (files.find((str) => str === ocrFileName)) {
-                    asset.state = AssetState.Visited;
-                } else {
-                    asset.state = AssetState.NotVisited;
+                    result.push(asset);
                 }
-                result.push(asset);
-            }
-        }));
+            })
+        );
         return result;
     }
 
-    public async getAsset(folderPath: string, assetName: string): Promise<IAsset>{
+    public async getAsset(
+        folderPath: string,
+        assetName: string
+    ): Promise<IAsset> {
         const files: string[] = await this.listFiles(folderPath);
-        if(files.findIndex(f=>f===assetName)!==-1){
+        if (files.findIndex((f) => f === assetName) !== -1) {
             const url = this.getUrl(assetName);
-            const asset = await AssetService.createAssetFromFilePath(url, this.getFileName(url));
+            const asset = await AssetService.createAssetFromFilePath(
+                url,
+                this.getFileName(url)
+            );
             if (this.isSupportedAssetType(asset.type)) {
-                const labelFileName = decodeURIComponent(`${asset.name}${constants.labelFileExtension}`);
-                const ocrFileName = decodeURIComponent(`${asset.name}${constants.ocrFileExtension}`);
+                const labelFileName = decodeURIComponent(
+                    `${asset.name}${constants.labelFileExtension}`
+                );
+                const ocrFileName = decodeURIComponent(
+                    `${asset.name}${constants.ocrFileExtension}`
+                );
 
                 if (files.find((str) => str === labelFileName)) {
                     asset.state = AssetState.Tagged;
-                    const labelFileName = decodeURIComponent(`${asset.name}${constants.labelFileExtension}`);
+                    const labelFileName = decodeURIComponent(
+                        `${asset.name}${constants.labelFileExtension}`
+                    );
                     const json = await this.readText(labelFileName, true);
                     const labelData = JSON.parse(json) as ILabelData;
                     if (labelData) {
-                        asset.labelingState = labelData.labelingState || AssetLabelingState.ManuallyLabeled;
+                        asset.labelingState =
+                            labelData.labelingState ||
+                            AssetLabelingState.ManuallyLabeled;
                         asset.schema = labelData.$schema;
                     }
                 } else if (files.find((str) => str === ocrFileName)) {
@@ -259,8 +323,7 @@ export class AzureBlobStorage implements IStorageProvider {
                 }
                 return asset;
             }
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -275,7 +338,11 @@ export class AzureBlobStorage implements IStorageProvider {
     }
 
     private isSupportedAssetType(assetType: AssetType) {
-        return assetType === AssetType.Image || assetType === AssetType.TIFF || assetType === AssetType.PDF;
+        return (
+            assetType === AssetType.Image ||
+            assetType === AssetType.TIFF ||
+            assetType === AssetType.PDF
+        );
     }
 
     private getUrl(blobName: string): string {
@@ -304,28 +371,38 @@ export class AzureBlobStorage implements IStorageProvider {
         });
     }
 
-    private azureBlobStorageErrorHandler = (exception, ignoreNotFound?: boolean, ignoreForbidden?: boolean) => {
+    private azureBlobStorageErrorHandler = (
+        exception,
+        ignoreNotFound?: boolean,
+        ignoreForbidden?: boolean
+    ) => {
         const appError = this.toAppError(exception);
-        throwUnhandledRejectionForEdge(appError, ignoreNotFound, ignoreForbidden);
+        throwUnhandledRejectionForEdge(
+            appError,
+            ignoreNotFound,
+            ignoreForbidden
+        );
         throw appError;
-    }
+    };
 
     private toAppError(exception) {
         if (exception.statusCode === 404) {
             return new AppError(
                 ErrorCode.BlobContainerIONotFound,
                 strings.errors.blobContainerIONotFound.message,
-                strings.errors.blobContainerIONotFound.title);
+                strings.errors.blobContainerIONotFound.title
+            );
         } else if (exception.statusCode === 403) {
             return new AppError(
                 ErrorCode.BlobContainerIOForbidden,
                 strings.errors.blobContainerIOForbidden.message,
-                strings.errors.blobContainerIOForbidden.title);
+                strings.errors.blobContainerIOForbidden.title
+            );
         } else if (exception.code === "REQUEST_SEND_ERROR") {
             return new AppError(
                 ErrorCode.RequestSendError,
                 strings.errors.requestSendError.message,
-                strings.errors.requestSendError.title,
+                strings.errors.requestSendError.title
             );
         }
         return exception;

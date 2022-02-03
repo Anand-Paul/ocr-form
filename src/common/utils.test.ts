@@ -1,12 +1,16 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import { randomIntInRange, createQueryString, encryptProject,
-    decryptProject, normalizeSlashes, encodeFileURI, joinPath, patch } from "./utils";
+import {
+    randomIntInRange,
+    createQueryString,
+    encryptProject,
+    decryptProject,
+    normalizeSlashes,
+    encodeFileURI,
+    joinPath,
+    patch,
+} from "./utils";
 import MockFactory from "./mockFactory";
 
 describe("Helper functions", () => {
-
     it("generates a random number in range", () => {
         let lower = 0;
         let upper = 100;
@@ -26,7 +30,6 @@ describe("Helper functions", () => {
     });
 
     describe("Path Utils", () => {
-
         const path = "C:\\User\\me\\my file.json";
         const normalized = "C:/User/me/my file.json";
         const encoded = "file:C:/User/me/my%20file.json";
@@ -64,10 +67,9 @@ describe("Helper functions", () => {
             };
 
             const result = createQueryString(params);
-            expect(result)
-                .toEqual(
-                    "a=1&b=A%20string%20with%20a%20space&c=A%20string%20with%20a%20%23%20and%20a%20%26%20char&d=true",
-                );
+            expect(result).toEqual(
+                "a=1&b=A%20string%20with%20a%20space&c=A%20string%20with%20a%20%23%20and%20a%20%26%20char&d=true"
+            );
         });
         it("Joins path with seperator", () => {
             expect(joinPath("/", "", "b", "c")).toEqual("b/c");
@@ -134,14 +136,23 @@ describe("Helper functions", () => {
         const securityToken = MockFactory.createSecurityToken("TestProject");
 
         it("encrypt project does not double encrypt project", async () => {
-            const encryptedProject = await encryptProject(testProject, securityToken);
-            const doubleEncryptedProject = await encryptProject(encryptedProject, securityToken);
+            const encryptedProject = await encryptProject(
+                testProject,
+                securityToken
+            );
+            const doubleEncryptedProject = await encryptProject(
+                encryptedProject,
+                securityToken
+            );
 
             expect(encryptedProject).toEqual(doubleEncryptedProject);
         });
 
         it("decrypt project does not attempt to decrypt already decrtyped data", async () => {
-            const decryptedProject = await decryptProject(testProject, securityToken);
+            const decryptedProject = await decryptProject(
+                testProject,
+                securityToken
+            );
 
             expect(decryptedProject).toEqual(testProject);
         });

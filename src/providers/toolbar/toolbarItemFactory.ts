@@ -1,7 +1,7 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import { IToolbarItemMetadata, ToolbarItem } from "../../react/components/toolbar/toolbarItem";
+import {
+    IToolbarItemMetadata,
+    ToolbarItem,
+} from "../../react/components/toolbar/toolbarItem";
 import Guard from "../../common/guard";
 
 /**
@@ -22,7 +22,10 @@ export class ToolbarItemFactory {
      * @param component - React component ToolbarItem
      * @param config - Configuration of ToolbarItem
      */
-    public static register(config: IToolbarItemMetadata, component: typeof ToolbarItem = ToolbarItem) {
+    public static register(
+        config: IToolbarItemMetadata,
+        component: typeof ToolbarItem = ToolbarItem
+    ) {
         Guard.null(component);
         Guard.null(config);
 

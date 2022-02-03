@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -43,8 +40,9 @@ import registerMixins from "./registerMixins";
     ReactDOM.render(
         <Provider store={store}>
             <App />
-        </Provider>
-        , document.getElementById("rootdiv"));
+        </Provider>,
+        document.getElementById("rootdiv")
+    );
 
     // If you want your app to work offline and load faster, you can change
     // unregister() to register() below. Note this comes with some pitfalls.

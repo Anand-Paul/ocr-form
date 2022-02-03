@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { ActionTypes } from "../actions/actionTypes";
 import { AnyAction } from "../actions/actionCreators";
 import { IAppError } from "../../models/applicationState";
@@ -17,7 +14,7 @@ import { IAppError } from "../../models/applicationState";
 export const reducer = (state: IAppError = null, action: AnyAction) => {
     switch (action.type) {
         case ActionTypes.SHOW_ERROR:
-            return {...action.payload};
+            return { ...action.payload };
         case ActionTypes.CLEAR_ERROR:
             return null;
         default:

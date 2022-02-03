@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import shortid from "shortid";
 import Guard from "../common/guard";
 import { IConnection } from "../models/applicationState";
@@ -19,7 +16,6 @@ export interface IConnectionService {
  * @description - Functions for dealing with project connections
  */
 export default class ConnectionService implements IConnectionService {
-
     /**
      * Save a connection
      * @param connection - Connection to save
@@ -33,7 +29,8 @@ export default class ConnectionService implements IConnectionService {
                     connection.id = shortid.generate();
                 }
 
-                const assetProvider = AssetProviderFactory.createFromConnection(connection);
+                const assetProvider =
+                    AssetProviderFactory.createFromConnection(connection);
                 if (assetProvider.initialize) {
                     await assetProvider.initialize();
                 }

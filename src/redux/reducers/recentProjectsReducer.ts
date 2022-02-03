@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { ActionTypes } from "../actions/actionTypes";
 import { IProject } from "../../models/applicationState";
 import { AnyAction } from "../actions/actionCreators";
@@ -14,7 +11,10 @@ import { AnyAction } from "../actions/actionCreators";
  * @param state - Array of recent projects
  * @param action - Action that was dispatched
  */
-export const reducer = (state: IProject[] = [], action: AnyAction): IProject[] => {
+export const reducer = (
+    state: IProject[] = [],
+    action: AnyAction
+): IProject[] => {
     if (!state) {
         state = [];
     }
@@ -29,7 +29,9 @@ export const reducer = (state: IProject[] = [], action: AnyAction): IProject[] =
                 ...state.filter((project) => project.id !== action.payload.id),
             ];
         case ActionTypes.DELETE_PROJECT_SUCCESS:
-            return [...state.filter((project) => project.id !== action.payload.id)];
+            return [
+                ...state.filter((project) => project.id !== action.payload.id),
+            ];
         case ActionTypes.SAVE_CONNECTION_SUCCESS:
             newState = state.map((project) => {
                 const updatedProject = { ...project };
@@ -40,8 +42,10 @@ export const reducer = (state: IProject[] = [], action: AnyAction): IProject[] =
             });
             return newState;
         case ActionTypes.UPDATE_TAG_LABEL_COUNTS_SUCCESS:
-            return [{ ...action.payload },
-            ...state.filter(project => project.id !== action.payload.id)];
+            return [
+                { ...action.payload },
+                ...state.filter((project) => project.id !== action.payload.id),
+            ];
         default:
             return state;
     }

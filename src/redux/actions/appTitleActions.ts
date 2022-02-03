@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { Dispatch } from "redux";
 import { createPayloadAction, IPayloadAction } from "./actionCreators";
 import { ActionTypes } from "./actionTypes";
@@ -35,4 +32,6 @@ export interface ISetTitleAction extends IPayloadAction<string, string> {
 /**
  * Instance of set title action
  */
-export const setTitleAction = createPayloadAction<ISetTitleAction>(ActionTypes.SET_TITLE);
+export const setTitleAction = createPayloadAction<ISetTitleAction>(
+    ActionTypes.SET_TITLE
+);

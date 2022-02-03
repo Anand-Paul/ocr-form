@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 export default class Guard {
     /**
      * Validates the string express is not null or empty, otherwise throws an exception
@@ -9,8 +6,9 @@ export default class Guard {
      * @param message - The error message to return on invalid value
      */
     public static empty(value: string, paramName?: string, message?: string) {
-        if ((!!value === false || value.trim().length === 0)) {
-            message = message || (`'${paramName || "value"}' cannot be null or empty`);
+        if (!!value === false || value.trim().length === 0) {
+            message =
+                message || `'${paramName || "value"}' cannot be null or empty`;
             throw new Error(message);
         }
     }
@@ -22,8 +20,10 @@ export default class Guard {
      * @param message - The error message to return on invalid value
      */
     public static null(value: any, paramName?: string, message?: string) {
-        if ((!!value === false)) {
-            message = message || (`'${paramName || "value"}' cannot be null or undefined`);
+        if (!!value === false) {
+            message =
+                message ||
+                `'${paramName || "value"}' cannot be null or undefined`;
             throw new Error(message);
         }
     }
@@ -35,9 +35,15 @@ export default class Guard {
      * @param paramName - The name of the parameter to validate
      * @param message - The error message to return on invalid value
      */
-    public static expression<T>(value: T, predicate: (value: T) => boolean, paramName?: string, message?: string) {
+    public static expression<T>(
+        value: T,
+        predicate: (value: T) => boolean,
+        paramName?: string,
+        message?: string
+    ) {
         if (!!value === false || !predicate(value)) {
-            message = message || (`'${paramName || "value"}' is not a valid value`);
+            message =
+                message || `'${paramName || "value"}' is not a valid value`;
             throw new Error(message);
         }
     }

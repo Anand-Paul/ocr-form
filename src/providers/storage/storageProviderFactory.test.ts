@@ -1,18 +1,24 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import { StorageProviderFactory, IStorageProvider } from "./storageProviderFactory";
+import {
+    StorageProviderFactory,
+    IStorageProvider,
+} from "./storageProviderFactory";
 import { IAsset, StorageType } from "../../models/applicationState";
 
 describe("Storage Provider Factory", () => {
     it("registers new storage providers", () => {
         expect(Object.keys(StorageProviderFactory.providers).length).toEqual(0);
-        StorageProviderFactory.register("testProvider", () => new TestStorageProvider());
+        StorageProviderFactory.register(
+            "testProvider",
+            () => new TestStorageProvider()
+        );
         expect(Object.keys(StorageProviderFactory.providers).length).toEqual(1);
     });
 
     it("creates a new instance of the provider", () => {
-        StorageProviderFactory.register("testProvider", () => new TestStorageProvider());
+        StorageProviderFactory.register(
+            "testProvider",
+            () => new TestStorageProvider()
+        );
         const provider = StorageProviderFactory.create("testProvider");
 
         expect(provider).not.toBeNull();

@@ -1,9 +1,6 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import {IPrebuiltSettings} from "../../models/applicationState";
-import {ActionTypes} from "../actions/actionTypes";
-import {IUpdatePrebuiltSettingsAction} from "../actions/prebuiltSettingsActions";
+import { IPrebuiltSettings } from "../../models/applicationState";
+import { ActionTypes } from "../actions/actionTypes";
+import { IUpdatePrebuiltSettingsAction } from "../actions/prebuiltSettingsActions";
 
 type AnyAction = IUpdatePrebuiltSettingsAction;
 
@@ -15,11 +12,14 @@ type AnyAction = IUpdatePrebuiltSettingsAction;
  * @param {AnyAction} action
  * @returns {IPrebuiltSettings}
  */
-export const reducer = (state: IPrebuiltSettings = {apiKey: "", serviceURI: ""}, action: AnyAction) :IPrebuiltSettings => {
+export const reducer = (
+    state: IPrebuiltSettings = { apiKey: "", serviceURI: "" },
+    action: AnyAction
+): IPrebuiltSettings => {
     switch (action.type) {
         case ActionTypes.UPDATE_PREBUILT_SETTINGS:
             return action.payload;
         default:
             return state;
     }
-}
+};

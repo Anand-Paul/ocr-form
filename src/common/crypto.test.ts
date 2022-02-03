@@ -1,7 +1,10 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import { generateKey, encrypt, decrypt, encryptObject, decryptObject } from "./crypto";
+import {
+    generateKey,
+    encrypt,
+    decrypt,
+    encryptObject,
+    decryptObject,
+} from "./crypto";
 
 describe("Crypto", () => {
     it("generates a key", () => {
@@ -41,12 +44,13 @@ describe("Crypto", () => {
             const decrypted = await decrypt(encrypted, decryptKey);
             expect(expected).not.toEqual(decrypted);
         } catch (e) {
-            expect(e.message).toEqual("Error decrypting data - Malformed UTF-8 data");
+            expect(e.message).toEqual(
+                "Error decrypting data - Malformed UTF-8 data"
+            );
         }
     });
 
-    it("encrypts the same value multiple times generates different encrypted data which can both be decrypted",
-    async () => {
+    it("encrypts the same value multiple times generates different encrypted data which can both be decrypted", async () => {
         const expected = "Hello, I am a string";
         const secret = generateKey();
 
@@ -67,7 +71,9 @@ describe("Crypto", () => {
     it("encryption fails with malformed message", () => {
         const secret = generateKey();
 
-        expect(async () => await decrypt("ABC123XYZSDAFASDFS23453", secret)).toThrowError();
+        expect(
+            async () => await decrypt("ABC123XYZSDAFASDFS23453", secret)
+        ).toThrowError();
     });
 
     it("encrypts and decrypts a javascript object", async () => {

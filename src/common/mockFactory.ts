@@ -1,15 +1,32 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import {
-    AssetState, AssetType, IApplicationState, IAppSettings, IAsset, IAssetMetadata,
-    IConnection, IProject, ITag, StorageType, ISecurityToken,
-    IAppError, ErrorCode,
-    IRegion, RegionType, FieldType, FieldFormat, FeatureCategory,
+    AssetState,
+    AssetType,
+    IApplicationState,
+    IAppSettings,
+    IAsset,
+    IAssetMetadata,
+    IConnection,
+    IProject,
+    ITag,
+    StorageType,
+    ISecurityToken,
+    IAppError,
+    ErrorCode,
+    IRegion,
+    RegionType,
+    FieldType,
+    FieldFormat,
+    FeatureCategory,
 } from "../models/applicationState";
-import { IAssetProvider, IAssetProviderRegistrationOptions } from "../providers/storage/assetProviderFactory";
+import {
+    IAssetProvider,
+    IAssetProviderRegistrationOptions,
+} from "../providers/storage/assetProviderFactory";
 import { IAzureCloudStorageOptions } from "../providers/storage/azureBlobStorage";
-import { IStorageProvider, IStorageProviderRegistrationOptions } from "../providers/storage/storageProviderFactory";
+import {
+    IStorageProvider,
+    IStorageProviderRegistrationOptions,
+} from "../providers/storage/storageProviderFactory";
 import { IProjectSettingsPageProps } from "../react/components/pages/projectSettings/projectSettingsPage";
 import { IEditorPageProps } from "../react/components/pages/editorPage/editorPage";
 import IProjectActions, * as projectActions from "../redux/actions/projectActions";
@@ -33,7 +50,8 @@ export default class MockFactory {
     public static createAppError(
         errorCode: ErrorCode = ErrorCode.Unknown,
         title: string = "",
-        message: string = ""): IAppError {
+        message: string = ""
+    ): IAppError {
         return {
             errorCode,
             title,
@@ -53,7 +71,8 @@ export default class MockFactory {
         assetState: AssetState = AssetState.NotVisited,
         path: string = encodeFileURI(`https://image.com/asset${name}.jpg`),
         assetType: AssetType = AssetType.Image,
-        timestamp: number = 0): IAsset {
+        timestamp: number = 0
+    ): IAsset {
         let testAsset = null;
         switch (assetType) {
             case AssetType.Image:
@@ -93,9 +112,12 @@ export default class MockFactory {
      * @param count Number of assets to create (default: 10)
      * @param startIndex The index that the assets should start at (default: 1)
      */
-    public static createTestAssets(count: number = 10, startIndex: number = 1): IAsset[] {
+    public static createTestAssets(
+        count: number = 10,
+        startIndex: number = 1
+    ): IAsset[] {
         const assets: IAsset[] = [];
-        for (let i = startIndex; i < (count + startIndex); i++) {
+        for (let i = startIndex; i < count + startIndex; i++) {
             assets.push(MockFactory.createTestAsset(i.toString()));
         }
 
@@ -106,7 +128,10 @@ export default class MockFactory {
      * Creates fake IAssetMetadata
      * @param asset Test asset
      */
-    public static createTestAssetMetadata(asset?: IAsset, regions?: IRegion[]): IAssetMetadata {
+    public static createTestAssetMetadata(
+        asset?: IAsset,
+        regions?: IRegion[]
+    ): IAssetMetadata {
         return {
             asset: asset || MockFactory.createTestAsset(),
             regions: regions || [],
@@ -133,7 +158,10 @@ export default class MockFactory {
      * @param name Name of project. project.id = `project-${name}` and project.name = `Project ${name}`
      * @param tagCount number of tags to create for project
      */
-    public static createTestProject(name: string = "test", tagCount: number = 5): IProject {
+    public static createTestProject(
+        name: string = "test",
+        tagCount: number = 5
+    ): IProject {
         const connection = MockFactory.createTestConnection(name);
 
         return {
@@ -195,7 +223,11 @@ export default class MockFactory {
      * @param content Content of blob
      * @param fileType File type of blob
      */
-    public static blob(name: string, content: string | Buffer, fileType: string): Blob {
+    public static blob(
+        name: string,
+        content: string | Buffer,
+        fileType: string
+    ): Blob {
         const blob = new Blob([content], { type: fileType });
         blob["name"] = name;
         return blob;
@@ -248,7 +280,9 @@ export default class MockFactory {
     public static createTestConnections(count: number = 10): IConnection[] {
         const connections: IConnection[] = [];
         for (let i = 1; i <= count; i++) {
-            connections.push(MockFactory.createTestCloudConnection(i.toString()));
+            connections.push(
+                MockFactory.createTestCloudConnection(i.toString())
+            );
         }
         return connections;
     }
@@ -257,7 +291,9 @@ export default class MockFactory {
      *
      * @param name Name of connection
      */
-    public static createTestCloudConnection(name: string = "test"): IConnection {
+    public static createTestCloudConnection(
+        name: string = "test"
+    ): IConnection {
         return MockFactory.createTestConnection(name, "azureBlobStorage");
     }
 
@@ -267,7 +303,9 @@ export default class MockFactory {
      * @param providerType Type of Connection - default local file system
      */
     public static createTestConnection(
-        name: string = "test", providerType: string = "azureBlobStorage"): IConnection {
+        name: string = "test",
+        providerType: string = "azureBlobStorage"
+    ): IConnection {
         return {
             id: `connection-${name}`,
             name: `Connection ${name}`,
@@ -314,7 +352,9 @@ export default class MockFactory {
             writeText: jest.fn(),
             isValidProjectConnection: jest.fn(),
             writeBinary: jest.fn(),
-            listFiles: jest.fn(() => Promise.resolve(MockFactory.createFileList())),
+            listFiles: jest.fn(() =>
+                Promise.resolve(MockFactory.createFileList())
+            ),
             listContainers: jest.fn(),
             createContainer: jest.fn(),
             deleteContainer: jest.fn(),
@@ -328,7 +368,9 @@ export default class MockFactory {
      * Creates a storage provider from IConnection
      * @param connection Connection with which to create Storage Provider
      */
-    public static createStorageProviderFromConnection(connection: IConnection): IStorageProvider {
+    public static createStorageProviderFromConnection(
+        connection: IConnection
+    ): IStorageProvider {
         return {
             ...MockFactory.createStorageProvider(),
             storageType: MockFactory.getStorageType(connection.providerType),
@@ -341,12 +383,15 @@ export default class MockFactory {
     public static createAssetProvider(): IAssetProvider {
         return {
             initialize: jest.fn(() => Promise.resolve()),
-            getAssets(folderPath?: string, folderName?: string): Promise<IAsset[]> {
+            getAssets(
+                folderPath?: string,
+                folderName?: string
+            ): Promise<IAsset[]> {
                 throw new Error("Method not implemented.");
             },
             getAsset(folderPath: string, assetName: string): Promise<IAsset> {
                 throw new Error("Method not implemented.");
-            }
+            },
         };
     }
 
@@ -354,10 +399,14 @@ export default class MockFactory {
      * Create array of IStorageProviderRegistrationOptions
      * @param count Number of storage provider registrations to create
      */
-    public static createStorageProviderRegistrations(count: number = 10): IStorageProviderRegistrationOptions[] {
+    public static createStorageProviderRegistrations(
+        count: number = 10
+    ): IStorageProviderRegistrationOptions[] {
         const registrations: IStorageProviderRegistrationOptions[] = [];
         for (let i = 1; i <= count; i++) {
-            registrations.push(MockFactory.createStorageProviderRegistration(i.toString()));
+            registrations.push(
+                MockFactory.createStorageProviderRegistration(i.toString())
+            );
         }
 
         return registrations;
@@ -367,10 +416,14 @@ export default class MockFactory {
      * Create array of IAssetProviderRegistrationOptions
      * @param count Number of Asset Provider Registrations to create
      */
-    public static createAssetProviderRegistrations(count: number = 10): IAssetProviderRegistrationOptions[] {
+    public static createAssetProviderRegistrations(
+        count: number = 10
+    ): IAssetProviderRegistrationOptions[] {
         const registrations: IAssetProviderRegistrationOptions[] = [];
         for (let i = 1; i <= count; i++) {
-            registrations.push(MockFactory.createAssetProviderRegistration(i.toString()));
+            registrations.push(
+                MockFactory.createAssetProviderRegistration(i.toString())
+            );
         }
 
         return registrations;
@@ -486,7 +539,9 @@ export default class MockFactory {
             loadAssetMetadata: jest.fn(() => Promise.resolve()),
             refreshAsset: jest.fn(() => Promise.resolve()),
             saveAssetMetadata: jest.fn(() => Promise.resolve()),
-            saveAssetMetadataAndCleanEmptyLabel: jest.fn(()=> Promise.resolve()),
+            saveAssetMetadataAndCleanEmptyLabel: jest.fn(() =>
+                Promise.resolve()
+            ),
             updateProjectTag: jest.fn(() => Promise.resolve()),
             deleteProjectTag: jest.fn(() => Promise.resolve()),
             reconfigureTableTag: jest.fn(() => Promise.resolve()),
@@ -521,12 +576,14 @@ export default class MockFactory {
      * Creates fake IProjectSettingsPageProps
      * @param projectId Current project ID
      */
-    public static projectSettingsProps(projectId?: string): IProjectSettingsPageProps {
+    public static projectSettingsProps(
+        projectId?: string
+    ): IProjectSettingsPageProps {
         return {
             ...MockFactory.pageProps(projectId, "settings"),
             connections: MockFactory.createTestConnections(),
             appSettings: MockFactory.appSettings(),
-            appTitleActions: (appTitleActions as any) as IAppTitleActions,
+            appTitleActions: appTitleActions as any as IAppTitleActions,
         };
     }
 
@@ -536,9 +593,10 @@ export default class MockFactory {
      */
     public static editorPageProps(projectId?: string): IEditorPageProps {
         return {
-            actions: (projectActions as any) as IProjectActions,
-            applicationActions: (applicationActions as any) as IApplicationActions,
-            appTitleActions: (appTitleActions as any) as IAppTitleActions,
+            actions: projectActions as any as IProjectActions,
+            applicationActions:
+                applicationActions as any as IApplicationActions,
+            appTitleActions: appTitleActions as any as IAppTitleActions,
             ...MockFactory.pageProps(projectId, "edit"),
         };
     }
@@ -578,7 +636,10 @@ export default class MockFactory {
      * @param predicate The predicate to evaluate the condition
      * @param interval The interval to check the value
      */
-    public static waitForCondition(predicate: () => boolean, interval: number = 100): Promise<void> {
+    public static waitForCondition(
+        predicate: () => boolean,
+        interval: number = 100
+    ): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const handle = setInterval(() => {
                 try {
@@ -593,7 +654,10 @@ export default class MockFactory {
         });
     }
 
-    public static createKeyboardRegistrations(count = 5, handlers?): IKeyboardRegistrations {
+    public static createKeyboardRegistrations(
+        count = 5,
+        handlers?
+    ): IKeyboardRegistrations {
         const keyDownRegs = {};
         if (!handlers) {
             handlers = [];
@@ -678,8 +742,9 @@ export default class MockFactory {
             project: null,
             appSettings: MockFactory.appSettings(),
             recentProjects: MockFactory.createTestProjects(),
-            projectActions: (projectActions as any) as IProjectActions,
-            applicationActions: (applicationActions as any) as IApplicationActions,
+            projectActions: projectActions as any as IProjectActions,
+            applicationActions:
+                applicationActions as any as IApplicationActions,
             history: MockFactory.history(),
             location: MockFactory.location(),
             match: MockFactory.match(projectId, method),
@@ -737,7 +802,7 @@ export default class MockFactory {
      * Generates a random color string
      */
     private static randomColor(): string {
-        return "#" + (Math.random() * 0xFFFFFF << 0).toString(16);
+        return "#" + ((Math.random() * 0xffffff) << 0).toString(16);
     }
 
     /**

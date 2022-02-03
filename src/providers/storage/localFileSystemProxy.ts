@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { IpcRendererProxy } from "../../common/ipcRendererProxy";
 import { IStorageProvider } from "./storageProviderFactory";
 import { IAssetProvider } from "./assetProviderFactory";
@@ -54,7 +51,9 @@ export class LocalFileSystemProxy implements IStorageProvider, IAssetProvider {
         if (fileName) {
             filePath = [this.options.folderPath, fileName].join("/");
         }
-        return IpcRendererProxy.send(`${PROXY_NAME}:isValidProjectConnection`, [filePath]);
+        return IpcRendererProxy.send(`${PROXY_NAME}:isValidProjectConnection`, [
+            filePath,
+        ]);
     }
 
     public getFileType(fileName: string): Promise<any> {
@@ -87,7 +86,10 @@ export class LocalFileSystemProxy implements IStorageProvider, IAssetProvider {
      */
     public writeText(fileName: string, contents: string): Promise<void> {
         const filePath = [this.options.folderPath, fileName].join("/");
-        return IpcRendererProxy.send(`${PROXY_NAME}:writeText`, [filePath, contents]);
+        return IpcRendererProxy.send(`${PROXY_NAME}:writeText`, [
+            filePath,
+            contents,
+        ]);
     }
 
     /**
@@ -97,7 +99,10 @@ export class LocalFileSystemProxy implements IStorageProvider, IAssetProvider {
      */
     public writeBinary(fileName: string, contents: Buffer): Promise<void> {
         const filePath = [this.options.folderPath, fileName].join("/");
-        return IpcRendererProxy.send(`${PROXY_NAME}:writeBinary`, [filePath, contents]);
+        return IpcRendererProxy.send(`${PROXY_NAME}:writeBinary`, [
+            filePath,
+            contents,
+        ]);
     }
 
     /**
@@ -106,7 +111,9 @@ export class LocalFileSystemProxy implements IStorageProvider, IAssetProvider {
      * @param ext - NOT CURRENTLY USED IN IMPLEMENTATION.
      */
     public listFiles(folderName?: string, ext?: string): Promise<string[]> {
-        const folderPath = folderName ? [this.options.folderPath, folderName].join("/") : this.options.folderPath;
+        const folderPath = folderName
+            ? [this.options.folderPath, folderName].join("/")
+            : this.options.folderPath;
         return IpcRendererProxy.send(`${PROXY_NAME}:listFiles`, [folderPath]);
     }
 
@@ -124,8 +131,12 @@ export class LocalFileSystemProxy implements IStorageProvider, IAssetProvider {
      * @param folderName - Directory from which to list directories
      */
     public listContainers(folderName?: string): Promise<string[]> {
-        const folderPath = folderName ? [this.options.folderPath, folderName].join("/") : this.options.folderPath;
-        return IpcRendererProxy.send(`${PROXY_NAME}:listContainers`, [folderPath]);
+        const folderPath = folderName
+            ? [this.options.folderPath, folderName].join("/")
+            : this.options.folderPath;
+        return IpcRendererProxy.send(`${PROXY_NAME}:listContainers`, [
+            folderPath,
+        ]);
     }
 
     /**
@@ -134,7 +145,9 @@ export class LocalFileSystemProxy implements IStorageProvider, IAssetProvider {
      */
     public createContainer(folderName: string): Promise<void> {
         const folderPath = [this.options.folderPath, folderName].join("/");
-        return IpcRendererProxy.send(`${PROXY_NAME}:createContainer`, [folderPath]);
+        return IpcRendererProxy.send(`${PROXY_NAME}:createContainer`, [
+            folderPath,
+        ]);
     }
 
     /**
@@ -143,7 +156,9 @@ export class LocalFileSystemProxy implements IStorageProvider, IAssetProvider {
      */
     public deleteContainer(folderName: string): Promise<void> {
         const folderPath = [this.options.folderPath, folderName].join("/");
-        return IpcRendererProxy.send(`${PROXY_NAME}:deleteContainer`, [folderPath]);
+        return IpcRendererProxy.send(`${PROXY_NAME}:deleteContainer`, [
+            folderPath,
+        ]);
     }
 
     /**
@@ -151,10 +166,16 @@ export class LocalFileSystemProxy implements IStorageProvider, IAssetProvider {
      * @param folderName - Directory containing assets
      */
     public getAssets(folderName?: string): Promise<IAsset[]> {
-        return IpcRendererProxy.send(`${PROXY_NAME}:getAssets`, [this.options.folderPath, folderName]);
+        return IpcRendererProxy.send(`${PROXY_NAME}:getAssets`, [
+            this.options.folderPath,
+            folderName,
+        ]);
     }
 
-    public getAsset(folderPath: string, assetName: string): Promise<IAsset>{
-        return IpcRendererProxy.send(`${PROXY_NAME}:getAsset`, [this.options.folderPath, `${folderPath}/${assetName}`]);
+    public getAsset(folderPath: string, assetName: string): Promise<IAsset> {
+        return IpcRendererProxy.send(`${PROXY_NAME}:getAsset`, [
+            this.options.folderPath,
+            `${folderPath}/${assetName}`,
+        ]);
     }
 }

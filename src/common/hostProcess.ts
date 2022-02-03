@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import os from "os";
 
 /**
@@ -20,8 +17,8 @@ export interface IHostProcess {
  */
 export enum HostProcessType {
     Electron = 1, // bits: 01
-    Browser = 2,  // bits: 10
-    All = 3,      // bits: 11
+    Browser = 2, // bits: 10
+    All = 3, // bits: 11
 }
 
 export enum PlatformType {
@@ -34,7 +31,10 @@ export enum PlatformType {
 function getHostProcess(): IHostProcess {
     const osRelease = os.release().toLowerCase();
     let hostProcessType: HostProcessType;
-    if (osRelease.indexOf("electron") > -1 || process.env.HOST_TYPE === "electron") {
+    if (
+        osRelease.indexOf("electron") > -1 ||
+        process.env.HOST_TYPE === "electron"
+    ) {
         hostProcessType = HostProcessType.Electron;
     } else {
         hostProcessType = HostProcessType.Browser;

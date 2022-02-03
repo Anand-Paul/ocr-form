@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 export interface IDeferred<T> {
     resolve(result?: T): void;
     reject(err?: any): void;
@@ -17,7 +14,9 @@ export class Deferred<T> implements IDeferred<T> {
             this.reject = reject;
         });
 
-        this.then = this.promise.then.bind(this.promise) as (<T>(value: T) => Promise<T>);
+        this.then = this.promise.then.bind(this.promise) as <T>(
+            value: T
+        ) => Promise<T>;
         this.catch = this.promise.catch.bind(this.promise);
     }
 
@@ -25,6 +24,10 @@ export class Deferred<T> implements IDeferred<T> {
     public resolve = (result?: T) => {};
     // tslint:disable-next-line:no-empty
     public reject = (err?: any) => {};
-    public then = (value: T): Promise<T> => { throw new Error("Not implemented yet"); };
-    public catch = (err: any): Promise<T> => { throw new Error("Not implemented yet"); };
+    public then = (value: T): Promise<T> => {
+        throw new Error("Not implemented yet");
+    };
+    public catch = (err: any): Promise<T> => {
+        throw new Error("Not implemented yet");
+    };
 }

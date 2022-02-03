@@ -1,18 +1,21 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { AssetProviderFactory, IAssetProvider } from "./assetProviderFactory";
 import { IAsset } from "../../models/applicationState";
 
 describe("Asset Provider Factory", () => {
     it("registers new storage providers", () => {
         expect(Object.keys(AssetProviderFactory.providers).length).toEqual(0);
-        AssetProviderFactory.register("testProvider", () => new TestAssetProvider());
+        AssetProviderFactory.register(
+            "testProvider",
+            () => new TestAssetProvider()
+        );
         expect(Object.keys(AssetProviderFactory.providers).length).toEqual(1);
     });
 
     it("creates a new instance of the provider", () => {
-        AssetProviderFactory.register("testProvider", () => new TestAssetProvider());
+        AssetProviderFactory.register(
+            "testProvider",
+            () => new TestAssetProvider()
+        );
         const provider = AssetProviderFactory.create("testProvider");
 
         expect(provider).not.toBeNull();
@@ -31,7 +34,7 @@ class TestAssetProvider implements IAssetProvider {
     public getAssets(folderPath?: string): Promise<IAsset[]> {
         throw new Error("Method not implemented.");
     }
-    public getAsset(folderPath: string, assetName: string): Promise<IAsset>{
+    public getAsset(folderPath: string, assetName: string): Promise<IAsset> {
         throw new Error("Method not implemented.");
     }
 }

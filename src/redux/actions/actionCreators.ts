@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { Action } from "redux";
 import { ActionTypes } from "./actionTypes";
 import {
@@ -28,10 +25,7 @@ import {
     IDeleteProjectTagAction,
     IRefreshAssetAction,
 } from "./projectActions";
-import {
-    IShowAppErrorAction,
-    IClearErrorAction,
-} from "./appErrorActions";
+import { IShowAppErrorAction, IClearErrorAction } from "./appErrorActions";
 import { ISetTitleAction } from "./appTitleActions";
 
 /**
@@ -46,7 +40,9 @@ export interface IPayloadAction<TType, TPayload> extends Action<TType> {
  * @param type Name for action being created
  */
 // tslint:disable-next-line:max-line-length
-export function createAction<TAction extends Action<TAction["type"]>>(type: TAction["type"]): () => Action<TAction["type"]> {
+export function createAction<TAction extends Action<TAction["type"]>>(
+    type: TAction["type"]
+): () => Action<TAction["type"]> {
     return () => ({
         type,
     });
@@ -57,7 +53,13 @@ export function createAction<TAction extends Action<TAction["type"]>>(type: TAct
  * @param type Name for action being created
  */
 // tslint:disable-next-line:max-line-length
-export function createPayloadAction<TAction extends IPayloadAction<TAction["type"], TAction["payload"]>>(type: TAction["type"]): (payload: TAction["payload"]) => IPayloadAction<TAction["type"], TAction["payload"]> {
+export function createPayloadAction<
+    TAction extends IPayloadAction<TAction["type"], TAction["payload"]>
+>(
+    type: TAction["type"]
+): (
+    payload: TAction["payload"]
+) => IPayloadAction<TAction["type"], TAction["payload"]> {
     return (payload: TAction["payload"]) => ({
         type,
         payload,
@@ -74,33 +76,36 @@ export interface IOtherAction extends Action<string> {
 /**
  * Helper instance of catch-all
  */
-export const anyOtherAction = createAction<IOtherAction>(ActionTypes.ANY_OTHER_ACTION);
+export const anyOtherAction = createAction<IOtherAction>(
+    ActionTypes.ANY_OTHER_ACTION
+);
 
 /**
  * Used by reducers to type-check all actions
  */
-export type AnyAction = IOtherAction |
-    ISaveAppSettingsAction |
-    IEnsureSecurityTokenAction |
-    ISaveConnectionAction |
-    IDeleteConnectionAction |
-    ILoadConnectionAction |
-    ISaveConnectionAction |
-    IAddAssetToProjectAction|
-    IDeleteConnectionAction |
-    ILoadProjectAction |
-    ICloseProjectAction |
-    ISaveProjectAction |
-    IDeleteProjectAction |
-    ILoadProjectAssetsAction |
-    IDeleteProjectAssetAction |
-    ISaveAssetMetadataAction |
-    ILoadAssetMetadataAction |
-    IRefreshAssetAction |
-    IShowAppErrorAction |
-    IClearErrorAction |
-    IUpdateProjectTagAction |
-    IUpdateProjectTagsFromFilesAction |
-    IUpdateTagDocumentCount |
-    IDeleteProjectTagAction |
-    ISetTitleAction;
+export type AnyAction =
+    | IOtherAction
+    | ISaveAppSettingsAction
+    | IEnsureSecurityTokenAction
+    | ISaveConnectionAction
+    | IDeleteConnectionAction
+    | ILoadConnectionAction
+    | ISaveConnectionAction
+    | IAddAssetToProjectAction
+    | IDeleteConnectionAction
+    | ILoadProjectAction
+    | ICloseProjectAction
+    | ISaveProjectAction
+    | IDeleteProjectAction
+    | ILoadProjectAssetsAction
+    | IDeleteProjectAssetAction
+    | ISaveAssetMetadataAction
+    | ILoadAssetMetadataAction
+    | IRefreshAssetAction
+    | IShowAppErrorAction
+    | IClearErrorAction
+    | IUpdateProjectTagAction
+    | IUpdateProjectTagsFromFilesAction
+    | IUpdateTagDocumentCount
+    | IDeleteProjectTagAction
+    | ISetTitleAction;

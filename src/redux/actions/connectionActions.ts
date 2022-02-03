@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { IConnection } from "../../models/applicationState";
 import { ActionTypes } from "./actionTypes";
 import { IPayloadAction, createPayloadAction } from "./actionCreators";
@@ -22,7 +19,9 @@ export default interface IConnectionActions {
  * Dispatches Load Connection action and resolves with IConnection
  * @param connection - Connection to load
  */
-export function loadConnection(connection: IConnection): (dispatch: Dispatch) => Promise<IConnection> {
+export function loadConnection(
+    connection: IConnection
+): (dispatch: Dispatch) => Promise<IConnection> {
     return (dispatch: Dispatch) => {
         dispatch(loadConnectionAction(connection));
         return Promise.resolve(connection);
@@ -33,15 +32,22 @@ export function loadConnection(connection: IConnection): (dispatch: Dispatch) =>
  * Dispatches Save Connection action and resolves with IConnection
  * @param connection - Connection to save
  */
-export function saveConnection(connection: IConnection): (dispatch: Dispatch) => Promise<IConnection> {
+export function saveConnection(
+    connection: IConnection
+): (dispatch: Dispatch) => Promise<IConnection> {
     return async (dispatch: Dispatch) => {
         const connectionService = new ConnectionService();
         await connectionService.save(connection);
-        const projectJson = await webStorage.getItem(constants.projectFormTempKey);
+        const projectJson = await webStorage.getItem(
+            constants.projectFormTempKey
+        );
         if (projectJson) {
             const project = JSON.parse(projectJson as string);
             project.sourceConnection = connection;
-            await webStorage.setItem(constants.projectFormTempKey, JSON.stringify(project));
+            await webStorage.setItem(
+                constants.projectFormTempKey,
+                JSON.stringify(project)
+            );
         }
         dispatch(saveConnectionAction(connection));
         return Promise.resolve(connection);
@@ -52,7 +58,9 @@ export function saveConnection(connection: IConnection): (dispatch: Dispatch) =>
  * Dispatches Delete Connection action and resolves with IConnection
  * @param connection - Connection to delete
  */
-export function deleteConnection(connection: IConnection): (dispatch: Dispatch) => Promise<void> {
+export function deleteConnection(
+    connection: IConnection
+): (dispatch: Dispatch) => Promise<void> {
     return (dispatch: Dispatch) => {
         dispatch(deleteConnectionAction(connection));
         return Promise.resolve();
@@ -62,34 +70,43 @@ export function deleteConnection(connection: IConnection): (dispatch: Dispatch) 
 /**
  * Load connection action type
  */
-export interface ILoadConnectionAction extends IPayloadAction<string, IConnection> {
+export interface ILoadConnectionAction
+    extends IPayloadAction<string, IConnection> {
     type: ActionTypes.LOAD_CONNECTION_SUCCESS;
 }
 
 /**
  * Save connection action type
  */
-export interface ISaveConnectionAction extends IPayloadAction<string, IConnection> {
+export interface ISaveConnectionAction
+    extends IPayloadAction<string, IConnection> {
     type: ActionTypes.SAVE_CONNECTION_SUCCESS;
 }
 
 /**
  * Delete connection action type
  */
-export interface IDeleteConnectionAction extends IPayloadAction<string, IConnection> {
+export interface IDeleteConnectionAction
+    extends IPayloadAction<string, IConnection> {
     type: ActionTypes.DELETE_CONNECTION_SUCCESS;
 }
 
 /**
  * Instance of load connection action
  */
-export const loadConnectionAction = createPayloadAction<ILoadConnectionAction>(ActionTypes.LOAD_CONNECTION_SUCCESS);
+export const loadConnectionAction = createPayloadAction<ILoadConnectionAction>(
+    ActionTypes.LOAD_CONNECTION_SUCCESS
+);
 /**
  * Instance of save connection action
  */
-export const saveConnectionAction = createPayloadAction<ISaveConnectionAction>(ActionTypes.SAVE_CONNECTION_SUCCESS);
+export const saveConnectionAction = createPayloadAction<ISaveConnectionAction>(
+    ActionTypes.SAVE_CONNECTION_SUCCESS
+);
 /**
  * Instance of delete connection action
  */
 export const deleteConnectionAction =
-    createPayloadAction<IDeleteConnectionAction>(ActionTypes.DELETE_CONNECTION_SUCCESS);
+    createPayloadAction<IDeleteConnectionAction>(
+        ActionTypes.DELETE_CONNECTION_SUCCESS
+    );

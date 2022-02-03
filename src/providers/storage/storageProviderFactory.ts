@@ -1,7 +1,7 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import { IAssetProvider, IAssetProviderRegistrationOptions } from "./assetProviderFactory";
+import {
+    IAssetProvider,
+    IAssetProviderRegistrationOptions,
+} from "./assetProviderFactory";
 import Guard from "../../common/guard";
 import { IConnection, StorageType } from "../../models/applicationState";
 import getHostProcess, { HostProcessType } from "../../common/hostProcess";
@@ -21,13 +21,16 @@ import getHostProcess, { HostProcessType } from "../../common/hostProcess";
  * @member deleteContainer - Delete a container from a storage provider
  */
 export interface IStorageProvider extends IAssetProvider {
-
     storageType: StorageType;
 
     readText(filePath: string, ignoreNotFound?: boolean): Promise<string>;
     getFileType?(filePath: string): Promise<any>;
     readBinary(filePath: string): Promise<Buffer>;
-    deleteFile(filePath: string, ignoreNotFound?: boolean, ignoreForbidden?: boolean): Promise<void>;
+    deleteFile(
+        filePath: string,
+        ignoreNotFound?: boolean,
+        ignoreForbidden?: boolean
+    ): Promise<void>;
 
     writeText(filePath: string, contents: string): Promise<void>;
     writeBinary(filePath: string, contents: Buffer): Promise<void>;
@@ -46,7 +49,8 @@ export interface IStorageProvider extends IAssetProvider {
  * Interface for registration options of Storage Providers
  * @member factory - Function to instantiate storage provider
  */
-export interface IStorageProviderRegistrationOptions extends IAssetProviderRegistrationOptions {
+export interface IStorageProviderRegistrationOptions
+    extends IAssetProviderRegistrationOptions {
     factory: (options?: any) => IStorageProvider;
 }
 
@@ -72,18 +76,25 @@ export class StorageProviderFactory {
      * @param name - Name of Storage Provider
      * @param factory - Function that instantiates Storage Provider
      */
-    public static register(name: string, factory: (options?: any) => IStorageProvider);
+    public static register(
+        name: string,
+        factory: (options?: any) => IStorageProvider
+    );
     /**
      * Register Storage Provider based on name and a factory
      * @param name - Name of Storage Provider
      * @param factory - Function that instantiates Storage Provider
      */
-    public static register(nameOrOptions: any, factory?: (options?: any) => IStorageProvider) {
+    public static register(
+        nameOrOptions: any,
+        factory?: (options?: any) => IStorageProvider
+    ) {
         Guard.null(nameOrOptions);
 
-        let options: IStorageProviderRegistrationOptions = nameOrOptions as IStorageProviderRegistrationOptions;
+        let options: IStorageProviderRegistrationOptions =
+            nameOrOptions as IStorageProviderRegistrationOptions;
 
-        if (typeof (nameOrOptions) === "string") {
+        if (typeof nameOrOptions === "string") {
             Guard.null(factory);
 
             options = {
@@ -120,9 +131,12 @@ export class StorageProviderFactory {
     public static create(name: string, options?: any): IStorageProvider {
         Guard.empty(name);
 
-        const registrationOptions = StorageProviderFactory.providerRegistry[name];
+        const registrationOptions =
+            StorageProviderFactory.providerRegistry[name];
         if (!registrationOptions) {
-            throw new Error(`No storage provider has been registered with name '${name}'`);
+            throw new Error(
+                `No storage provider has been registered with name '${name}'`
+            );
         }
 
         return registrationOptions.factory(options);
@@ -136,5 +150,7 @@ export class StorageProviderFactory {
         return this.providers[providerType] !== undefined;
     }
 
-    private static providerRegistry: { [id: string]: IStorageProviderRegistrationOptions } = {};
+    private static providerRegistry: {
+        [id: string]: IStorageProviderRegistrationOptions;
+    } = {};
 }

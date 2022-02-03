@@ -1,7 +1,8 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import { forEachAsync as arrayForEachAsync, mapAsync, containsDuplicates } from "./common/extensions/array";
+import {
+    forEachAsync as arrayForEachAsync,
+    mapAsync,
+    containsDuplicates,
+} from "./common/extensions/array";
 import { forEachAsync as mapForEachAsync } from "./common/extensions/map";
 
 declare global {
@@ -13,7 +14,10 @@ declare global {
          * @param action The action to perform on each item in the array
          * @param batchSize The batch size for actions to perform in parallel (default: 5)
          */
-        forEachAsync(action: (item: T) => Promise<void>, batchSize?: number): Promise<void>;
+        forEachAsync(
+            action: (item: T) => Promise<void>,
+            batchSize?: number
+        ): Promise<void>;
 
         /**
          * Maps items in the array in async batches with the specified action
@@ -21,7 +25,10 @@ declare global {
          * @param action The transformer action to perform on each item in the array
          * @param batchSize The batch size for actions to perform in parallel (default: 5);
          */
-        mapAsync<R>(action: (item: T) => Promise<R>, batchSize?: number): Promise<R[]>;
+        mapAsync<R>(
+            action: (item: T) => Promise<R>,
+            batchSize?: number
+        ): Promise<R[]>;
 
         /**
          * Checks for duplicates in an array using a key selector function for each item.
@@ -34,7 +41,8 @@ declare global {
         containsDuplicates<T>(
             this: T[],
             keySelectorFn: (t: T) => string,
-            keyNormalizerFn?: (s: string) => string): boolean;
+            keyNormalizerFn?: (s: string) => string
+        ): boolean;
     }
 
     // tslint:disable-next-line:interface-name
@@ -45,7 +53,10 @@ declare global {
          * @param action The action to perform on each item in the map
          * @param batchSize The batch size for actions to perform in parallel (default: 5)
          */
-        forEachAsync(action: (value: V, key: K) => Promise<void>, batchSize?: number): Promise<void>;
+        forEachAsync(
+            action: (value: V, key: K) => Promise<void>,
+            batchSize?: number
+        ): Promise<void>;
     }
 }
 

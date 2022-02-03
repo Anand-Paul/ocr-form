@@ -1,9 +1,10 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import {
-    app, ipcMain, BrowserWindow, BrowserWindowConstructorOptions,
-    Menu, MenuItemConstructorOptions,
+    app,
+    ipcMain,
+    BrowserWindow,
+    BrowserWindowConstructorOptions,
+    Menu,
+    MenuItemConstructorOptions,
 } from "electron";
 import { IpcMainProxy } from "./common/ipcMainProxy";
 import LocalFileSystem from "./providers/storage/localFileSystem";
@@ -13,8 +14,8 @@ import LocalFileSystem from "./providers/storage/localFileSystem";
 let mainWindow: BrowserWindow | null;
 let ipcMainProxy: IpcMainProxy;
 
-const isMac = process.platform === "darwin"
-const isLinux = process.platform === "linux"
+const isMac = process.platform === "darwin";
+const isLinux = process.platform === "linux";
 
 async function createWindow() {
     const windowOptions: BrowserWindowConstructorOptions = {
@@ -26,15 +27,16 @@ async function createWindow() {
         titleBarStyle: "hidden",
         backgroundColor: "#272B30",
         show: false,
-        icon: "app-icons/icon.png"
+        icon: "app-icons/icon.png",
     };
     windowOptions.webPreferences = {
         nodeIntegration: true,
         webSecurity: false,
-        enableRemoteModule: true
+        enableRemoteModule: true,
     };
 
-    const staticUrl = process.env.ELECTRON_START_URL || `file:///${__dirname}/index.html`;
+    const staticUrl =
+        process.env.ELECTRON_START_URL || `file:///${__dirname}/index.html`;
     mainWindow = new BrowserWindow(windowOptions);
     mainWindow.loadURL(staticUrl);
     mainWindow.maximize();
@@ -73,11 +75,11 @@ function registerContextMenu(browserWindow: BrowserWindow): void {
     const inputMenu = Menu.buildFromTemplate([
         { role: "undo", accelerator: "CmdOrCtrl+Z" },
         { role: "redo", accelerator: "CmdOrCtrl+Shift+Z" },
-        { type: "separator", label: "separator1"},
+        { type: "separator", label: "separator1" },
         { role: "cut", accelerator: "CmdOrCtrl+X" },
         { role: "copy", accelerator: "CmdOrCtrl+C" },
         { role: "paste", accelerator: "CmdOrCtrl+V" },
-        { type: "separator", label: "separator2"},
+        { type: "separator", label: "separator2" },
         { role: "selectAll", accelerator: "CmdOrCtrl+A" },
     ]);
 
@@ -96,34 +98,33 @@ function registerContextMenu(browserWindow: BrowserWindow): void {
 
     const menuItems: MenuItemConstructorOptions[] = [
         {
-            label: "File", submenu: [
-                isMac ? { role: "close" } : { role: "quit" }
-            ],
+            label: "File",
+            submenu: [isMac ? { role: "close" } : { role: "quit" }],
         },
         { role: "editMenu" },
         {
-            label: "View", submenu: [
+            label: "View",
+            submenu: [
                 { role: "reload" },
                 { type: "separator", label: "separator1" },
                 { role: "toggleDevTools" },
                 { role: "togglefullscreen" },
                 { type: "separator", label: "separator2" },
                 { role: "resetZoom", label: "Reset Zoom" },
-                { role: "zoomIn", accelerator:  "CmdOrCtrl+="},
+                { role: "zoomIn", accelerator: "CmdOrCtrl+=" },
                 { role: "zoomOut" },
             ],
         },
         {
-            label: "Window", submenu:
-                (isMac ? [
-                    { role: "minimize" },
-                    { role: "front" },
-                    { type: "separator" },
-                    { role: "window" }
-                ] : [
-                    { role: "minimize" },
-                    { role: "close" }
-                ])
+            label: "Window",
+            submenu: isMac
+                ? [
+                      { role: "minimize" },
+                      { role: "front" },
+                      { type: "separator" },
+                      { role: "window" },
+                  ]
+                : [{ role: "minimize" }, { role: "close" }],
         },
     ];
     const menu = Menu.buildFromTemplate(menuItems);

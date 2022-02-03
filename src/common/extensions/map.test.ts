@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import _ from "lodash";
 import MockFactory from "../mockFactory";
 import { IAsset } from "../../models/applicationState";
@@ -12,7 +9,10 @@ describe("Map Extensions", () => {
     beforeAll(registerMixins);
 
     describe("forEachAsync", () => {
-        const map = testArray.map((asset) => [asset.id, asset]) as [string, IAsset][];
+        const map = testArray.map((asset) => [asset.id, asset]) as [
+            string,
+            IAsset
+        ][];
         const testMap = new Map<string, IAsset>(map);
 
         const output = [];
@@ -27,10 +27,10 @@ describe("Map Extensions", () => {
         };
 
         const sortFunc = (a: IAsset, b: IAsset) => {
-            return a.id > b.id ? 1 : (b.id > a.id ? -1 : 0);
+            return a.id > b.id ? 1 : b.id > a.id ? -1 : 0;
         };
 
-        beforeEach(() => output.length = 0);
+        beforeEach(() => (output.length = 0));
 
         it("processes items in batches of default size", async () => {
             await testMap.forEachAsync(actionFunc);
@@ -43,7 +43,9 @@ describe("Map Extensions", () => {
         });
 
         it("fails when called with invalid batch size", async () => {
-            await expect(testMap.forEachAsync(() => null, 0)).rejects.not.toBeNull();
+            await expect(
+                testMap.forEachAsync(() => null, 0)
+            ).rejects.not.toBeNull();
         });
     });
 });

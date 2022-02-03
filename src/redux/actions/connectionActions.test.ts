@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import createMockStore, { MockStoreEnhanced } from "redux-mock-store";
 import { ActionTypes } from "./actionTypes";
 import * as connectionActions from "./connectionActions";
@@ -19,7 +16,9 @@ describe("Conneciton Redux Actions", () => {
     });
     it("Load Connection action resolves a promise and dispatches redux action", async () => {
         const connection = MockFactory.createTestConnection("Connection1");
-        const result = await connectionActions.loadConnection(connection)(store.dispatch);
+        const result = await connectionActions.loadConnection(connection)(
+            store.dispatch
+        );
         const actions = store.getActions();
 
         expect(actions.length).toEqual(1);
@@ -31,11 +30,17 @@ describe("Conneciton Redux Actions", () => {
     });
 
     it("Save Connection action resolves a promise and dispatches redux action", async () => {
-        const connectionServiceMock = ConnectionService as jest.Mocked<typeof ConnectionService>;
-        connectionServiceMock.prototype.save = jest.fn((connection) => Promise.resolve(connection));
+        const connectionServiceMock = ConnectionService as jest.Mocked<
+            typeof ConnectionService
+        >;
+        connectionServiceMock.prototype.save = jest.fn((connection) =>
+            Promise.resolve(connection)
+        );
 
         const connection = MockFactory.createTestConnection("Connection1");
-        const result = await connectionActions.saveConnection(connection)(store.dispatch);
+        const result = await connectionActions.saveConnection(connection)(
+            store.dispatch
+        );
         const actions = store.getActions();
 
         expect(actions.length).toEqual(1);

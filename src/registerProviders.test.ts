@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import registerProviders from "./registerProviders";
 import { StorageProviderFactory } from "./providers/storage/storageProviderFactory";
 import { AssetProviderFactory } from "./providers/storage/assetProviderFactory";
@@ -21,8 +18,12 @@ describe("Register Providers", () => {
 
             registerProviders();
 
-            expect(StorageProviderFactory.providers["localFileSystemProxy"]).toBeUndefined();
-            expect(AssetProviderFactory.providers["localFileSystemProxy"]).toBeUndefined();
+            expect(
+                StorageProviderFactory.providers["localFileSystemProxy"]
+            ).toBeUndefined();
+            expect(
+                AssetProviderFactory.providers["localFileSystemProxy"]
+            ).toBeUndefined();
         });
     });
 });

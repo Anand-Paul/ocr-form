@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { Middleware, Dispatch, AnyAction, MiddlewareAPI } from "redux";
 import { constants } from "../../common/constants";
 import { webStorage } from "../../common/webStorage";
@@ -9,20 +6,24 @@ export interface ILocalStorageMiddlewareOptions {
     paths: string[];
 }
 
-export function createLocalStorage(config: ILocalStorageMiddlewareOptions): Middleware {
-    return (store: MiddlewareAPI<Dispatch<AnyAction>>) => (next: Dispatch<AnyAction>) => (action: any) => {
-        const result = next(action);
-        const state = store.getState();
+export function createLocalStorage(
+    config: ILocalStorageMiddlewareOptions
+): Middleware {
+    return (store: MiddlewareAPI<Dispatch<AnyAction>>) =>
+        (next: Dispatch<AnyAction>) =>
+        (action: any) => {
+            const result = next(action);
+            const state = store.getState();
 
-        config.paths.forEach((path) => {
-            if (state[path]) {
-                const json = JSON.stringify(state[path]);
-                setStorageItem(path, json);
-            }
-        });
+            config.paths.forEach((path) => {
+                if (state[path]) {
+                    const json = JSON.stringify(state[path]);
+                    setStorageItem(path, json);
+                }
+            });
 
-        return result;
-    };
+            return result;
+        };
 }
 
 export async function mergeInitialState(state: any, paths: string[]) {
@@ -48,7 +49,11 @@ export async function mergeInitialState(state: any, paths: string[]) {
         if (isArray) {
             initialState[path] = [].concat(legacyItem, item);
         } else {
-            initialState[path] = { ...initialState[path], ...item, ...legacyItem };
+            initialState[path] = {
+                ...initialState[path],
+                ...item,
+                ...legacyItem,
+            };
         }
     }
 

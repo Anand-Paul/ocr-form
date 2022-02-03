@@ -1,14 +1,16 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import { strings, addLocValues, IAppStrings, interpolate, interpolateJson } from "./strings";
+import {
+    strings,
+    addLocValues,
+    IAppStrings,
+    interpolate,
+    interpolateJson,
+} from "./strings";
 import { english } from "./localization/en-us";
 import { spanish } from "./localization/es-cl";
 
 const languages = ["en", "es"];
 
 describe("Localization tests", () => {
-
     function getLanguageJson(language: string): IAppStrings {
         return {
             en: english,
@@ -43,12 +45,21 @@ describe("Localization tests", () => {
                 const appSettings = languageJson.appSettings;
                 const newFormJson = addLocValues(formJson);
                 const formProps = newFormJson.properties;
-                const securityTokenProps = formProps.securityTokens.items.properties;
+                const securityTokenProps =
+                    formProps.securityTokens.items.properties;
 
-                expect(formProps.securityTokens.title).toEqual(appSettings.securityTokens.title);
-                expect(formProps.securityTokens.description).toEqual(appSettings.securityTokens.description);
-                expect(securityTokenProps.name.title).toEqual(appSettings.securityToken.name.title);
-                expect(securityTokenProps.key.title).toEqual(appSettings.securityToken.key.title);
+                expect(formProps.securityTokens.title).toEqual(
+                    appSettings.securityTokens.title
+                );
+                expect(formProps.securityTokens.description).toEqual(
+                    appSettings.securityTokens.description
+                );
+                expect(securityTokenProps.name.title).toEqual(
+                    appSettings.securityToken.name.title
+                );
+                expect(securityTokenProps.key.title).toEqual(
+                    appSettings.securityToken.key.title
+                );
             }
         });
 
@@ -65,15 +76,28 @@ describe("Localization tests", () => {
                 const lProj = languageJson.projectSettings;
 
                 expect(formProps.name.title).toEqual(common.displayName);
-                expect(formProps.sourceConnection.title).toEqual(lProj.sourceConnection.title);
-                expect(formProps.sourceConnection.description).toEqual(lProj.sourceConnection.description);
-                expect(formProps.targetConnection.title).toEqual(lProj.targetConnection.title);
-                expect(formProps.targetConnection.description).toEqual(lProj.targetConnection.description);
-                expect(formProps.videoSettings.title).toEqual(lProj.videoSettings.title);
-                expect(formProps.videoSettings.properties.frameExtractionRate.description).toEqual(
-                    lProj.videoSettings.description);
-                expect(formProps.videoSettings.properties.frameExtractionRate.title).toEqual(
-                    lProj.videoSettings.frameExtractionRate);
+                expect(formProps.sourceConnection.title).toEqual(
+                    lProj.sourceConnection.title
+                );
+                expect(formProps.sourceConnection.description).toEqual(
+                    lProj.sourceConnection.description
+                );
+                expect(formProps.targetConnection.title).toEqual(
+                    lProj.targetConnection.title
+                );
+                expect(formProps.targetConnection.description).toEqual(
+                    lProj.targetConnection.description
+                );
+                expect(formProps.videoSettings.title).toEqual(
+                    lProj.videoSettings.title
+                );
+                expect(
+                    formProps.videoSettings.properties.frameExtractionRate
+                        .description
+                ).toEqual(lProj.videoSettings.description);
+                expect(
+                    formProps.videoSettings.properties.frameExtractionRate.title
+                ).toEqual(lProj.videoSettings.frameExtractionRate);
                 expect(formProps.description.title).toEqual(common.description);
                 expect(formProps.tags.title).toEqual(languageJson.tags.title);
             }
@@ -91,7 +115,9 @@ describe("Localization tests", () => {
             };
 
             const result = interpolate(template, params);
-            expect(result).toEqual(`Hello ${params.user.name}, my name is ${params.bot.handle}`);
+            expect(result).toEqual(
+                `Hello ${params.user.name}, my name is ${params.bot.handle}`
+            );
         });
 
         it("Interpolate processes a JSON object template correctly", () => {

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 /**
  * Redux Action types
  */
@@ -38,5 +35,5 @@ export enum ActionTypes {
 
     SET_TITLE = "SET_TITLE",
 
-    UPDATE_PREBUILT_SETTINGS = "UPDATE_PREBUILT_SETTINGS"
+    UPDATE_PREBUILT_SETTINGS = "UPDATE_PREBUILT_SETTINGS",
 }

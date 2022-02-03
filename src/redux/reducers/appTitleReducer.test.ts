@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import { reducer } from "./appTitleReducer";
 import { setTitleAction } from "../actions/appTitleActions";
 import { anyOtherAction } from "../actions/actionCreators";

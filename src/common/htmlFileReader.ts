@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import axios, { AxiosRequestConfig } from "axios";
 import { IAsset, AssetType, IFileInfo } from "../models/applicationState";
 import Guard from "./guard";
@@ -11,7 +8,6 @@ import { isNumber } from "util";
  * Helper class for reading HTML files
  */
 export default class HtmlFileReader {
-
     public static videoAssetFiles = {};
 
     /**
@@ -49,8 +45,9 @@ export default class HtmlFileReader {
      * Reads attributes from asset depending on type (video or image)
      * @param asset Asset to read from
      */
-    public static async readAssetAttributes(asset: IAsset)
-        : Promise<{ width: number, height: number, duration?: number }> {
+    public static async readAssetAttributes(
+        asset: IAsset
+    ): Promise<{ width: number; height: number; duration?: number }> {
         Guard.null(asset);
 
         switch (asset.type) {
@@ -61,8 +58,9 @@ export default class HtmlFileReader {
         }
     }
 
-    public static async readAssetAttributesWithBuffer(base64: string)
-        : Promise<{ width: number, height: number, duration?: number }> {
+    public static async readAssetAttributesWithBuffer(
+        base64: string
+    ): Promise<{ width: number; height: number; duration?: number }> {
         Guard.null(base64);
 
         return await this.readImageAttributes("data:image;base64," + base64);
@@ -98,7 +96,9 @@ export default class HtmlFileReader {
         return await new Response(blob).arrayBuffer();
     }
 
-    public static readImageAttributes(url: string): Promise<{ width: number, height: number }> {
+    public static readImageAttributes(
+        url: string
+    ): Promise<{ width: number; height: number }> {
         return new Promise((resolve, reject) => {
             const image = document.createElement("img") as HTMLImageElement;
             image.onload = () => {
@@ -127,7 +127,9 @@ export default class HtmlFileReader {
         });
     }
 
-    public static async readImageOrientation(image: HTMLImageElement): Promise<number> {
+    public static async readImageOrientation(
+        image: HTMLImageElement
+    ): Promise<number> {
         return new Promise((resolve, reject) => {
             try {
                 EXIF.getData(image as any, () => {

@@ -1,11 +1,13 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
 import React from "react";
 import { IconButton } from "@fluentui/react";
 import { strings } from "../../../../common/strings";
-import { ITableRegion, ITableTag, ITag, TagInputMode } from "../../../../models/applicationState";
-import {constants} from "../../../../common/constants";
+import {
+    ITableRegion,
+    ITableTag,
+    ITag,
+    TagInputMode,
+} from "../../../../models/applicationState";
+import { constants } from "../../../../common/constants";
 
 enum Categories {
     General,
@@ -21,7 +23,11 @@ export interface ITagInputToolbarProps {
     /** Function to call when add tags button is clicked */
     onAddTags: () => void;
 
-    setTagInputMode?: (tagInputMode: TagInputMode, selectedTableTagToLabel?: ITableTag, selectedTableTagBody?: ITableRegion[][][]) => void;
+    setTagInputMode?: (
+        tagInputMode: TagInputMode,
+        selectedTableTagToLabel?: ITableTag,
+        selectedTableTagBody?: ITableRegion[][][]
+    ) => void;
     /** Function to call when search tags button is clicked */
     onSearchTags: () => void;
     /** Function to call when lock tags button is clicked */
@@ -50,18 +56,17 @@ interface ITagInputToolbarItemState {
     showOriginLabels: boolean;
 }
 
-export default class TagInputToolbar extends React.Component<ITagInputToolbarProps, ITagInputToolbarItemState> {
+export default class TagInputToolbar extends React.Component<
+    ITagInputToolbarProps,
+    ITagInputToolbarItemState
+> {
     state = {
         tagFilterToggled: false,
         showOriginLabels: constants.showOriginLabelsByDefault,
     };
 
     public render() {
-        return (
-            <div className="tag-input-toolbar">
-                {this.renderItems()}
-            </div>
-        );
+        return <div className="tag-input-toolbar">{this.renderItems()}</div>;
     }
 
     private getToolbarItems = (): ITagInputToolbarItemProps[] => {
@@ -83,13 +88,17 @@ export default class TagInputToolbar extends React.Component<ITagInputToolbarPro
                 category: Categories.Separator,
             },
             {
-                displayName: this.state.tagFilterToggled ? strings.tags.toolbar.showAllTags : strings.tags.toolbar.onlyShowCurrentPageTags,
+                displayName: this.state.tagFilterToggled
+                    ? strings.tags.toolbar.showAllTags
+                    : strings.tags.toolbar.onlyShowCurrentPageTags,
                 icon: this.state.tagFilterToggled ? "ClearFilter" : "Filter",
                 category: Categories.General,
                 handler: this.handleOnlyCurrentPageTags,
             },
             {
-                displayName: this.state.showOriginLabels ? strings.tags.toolbar.hideOriginLabels : strings.tags.toolbar.showOriginLabels,
+                displayName: this.state.showOriginLabels
+                    ? strings.tags.toolbar.hideOriginLabels
+                    : strings.tags.toolbar.showOriginLabels,
                 icon: this.state.showOriginLabels ? "GroupList" : "GroupedList",
                 category: Categories.General,
                 handler: this.handleShowOriginLabels,
@@ -129,118 +138,140 @@ export default class TagInputToolbar extends React.Component<ITagInputToolbarPro
                 handler: this.handleDelete,
             },
         ];
-    }
+    };
 
     private renderItems = () => {
-        const moveModifierDisabled = !this.props.selectedTag || this.props.searchingTags;
+        const moveModifierDisabled =
+            !this.props.selectedTag || this.props.searchingTags;
         const renameModifierDisabled = !this.props.selectedTag;
         const moveModifierClassNames = ["tag-input-toolbar-iconbutton"];
         const renameModifierClassNames = ["tag-input-toolbar-iconbutton"];
         if (moveModifierDisabled) {
-            moveModifierClassNames.push("tag-input-toolbar-iconbutton-disabled");
+            moveModifierClassNames.push(
+                "tag-input-toolbar-iconbutton-disabled"
+            );
         }
         if (renameModifierDisabled) {
-            renameModifierClassNames.push("tag-input-toolbar-iconbutton-disabled");
+            renameModifierClassNames.push(
+                "tag-input-toolbar-iconbutton-disabled"
+            );
         }
 
         const moveModifierClassName = moveModifierClassNames.join(" ");
         const renameModifierClassName = renameModifierClassNames.join(" ");
 
-        return (
-            this.getToolbarItems().map((itemConfig, index) => {
-                if (itemConfig.category === Categories.General) {
-                    return (
-                        <IconButton
-                            key={itemConfig.displayName}
-                            title={itemConfig.displayName}
-                            ariaLabel={itemConfig.displayName}
-                            className="tag-input-toolbar-iconbutton"
-                            iconProps={{iconName: itemConfig.icon}}
-                            autoFocus={!index}
-                            onClick={(e) => this.onToolbarItemClick(e, itemConfig)} />
-                    );
-                } else if (itemConfig.category === Categories.Separator) {
-                    return (<div className="tag-input-toolbar-separator" key={itemConfig.displayName}></div>);
-                } else if (itemConfig.category === Categories.RenameModifier) {
-                    return (
-                        <IconButton
-                            key={itemConfig.displayName}
-                            disabled={renameModifierDisabled}
-                            title={itemConfig.displayName}
-                            ariaLabel={itemConfig.displayName}
-                            className={renameModifierClassName}
-                            iconProps={{iconName: itemConfig.icon}}
-                            onClick={(e) => this.onToolbarItemClick(e, itemConfig)} />
-                    );
-                } else if (itemConfig.category === Categories.MoveModifier) {
-                    return (
-                        <IconButton
-                            key={itemConfig.displayName}
-                            disabled={moveModifierDisabled}
-                            title={itemConfig.displayName}
-                            ariaLabel={itemConfig.displayName}
-                            className={moveModifierClassName}
-                            iconProps={{iconName: itemConfig.icon}}
-                            onClick={(e) => this.onToolbarItemClick(e, itemConfig)} />
-                    );
-                } else {
-                    throw new Error(`Unsupported item category ${itemConfig.category}`);
-                }
-            })
-        );
-    }
+        return this.getToolbarItems().map((itemConfig, index) => {
+            if (itemConfig.category === Categories.General) {
+                return (
+                    <IconButton
+                        key={itemConfig.displayName}
+                        title={itemConfig.displayName}
+                        ariaLabel={itemConfig.displayName}
+                        className="tag-input-toolbar-iconbutton"
+                        iconProps={{ iconName: itemConfig.icon }}
+                        autoFocus={!index}
+                        onClick={(e) => this.onToolbarItemClick(e, itemConfig)}
+                    />
+                );
+            } else if (itemConfig.category === Categories.Separator) {
+                return (
+                    <div
+                        className="tag-input-toolbar-separator"
+                        key={itemConfig.displayName}
+                    ></div>
+                );
+            } else if (itemConfig.category === Categories.RenameModifier) {
+                return (
+                    <IconButton
+                        key={itemConfig.displayName}
+                        disabled={renameModifierDisabled}
+                        title={itemConfig.displayName}
+                        ariaLabel={itemConfig.displayName}
+                        className={renameModifierClassName}
+                        iconProps={{ iconName: itemConfig.icon }}
+                        onClick={(e) => this.onToolbarItemClick(e, itemConfig)}
+                    />
+                );
+            } else if (itemConfig.category === Categories.MoveModifier) {
+                return (
+                    <IconButton
+                        key={itemConfig.displayName}
+                        disabled={moveModifierDisabled}
+                        title={itemConfig.displayName}
+                        ariaLabel={itemConfig.displayName}
+                        className={moveModifierClassName}
+                        iconProps={{ iconName: itemConfig.icon }}
+                        onClick={(e) => this.onToolbarItemClick(e, itemConfig)}
+                    />
+                );
+            } else {
+                throw new Error(
+                    `Unsupported item category ${itemConfig.category}`
+                );
+            }
+        });
+    };
 
-    private onToolbarItemClick = (e: any, itemConfig: ITagInputToolbarItemProps): void => {
+    private onToolbarItemClick = (
+        e: any,
+        itemConfig: ITagInputToolbarItemProps
+    ): void => {
         e.stopPropagation();
         itemConfig.handler();
-    }
+    };
 
     private handleAdd = () => {
         this.props.onAddTags();
-    }
+    };
     private handleOnlyCurrentPageTags = () => {
-        this.setState({tagFilterToggled: !this.state.tagFilterToggled}, () => {
-            this.props.onOnlyCurrentPageTags(this.state.tagFilterToggled);
-        });
-    }
+        this.setState(
+            { tagFilterToggled: !this.state.tagFilterToggled },
+            () => {
+                this.props.onOnlyCurrentPageTags(this.state.tagFilterToggled);
+            }
+        );
+    };
 
     private handleShowOriginLabels = () => {
-        this.setState({showOriginLabels: !this.state.showOriginLabels}, () => {
-            if (this.props.onShowOriginLabels) {
-                this.props.onShowOriginLabels(this.state.showOriginLabels);
+        this.setState(
+            { showOriginLabels: !this.state.showOriginLabels },
+            () => {
+                if (this.props.onShowOriginLabels) {
+                    this.props.onShowOriginLabels(this.state.showOriginLabels);
+                }
             }
-        });
-    }
+        );
+    };
 
     private handleAddTable = () => {
         this.props.setTagInputMode(TagInputMode.ConfigureTable, null, null);
-    }
+    };
 
     private handleSearch = () => {
         this.props.onSearchTags();
-    }
+    };
 
     private handleRename = () => {
         if (this.props.selectedTag) {
             this.props.onRenameTag(this.props.selectedTag);
         }
-    }
+    };
 
     private handleMoveUp = () => {
         if (this.props.selectedTag) {
             this.props.onReorder(this.props.selectedTag, -1);
         }
-    }
+    };
 
     private handleMoveDown = () => {
         if (this.props.selectedTag) {
             this.props.onReorder(this.props.selectedTag, 1);
         }
-    }
+    };
 
     private handleDelete = () => {
         if (this.props.selectedTag) {
             this.props.onDelete(this.props.selectedTag);
         }
-    }
+    };
 }

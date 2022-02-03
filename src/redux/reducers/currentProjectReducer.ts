@@ -1,9 +1,6 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-import {ActionTypes} from "../actions/actionTypes";
-import {IProject, ITag} from "../../models/applicationState";
-import {AnyAction} from "../actions/actionCreators";
+import { ActionTypes } from "../actions/actionTypes";
+import { IProject, ITag } from "../../models/applicationState";
+import { AnyAction } from "../actions/actionCreators";
 import _ from "lodash";
 import { getNextColor } from "../../common/utils";
 
@@ -18,15 +15,18 @@ import { getNextColor } from "../../common/utils";
  * @param state - Current project
  * @param action - Action that was dispatched
  */
-export const reducer = (state: IProject = null, action: AnyAction): IProject => {
+export const reducer = (
+    state: IProject = null,
+    action: AnyAction
+): IProject => {
     switch (action.type) {
         case ActionTypes.DELETE_PROJECT_SUCCESS:
         case ActionTypes.CLOSE_PROJECT_SUCCESS:
             return null;
         case ActionTypes.LOAD_PROJECT_SUCCESS:
-            return {...action.payload};
+            return { ...action.payload };
         case ActionTypes.ADD_ASSET_TO_PROJECT_SUCCESS:
-            return {...state, lastVisitedAssetId: action.payload.id};
+            return { ...state, lastVisitedAssetId: action.payload.id };
         case ActionTypes.LOAD_ASSET_METADATA_SUCCESS:
             if (!state) {
                 return state;
@@ -40,7 +40,10 @@ export const reducer = (state: IProject = null, action: AnyAction): IProject => 
         case ActionTypes.REFRESH_ASSET_SUCCESS:
             return {
                 ...state,
-                assets:{...state.assets, [action.payload.id]: action.payload},
+                assets: {
+                    ...state.assets,
+                    [action.payload.id]: action.payload,
+                },
             };
         case ActionTypes.DELETE_PROJECT_ASSET_SUCCESS:
         case ActionTypes.LOAD_PROJECT_ASSETS_SUCCESS:
@@ -57,18 +60,25 @@ export const reducer = (state: IProject = null, action: AnyAction): IProject => 
             if (!state) {
                 return state;
             }
-            const updatedAssets = {...state.assets} || {};
-            updatedAssets[action.payload.asset.id] = _.cloneDeep(action.payload.asset);
+            const updatedAssets = { ...state.assets } || {};
+            updatedAssets[action.payload.asset.id] = _.cloneDeep(
+                action.payload.asset
+            );
 
             const assetTags = new Set();
-            action.payload.regions.forEach((region) => region.tags.forEach((tag) => assetTags.add(tag)));
+            action.payload.regions.forEach((region) =>
+                region.tags.forEach((tag) => assetTags.add(tag))
+            );
 
             const newTags: ITag[] = state.tags ? [...state.tags] : [];
             let updateTags = false;
 
             assetTags.forEach((tag) => {
-                if (!state.tags || state.tags.length === 0 ||
-                    !state.tags.find((projectTag) => tag === projectTag.name)) {
+                if (
+                    !state.tags ||
+                    state.tags.length === 0 ||
+                    !state.tags.find((projectTag) => tag === projectTag.name)
+                ) {
                     const color = getNextColor(newTags);
                     newTags.push({
                         name: tag,
@@ -106,9 +116,10 @@ export const reducer = (state: IProject = null, action: AnyAction): IProject => 
 
             return {
                 ...state,
-                sourceConnection: state.sourceConnection.id === action.payload.id
-                    ? {...action.payload}
-                    : state.sourceConnection,
+                sourceConnection:
+                    state.sourceConnection.id === action.payload.id
+                        ? { ...action.payload }
+                        : state.sourceConnection,
             };
         default:
             return state;

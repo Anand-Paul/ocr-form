@@ -1,1 +1,2 @@
-12.17.1
+nvm install 12.17.1
+nvm use 12.17.1

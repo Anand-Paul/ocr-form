@@ -32,6 +32,8 @@ import { IEditorPageProps } from "../react/components/pages/editorPage/editorPag
 import IProjectActions, * as projectActions from "../redux/actions/projectActions";
 import IApplicationActions, * as applicationActions from "../redux/actions/applicationActions";
 import IAppTitleActions, * as appTitleActions from "../redux/actions/appTitleActions";
+import IConnectionActions, * as connectionActions from "../redux/actions/connectionActions";
+
 import { generateKey } from "./crypto";
 import { randomIntInRange, encodeFileURI } from "./utils";
 import { appInfo } from "./appInfo";
@@ -597,6 +599,7 @@ export default class MockFactory {
             applicationActions:
                 applicationActions as any as IApplicationActions,
             appTitleActions: appTitleActions as any as IAppTitleActions,
+            connectionActions: connectionActions as any as IConnectionActions,
             ...MockFactory.pageProps(projectId, "edit"),
         };
     }

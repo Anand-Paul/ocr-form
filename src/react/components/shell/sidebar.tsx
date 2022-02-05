@@ -25,7 +25,7 @@ export function Sidebar({ project }) {
                 </li>
                 <li>
                     <ConditionalNavLink
-                        disabled={!projectId}
+                        disabled={false} //{!projectId}
                         title={strings.tags.editor}
                         to={`/projects/${projectId}/edit`}
                     >

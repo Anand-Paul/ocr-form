@@ -33,6 +33,7 @@ import {
 import IApplicationActions, * as applicationActions from "../../../../redux/actions/applicationActions";
 import IProjectActions, * as projectActions from "../../../../redux/actions/projectActions";
 import IAppTitleActions, * as appTitleActions from "../../../../redux/actions/appTitleActions";
+import IConnectionActions, * as connectionActions from "../../../../redux/actions/connectionActions";
 import {
     AssetPreview,
     ContentSource,
@@ -79,6 +80,7 @@ export interface IEditorPageProps
     actions: IProjectActions;
     applicationActions: IApplicationActions;
     appTitleActions: IAppTitleActions;
+    connectionActions: IConnectionActions;
 }
 
 /**
@@ -143,6 +145,7 @@ function mapDispatchToProps(dispatch) {
         actions: bindActionCreators(projectActions, dispatch),
         applicationActions: bindActionCreators(applicationActions, dispatch),
         appTitleActions: bindActionCreators(appTitleActions, dispatch),
+        connectionActions: bindActionCreators(connectionActions, dispatch),
     };
 }
 
@@ -192,10 +195,14 @@ export default class EditorPage extends React.Component<
     constructor(props) {
         super(props);
         this.tagInputRef = React.createRef();
+        this.initialConnection = this.initialConnection.bind(this);
     }
 
     public async componentDidMount() {
         window.addEventListener("focus", this.onFocused);
+
+        // TODO
+        // this.initialConnection();
 
         this.isUnmount = false;
         this.isOCROrAutoLabelingBatchRunning = false;
@@ -212,6 +219,15 @@ export default class EditorPage extends React.Component<
         }
         document.title = strings.editorPage.title + " - " + strings.appName;
     }
+
+    private initialConnection = async () => {
+        try {
+            // TODO
+            // await this.props.connectionActions.saveConnection(connection);
+        } catch (error) {
+            alert(error);
+        }
+    };
 
     public async componentDidUpdate(prevProps: Readonly<IEditorPageProps>) {
         if (this.props.project) {

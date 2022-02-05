@@ -20,7 +20,6 @@ import { StatusBar } from "./react/components/shell/statusBar";
 import { StatusBarMetrics } from "./react/components/shell/statusBarMetrics";
 import { TitleBar } from "./react/components/shell/titleBar";
 import ShareProjectButton from "./react/components/shell/shareProjectButton";
-import AppSurveyLink from "./react/components/shell/appSurveyLink";
 
 import { getAppInsights } from "./services/telemetryService";
 import TelemetryProvider from "./providers/telemetry/telemetryProvider";
@@ -94,9 +93,6 @@ export default class App extends React.Component<IAppProps> {
                                     className={`app-shell platform-${platform}`}
                                 >
                                     <TitleBar icon="TagGroup">
-                                        <div className="app-servey-link">
-                                            <AppSurveyLink />
-                                        </div>
                                         <div className="project-share-menu-icon">
                                             <ShareProjectButton />
                                         </div>

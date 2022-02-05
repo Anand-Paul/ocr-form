@@ -14,16 +14,8 @@
         "noEmit": true,
         "jsx": "preserve",
         "experimentalDecorators": true,
-        "lib": [
-            "esnext",
-            "dom"
-        ],
-        "typeRoots": [
-            "./typings",
-            "./node_modules/@types"
-        ],
+        "lib": ["esnext", "dom"],
+        "typeRoots": ["./node_modules/@types"]
     },
-    "include": [
-        "src"
-    ]
+    "include": ["src"]
 }

@@ -63,6 +63,7 @@ import { toast } from "react-toastify";
 import { PredictService } from "../../../../services/predictService";
 import { AssetService } from "../../../../services/assetService";
 import clone from "rfdc";
+import Loader from "../../common/loader/loader";
 
 /**
  * Properties for Editor Page
@@ -281,6 +282,7 @@ export default class EditorPage extends React.Component<
 
         return (
             <div className="editor-page skipToMainContent" id="pageEditor">
+                {/* <Loader /> */}
                 {this.state.tableToView !== null && (
                     <TableView
                         handleTableViewClose={this.handleTableViewClose}

@@ -163,7 +163,7 @@ export default class EditorPage extends React.Component<
     IEditorPageState
 > {
     public state: IEditorPageState = {
-        customLoading: false,
+        customLoading: true,
         selectedTag: null,
         lockedTags: [],
         assets: [],
@@ -227,7 +227,6 @@ export default class EditorPage extends React.Component<
     private initialConnection = async () => {
         try {
             // TODO
-            this.setState({ customLoading: true });
             const connectionObject = {
                 id: "j48BmdS8-",
                 name: "clienth",
@@ -346,16 +345,15 @@ export default class EditorPage extends React.Component<
             (asset) => asset.state === AssetState.NotVisited
         );
 
-        if (!project) {
-            return <div>Loading...</div>;
-        }
-
         const isBasicInputMode = this.state.tagInputMode === TagInputMode.Basic;
         this.initialRightSplitPaneWidth = isBasicInputMode ? 290 : 520;
 
+        if (this.state.customLoading && !project) {
+            return <Loader />;
+        }
+
         return (
             <div className="editor-page skipToMainContent" id="pageEditor">
-                {this.state.customLoading && <Loader />}
                 {this.state.tableToView !== null && (
                     <TableView
                         handleTableViewClose={this.handleTableViewClose}

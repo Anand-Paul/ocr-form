@@ -5,6 +5,7 @@ import { RouteComponentProps } from "react-router-dom";
 import SplitPane from "react-split-pane";
 import { bindActionCreators } from "redux";
 import { PrimaryButton } from "@fluentui/react";
+
 import HtmlFileReader from "../../../../common/htmlFileReader";
 import { strings, interpolate } from "../../../../common/strings";
 import {
@@ -64,6 +65,7 @@ import { PredictService } from "../../../../services/predictService";
 import { AssetService } from "../../../../services/assetService";
 import clone from "rfdc";
 import Loader from "../../common/loader/loader";
+import ProjectService from "../../../../services/projectService";
 
 /**
  * Properties for Editor Page
@@ -203,7 +205,7 @@ export default class EditorPage extends React.Component<
         window.addEventListener("focus", this.onFocused);
 
         // TODO
-        // this.initialConnection();
+        this.initialConnection();
 
         this.isUnmount = false;
         this.isOCROrAutoLabelingBatchRunning = false;
@@ -224,7 +226,68 @@ export default class EditorPage extends React.Component<
     private initialConnection = async () => {
         try {
             // TODO
-            // await this.props.connectionActions.saveConnection(connection);
+            const connectionObject = {
+                id: "j48BmdS8-",
+                name: "clienth",
+                providerOptions: {
+                    sas: "https://aismeformrecognizer.blob.core.windows.net/clienth?sv=2020-08-04&st=2022-02-01T17:28:57Z&se=2022-03-03T17:28:57Z&sr=c&sp=racwdli&sig=QDZtN%2FmeItFMsLBqhOjAQ4NZRH%2BPdFBjeCb9jkBlX2M%3D",
+                },
+                providerType: "azureBlobStorage",
+            };
+            await this.props.connectionActions.saveConnection(connectionObject);
+            const ProjectServiceObject = {
+                id: "",
+                predictModelId: "",
+                recentModelRecords: [],
+                trainRecord: {
+                    modelInfo: {
+                        modelId: "",
+                        createdDateTime: "",
+                        modelName: "",
+                    },
+                },
+                apiKey: "3bfe8616977b42c0af2b4d547789f8f5",
+                apiUriBase:
+                    "https://aismepocformrecognizer.cognitiveservices.azure.com",
+                apiVersion: undefined,
+                version: undefined,
+                tags: [],
+                folderPath: "",
+                name: "New Project",
+                securityToken: "New Project Token",
+                sourceConnection: {
+                    id: "j48BmdS8-",
+                    name: "clienth",
+                    providerOptions: {
+                        sas: "https://aismeformrecognizer.blob.core.windows.net/clienth?sv=2020-08-04&st=2022-02-01T17:28:57Z&se=2022-03-03T17:28:57Z&sr=c&sp=racwdli&sig=QDZtN%2FmeItFMsLBqhOjAQ4NZRH%2BPdFBjeCb9jkBlX2M%3D",
+                    },
+                    providerType: "azureBlobStorage",
+                },
+            };
+            const isNew = !!!ProjectServiceObject?.id;
+            const projectService = new ProjectService();
+            if (
+                !(await projectService.isValidProjectConnection(
+                    ProjectServiceObject
+                ))
+            ) {
+                return;
+            }
+            if (
+                await projectService.isProjectNameAlreadyUsed(
+                    ProjectServiceObject
+                )
+            ) {
+                return;
+            }
+            await this.props.applicationActions.ensureSecurityToken(
+                ProjectServiceObject
+            );
+            await this.props.actions.saveProject(
+                ProjectServiceObject,
+                false,
+                true
+            );
         } catch (error) {
             alert(error);
         }

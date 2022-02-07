@@ -216,13 +216,13 @@ export default class ConnectionPage extends React.Component<
                     { autoClose: 10000 }
                 );
             } else {
+                console.log(connection);
                 await this.props.actions.saveConnection(connection);
                 toast.success(
                     interpolate(strings.connections.messages.saveSuccess, {
                         connection,
                     })
                 );
-
                 this.props.history.push("/connections");
             }
         } catch (error) {

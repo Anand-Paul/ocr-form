@@ -133,6 +133,7 @@ export interface IEditorPageState {
     reconfigureTableConfirm?: boolean;
     pageNumber: number;
     highlightedTableCellRegions: ITableRegion[];
+    customLoading?: boolean;
 }
 
 function mapStateToProps(state: IApplicationState) {
@@ -162,6 +163,7 @@ export default class EditorPage extends React.Component<
     IEditorPageState
 > {
     public state: IEditorPageState = {
+        customLoading: false,
         selectedTag: null,
         lockedTags: [],
         assets: [],
@@ -179,7 +181,6 @@ export default class EditorPage extends React.Component<
         pageNumber: 1,
         highlightedTableCellRegions: null,
     };
-
     private tagInputRef: RefObject<TagInput>;
 
     private loadingProjectAssets: boolean = false;
@@ -205,7 +206,7 @@ export default class EditorPage extends React.Component<
         window.addEventListener("focus", this.onFocused);
 
         // TODO
-        this.initialConnection();
+        await this.initialConnection();
 
         this.isUnmount = false;
         this.isOCROrAutoLabelingBatchRunning = false;
@@ -226,6 +227,7 @@ export default class EditorPage extends React.Component<
     private initialConnection = async () => {
         try {
             // TODO
+            this.setState({ customLoading: true });
             const connectionObject = {
                 id: "j48BmdS8-",
                 name: "clienth",
@@ -235,6 +237,7 @@ export default class EditorPage extends React.Component<
                 providerType: "azureBlobStorage",
             };
             await this.props.connectionActions.saveConnection(connectionObject);
+            const timestamp = new Date();
             const ProjectServiceObject = {
                 id: "",
                 predictModelId: "",
@@ -253,8 +256,8 @@ export default class EditorPage extends React.Component<
                 version: undefined,
                 tags: [],
                 folderPath: "",
-                name: "New Project",
-                securityToken: "New Project Token",
+                name: "New Project" + timestamp,
+                securityToken: "New Project " + timestamp + " Token",
                 sourceConnection: {
                     id: "j48BmdS8-",
                     name: "clienth",
@@ -271,6 +274,7 @@ export default class EditorPage extends React.Component<
                     ProjectServiceObject
                 ))
             ) {
+                console.log("valid project connection");
                 return;
             }
             if (
@@ -278,6 +282,8 @@ export default class EditorPage extends React.Component<
                     ProjectServiceObject
                 )
             ) {
+                console.log("valid project name");
+
                 return;
             }
             await this.props.applicationActions.ensureSecurityToken(
@@ -288,6 +294,10 @@ export default class EditorPage extends React.Component<
                 false,
                 true
             );
+            this.props.history.replace(
+                `/projects/${this.props.project.id}/edit`
+            );
+            this.setState({ customLoading: false });
         } catch (error) {
             alert(error);
         }
@@ -345,7 +355,7 @@ export default class EditorPage extends React.Component<
 
         return (
             <div className="editor-page skipToMainContent" id="pageEditor">
-                {/* <Loader /> */}
+                {this.state.customLoading && <Loader />}
                 {this.state.tableToView !== null && (
                     <TableView
                         handleTableViewClose={this.handleTableViewClose}

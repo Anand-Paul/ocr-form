@@ -39,11 +39,13 @@ export function ensureSecurityToken(
 ) => Promise<IAppSettings> {
     return async (dispatch: Dispatch, getState: () => IApplicationState) => {
         const appState = getState();
+
         let securityToken = appState.appSettings.securityTokens.find(
             (st) => st.name === project.securityToken
         );
-
+        console.log("HI anand reached ensure security token", securityToken);
         if (securityToken) {
+            console.log("hi a");
             return appState.appSettings;
         }
 

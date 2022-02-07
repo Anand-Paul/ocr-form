@@ -243,6 +243,7 @@ export default class ProjectSettingsPage extends React.Component<
             }
 
             await this.deleteOldProjectWhenRenamed(project, isNew);
+            console.log("before on secure", project);
             await this.props.applicationActions.ensureSecurityToken(project);
             await this.props.projectActions.saveProject(project, false, true);
 

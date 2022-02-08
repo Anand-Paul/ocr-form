@@ -266,7 +266,7 @@ export default class EditorPage extends React.Component<
                     providerType: "azureBlobStorage",
                 },
             };
-            const isNew = !!!ProjectServiceObject?.id;
+            // const isNew = !!!ProjectServiceObject?.id;
             const projectService = new ProjectService();
             if (
                 !(await projectService.isValidProjectConnection(

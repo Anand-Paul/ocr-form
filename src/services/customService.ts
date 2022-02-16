@@ -29,7 +29,8 @@ export interface ICustomService {
 export default class CustomService implements ICustomService {
     public getCustomData(params: string) {
         return new Promise<ICustomDetails>(async (resolve, reject) => {
-            // FxORcRAoQksYzrqgrFx2dN%2F7BHTWOsiPzVl1RLl7uec%3D
+            // Project ID: Ml9sYXlvdXRfNQ==
+            // QR : FxORcRAoQksYzrqgrFx2dN%2F7BHTWOsiPzVl1RLl7uec%3D
             Axios.get(`${constants.customDataAPI}?qr=${params}`)
                 .then((response) => {
                     if (response.status === 200) {

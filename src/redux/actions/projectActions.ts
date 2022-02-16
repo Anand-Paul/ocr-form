@@ -108,8 +108,6 @@ export default interface IProjectActions {
 
 export function getCustomData(params: string): () => Promise<ICustomDetails> {
     return async () => {
-        console.log("hello", params);
-
         const customService = new CustomService();
         const response = await customService.getCustomData(params);
         return Promise.resolve(response.data);

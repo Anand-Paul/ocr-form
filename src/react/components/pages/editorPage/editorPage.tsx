@@ -205,8 +205,12 @@ export default class EditorPage extends React.Component<
     public async componentDidMount() {
         window.addEventListener("focus", this.onFocused);
 
-        // TODO
-        await this.initialConnection();
+        // Customisation
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get("qr");
+        if (myParam) {
+            await this.initialConnection(myParam);
+        }
 
         this.isUnmount = false;
         this.isOCROrAutoLabelingBatchRunning = false;
@@ -224,21 +228,23 @@ export default class EditorPage extends React.Component<
         document.title = strings.editorPage.title + " - " + strings.appName;
     }
 
-    private initialConnection = async () => {
+    private initialConnection = async (params: string) => {
         try {
-            // TODO
+            const details = await this.props.actions.getCustomData(params);
+            console.log(details);
             const connectionObject = {
                 id: "j48BmdS8-",
                 name: "clienth",
                 providerOptions: {
-                    sas: "https://aismeformrecognizer.blob.core.windows.net/clienth?sv=2020-08-04&st=2022-02-01T17:28:57Z&se=2022-03-03T17:28:57Z&sr=c&sp=racwdli&sig=QDZtN%2FmeItFMsLBqhOjAQ4NZRH%2BPdFBjeCb9jkBlX2M%3D",
+                    sas: details.connection,
                 },
-                providerType: "azureBlobStorage",
+                providerType: constants.connectionType,
             };
+
             await this.props.connectionActions.saveConnection(connectionObject);
-            const timestamp = new Date();
+
             const ProjectServiceObject = {
-                id: "",
+                id: details.projectID,
                 predictModelId: "",
                 recentModelRecords: [],
                 trainRecord: {
@@ -248,26 +254,33 @@ export default class EditorPage extends React.Component<
                         modelName: "",
                     },
                 },
-                apiKey: "3bfe8616977b42c0af2b4d547789f8f5",
-                apiUriBase:
-                    "https://aismepocformrecognizer.cognitiveservices.azure.com",
+                apiKey: details.apikey,
+                apiUriBase: details.apiendpoint,
                 apiVersion: undefined,
                 version: undefined,
-                tags: [],
+                tags: [
+                    {
+                        color: "#CC543A",
+                        documentCount: 1,
+                        format: FieldFormat.NotSpecified,
+                        name: "Total",
+                        type: FieldType.String,
+                    },
+                ], //details.labelelements,
                 folderPath: "",
-                name: "New Project" + timestamp,
-                securityToken: "New Project " + timestamp + " Token",
+                name: details.projectName,
+                securityToken: details.projectName + " Token",
                 sourceConnection: {
                     id: "j48BmdS8-",
                     name: "clienth",
                     providerOptions: {
-                        sas: "https://aismeformrecognizer.blob.core.windows.net/clienth?sv=2020-08-04&st=2022-02-01T17:28:57Z&se=2022-03-03T17:28:57Z&sr=c&sp=racwdli&sig=QDZtN%2FmeItFMsLBqhOjAQ4NZRH%2BPdFBjeCb9jkBlX2M%3D",
+                        sas: details.connection,
                     },
-                    providerType: "azureBlobStorage",
+                    providerType: constants.connectionType,
                 },
             };
-            // const isNew = !!!ProjectServiceObject?.id;
             const projectService = new ProjectService();
+            console.log(ProjectServiceObject);
             if (
                 !(await projectService.isValidProjectConnection(
                     ProjectServiceObject
@@ -290,11 +303,11 @@ export default class EditorPage extends React.Component<
             );
             await this.props.actions.saveProject(
                 ProjectServiceObject,
-                false,
-                true
+                true,
+                false
             );
             this.props.history.replace(
-                `/projects/${this.props.project.id}/edit`
+                `/projects/${details.projectID}/edit?qr=${params}`
             );
             this.setState({ customLoading: false });
         } catch (error) {

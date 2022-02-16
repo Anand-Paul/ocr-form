@@ -14,7 +14,9 @@ import "./sidebar.scss";
  */
 export function Sidebar({ project }) {
     const projectId = project ? project.id : null;
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get("qr");
+    const editorPageBtn = myParam || projectId;
     return (
         <div className="bg-lighter-2 app-sidebar" id="appSidebar">
             <ul>
@@ -25,7 +27,7 @@ export function Sidebar({ project }) {
                 </li>
                 <li>
                     <ConditionalNavLink
-                        disabled={false} //{!projectId}
+                        disabled={!editorPageBtn} //{!projectId}
                         title={strings.tags.editor}
                         to={`/projects/${projectId}/edit`}
                     >

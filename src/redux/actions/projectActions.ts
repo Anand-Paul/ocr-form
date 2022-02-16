@@ -1,5 +1,6 @@
 import { Action, Dispatch } from "redux";
 import ProjectService from "../../services/projectService";
+import CustomService from "../../services/customService";
 import { ActionTypes } from "./actionTypes";
 import { AssetService } from "../../services/assetService";
 import {
@@ -17,6 +18,7 @@ import {
     ITableTag,
     ITableField,
     TableVisualizationHint,
+    ICustomDetails,
 } from "../../models/applicationState";
 import {
     createAction,
@@ -42,6 +44,7 @@ export default interface IProjectActions {
         saveTags?: boolean,
         updateTagsFromFiles?: boolean
     ): Promise<IProject>;
+    getCustomData(params: string): Promise<ICustomDetails>;
     deleteProject(project: IProject): Promise<void>;
     closeProject(): void;
     addAssetToProject(
@@ -101,6 +104,14 @@ export default interface IProjectActions {
         newRows: ITableConfigItem[],
         newColumns: ITableConfigItem[]
     ): Promise<IAssetMetadata[]>;
+}
+
+export function getCustomData(params: string): () => Promise<ICustomDetails> {
+    return async () => {
+        const customService = new CustomService();
+        const response = await customService.getCustomData(params);
+        return Promise.resolve(response.data);
+    };
 }
 
 /**

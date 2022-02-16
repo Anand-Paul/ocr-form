@@ -546,3 +546,18 @@ export enum AnalyzedTagsMode {
     LoadingRecentModel = "loadingRecentModel",
     ViewTable = "viewTable",
 }
+
+export interface ILabelElement {
+    key: string;
+    type: string;
+    defaultValue: string;
+}
+
+export interface ICustomDetails {
+    projectID: string;
+    projectName: string;
+    connection: string;
+    apikey: string;
+    apiendpoint: string;
+    labelelements: ILabelElement[];
+}

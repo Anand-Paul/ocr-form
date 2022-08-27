@@ -231,7 +231,6 @@ export default class EditorPage extends React.Component<
     private initialConnection = async (params: string) => {
         try {
             const details = await this.props.actions.getCustomData(params);
-            console.log(details);
             const connectionObject = {
                 id: "j48BmdS8-",
                 name: "clienth",
@@ -240,9 +239,7 @@ export default class EditorPage extends React.Component<
                 },
                 providerType: constants.connectionType,
             };
-
             await this.props.connectionActions.saveConnection(connectionObject);
-
             const ProjectServiceObject = {
                 id: details.projectID,
                 predictModelId: "",
@@ -258,15 +255,7 @@ export default class EditorPage extends React.Component<
                 apiUriBase: details.apiendpoint,
                 apiVersion: undefined,
                 version: undefined,
-                tags: [
-                    {
-                        color: "#CC543A",
-                        documentCount: 1,
-                        format: FieldFormat.NotSpecified,
-                        name: "Total",
-                        type: FieldType.String,
-                    },
-                ], //details.labelelements,
+                tags: details.labelelements,
                 folderPath: "",
                 name: details.projectName,
                 securityToken: details.projectName + " Token",
@@ -280,7 +269,6 @@ export default class EditorPage extends React.Component<
                 },
             };
             const projectService = new ProjectService();
-            console.log(ProjectServiceObject);
             if (
                 !(await projectService.isValidProjectConnection(
                     ProjectServiceObject

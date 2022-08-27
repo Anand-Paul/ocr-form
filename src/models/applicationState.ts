@@ -559,5 +559,18 @@ export interface ICustomDetails {
     connection: string;
     apikey: string;
     apiendpoint: string;
-    labelelements: ILabelElement[];
+    labelelements: ITag[];
+}
+
+export interface PostModelIDParams {
+    qr: string;
+    formrecognizerModelID: string;
+}
+
+export interface PostModelIDDetails {
+    statusCode: number;
+    error: boolean;
+    success: boolean;
+    errorMessage: string;
+    data: boolean;
 }

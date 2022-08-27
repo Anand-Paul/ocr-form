@@ -19,6 +19,8 @@ import {
     ITableField,
     TableVisualizationHint,
     ICustomDetails,
+    PostModelIDParams,
+    PostModelIDDetails,
 } from "../../models/applicationState";
 import {
     createAction,
@@ -45,6 +47,7 @@ export default interface IProjectActions {
         updateTagsFromFiles?: boolean
     ): Promise<IProject>;
     getCustomData(params: string): Promise<ICustomDetails>;
+    postModelID(params: PostModelIDParams): Promise<PostModelIDDetails>;
     deleteProject(project: IProject): Promise<void>;
     closeProject(): void;
     addAssetToProject(
@@ -111,6 +114,16 @@ export function getCustomData(params: string): () => Promise<ICustomDetails> {
         const customService = new CustomService();
         const response = await customService.getCustomData(params);
         return Promise.resolve(response.data);
+    };
+}
+
+export function postModelID(
+    params: PostModelIDParams
+): () => Promise<PostModelIDDetails> {
+    return async () => {
+        const customService = new CustomService();
+        const response = await customService.postModelID(params);
+        return Promise.resolve(response);
     };
 }
 
@@ -193,6 +206,7 @@ export function saveProject(
         project = Object.assign({}, project);
         const appState = getState();
         const projectService = new ProjectService();
+
         if (projectService.isDuplicate(project, appState.recentProjects)) {
             throw new AppError(
                 ErrorCode.ProjectDuplicateName,

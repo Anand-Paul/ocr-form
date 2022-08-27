@@ -62,7 +62,6 @@ export const constants = {
     insightsKey: "",
     prebuiltServiceVersion: "v2.1",
     pages: "pages",
-    customDataAPI:
-        "https://aismelabs-dev-api.azurewebsites.net/api/LayoutDetails/getlayout",
+    customService: "https://aismelabs-dev-api.azurewebsites.net",
     connectionType: "azureBlobStorage",
 };

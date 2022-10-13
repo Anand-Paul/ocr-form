@@ -74,9 +74,6 @@
       display: flex;
       flex-direction: column;
       background-color: $lighter-3;
-      -webkit-box-shadow: 0px 10px 25px 2px rgba(181,172,181,1);
-      -moz-box-shadow: 0px 10px 25px 2px rgba(181,172,181,1);
-      box-shadow: 0px 10px 25px 2px rgba(181,172,181,1);
       &-fill {
           flex-grow: 1;
       }

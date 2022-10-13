@@ -12,7 +12,7 @@ export class StatusBar extends React.Component<IStatusBarProps> {
     public render() {
         const apiVersion = getAPIVersion(this.props.project?.apiVersion);
         return (
-            <div className="status-bar">
+            <div className="status-bar shadow">
                 <div className="status-bar-main">{this.props.children}</div>
                 <div className="status-bar-version">
                     <ul>

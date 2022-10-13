@@ -18,7 +18,7 @@ export function Sidebar({ project }) {
     const myParam = urlParams.get("qr");
     const editorPageBtn = myParam || projectId;
     return (
-        <div className="bg-lighter-2 app-sidebar" id="appSidebar">
+        <div className="shadow app-sidebar" id="appSidebar">
             <ul>
                 <li>
                     <NavLink title={"Home"} to={`/`} exact role="button">

@@ -37,7 +37,12 @@ $lighter-8: rgba(255,255,255,0.60);
                 background-color: $lighter-3;
 
                 &:hover {
-                    background-color: $lighter-2;
+                    background-color: $darker-15;
+                    a{
+                        .ms-Icon,.title,.description{
+                            color:$lighter-6;
+                        }
+                    }
                 }
                 &:first-child {
                     margin-left: 2rem;
@@ -78,7 +83,8 @@ $lighter-8: rgba(255,255,255,0.60);
                         }
                     }
                     &.quickstart {
-                        color: $lighter-7;
+                        color: $darker-6; 
+                        padding-bottom: 20px;
                         &:hover {
                             color: #fff;
                         }

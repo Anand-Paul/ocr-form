@@ -240,7 +240,7 @@ export class LayoutPredictPage extends React.Component<
                     <div className="predict-sidebar bg-lighter-1">
                         <div className="condensed-list">
                             <h6
-                                className="condensed-list-header bg-darker-2 p-2 flex-center"
+                                className="condensed-list-header p-2 flex-center"
                                 style={{ marginBottom: "1rem" }}
                             >
                                 <FontIcon
@@ -258,7 +258,7 @@ export class LayoutPredictPage extends React.Component<
                                 actions={this.props.actions}
                             />
                             <div className="p-3">
-                                <h5>
+                                <h5 className="layoutPredict-text">
                                     {
                                         strings.layoutPredict
                                             .selectFileAndRunLayout

@@ -2,22 +2,40 @@
     width: 50%;
     float: left;
     padding-right: 5px;
+    color: #333;
 }
+
 .locales-section {
     width: 50%;
     float: right;
     padding-right: 5px;
 }
+
+.locales-text {
+    color: #333;
+}
+
 .predict-button {
     margin-top: 12px;
+
     .ms-Button-icon {
         color: rgb(120, 173, 14);
     }
+
+    .ms-Button-textContainer {
+        color: rgba(255, 255, 255, 1);
+    }
+}
+
+.layoutPredict-text{
+    color: #333;
+    text-shadow: none;
 }
 
 .request-uri-textfield {
     textarea {
         word-break: break-all;
+        color: rgba(255, 255, 255, 1);
     }
 }
 

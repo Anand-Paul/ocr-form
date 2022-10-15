@@ -2,11 +2,11 @@
 
 .help-menu-button {
     padding: 6px 10px;
-    color: #ccc;
+    color: $lighter-7;
     display: inline-block;
 
     &:hover {
-        color: #fff;
+        color: $lighter-8;
         background-color: $lighter-2;
         cursor: pointer;
     }

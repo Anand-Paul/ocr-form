@@ -90,7 +90,7 @@ export default class HomePage extends React.Component<
             <div className="app-homepage" id="pageHome">
                 <div className="app-homepage-main">
                     <ul>
-                        <li>
+                        <li className="shadow">
                             <a
                                 id="home_prebuilt"
                                 onClick={this.onPrebuiltClicked}
@@ -121,7 +121,7 @@ export default class HomePage extends React.Component<
                                 {strings.homePage.quickStartGuide}
                             </a>
                         </li>
-                        <li>
+                        <li className="shadow">
                             <a
                                 onClick={
                                     this.onUseLayoutToGetTextAndTAblesClicked
@@ -150,7 +150,7 @@ export default class HomePage extends React.Component<
                                 {strings.homePage.quickStartGuide}
                             </a>
                         </li>
-                        <li>
+                        <li className="shadow">
                             <a
                                 onClick={this.onTrainAndUseAModelWithLables}
                                 className="primary-link"

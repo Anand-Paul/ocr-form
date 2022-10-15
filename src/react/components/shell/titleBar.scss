@@ -26,11 +26,11 @@
     display: flex;
     flex-direction: row;
     align-items: stretch;
-
+    background-color: $lighter-3;
     &-main {
         -webkit-app-region: drag;
         -webkit-user-select: none;
-
+        color: #333;
         display: flex;
         flex-direction: column;
         justify-content: center;

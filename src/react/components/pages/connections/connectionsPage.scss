@@ -14,5 +14,10 @@
     &-detail {
         flex-grow: 1;
         overflow: auto;
+        color: #333;
+        h6{
+            text-shadow: none;
+        }
+        
     }
 }

@@ -50,7 +50,7 @@ export default class CondensedList extends React.Component<
 
         return (
             <div className="condensed-list">
-                <div className="condensed-list-header bg-darker-2">
+                <div className="condensed-list-header shadow">
                     <span>{title}</span>
                     {newLinkTo && (
                         <Link

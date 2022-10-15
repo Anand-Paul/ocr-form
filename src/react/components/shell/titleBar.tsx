@@ -122,7 +122,7 @@ export class TitleBar extends React.Component<ITitleBarProps, ITitleBarState> {
         };
 
         return (
-            <div className="title-bar bg-lighter-3">
+            <div className="title-bar bg-lighter-3 shadow-sm">
                 {isNotElectronAndMacOrLinux && (
                     <div className="title-bar-icon">
                         {typeof this.props.icon === "string" && (

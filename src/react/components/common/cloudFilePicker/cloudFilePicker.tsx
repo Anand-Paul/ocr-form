@@ -109,7 +109,7 @@ export class CloudFilePicker extends React.Component<
                 {!this.state.selectedConnection && (
                     <>
                         <div className={"shared-string-input-container"}>
-                            <div className="condensed-list-header bg-darker-2 shared-uri-header">
+                            <div className="condensed-list-header shared-uri-header">
                                 Shared project token
                             </div>
                             <div className="input-uri">

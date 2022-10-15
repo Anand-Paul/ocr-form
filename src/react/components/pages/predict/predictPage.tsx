@@ -366,7 +366,7 @@ export default class PredictPage extends React.Component<
                     style={{ width: sidebarWidth, minWidth: sidebarWidth }}
                 >
                     <div className="condensed-list">
-                        <h6 className="condensed-list-header bg-darker-2 p-2 flex-center">
+                        <h6 className="condensed-list-header p-2 flex-center">
                             <FontIcon className="mr-1" iconName="Insights" />
                             <span>{strings.predict.title}</span>
                         </h6>
